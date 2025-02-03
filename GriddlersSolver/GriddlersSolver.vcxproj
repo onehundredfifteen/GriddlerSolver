@@ -20,12 +20,14 @@
     <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
     <CharacterSet>Unicode</CharacterSet>
+    <PlatformToolset>v142</PlatformToolset>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>false</UseDebugLibraries>
     <WholeProgramOptimization>true</WholeProgramOptimization>
     <CharacterSet>Unicode</CharacterSet>
+    <PlatformToolset>v142</PlatformToolset>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
   <ImportGroup Label="ExtensionSettings">
@@ -83,11 +85,12 @@
     <ClInclude Include="Estimators\EntropyEstimator.h" />
     <ClInclude Include="Estimators\Estimator.h" />
     <ClInclude Include="Estimators\FairEstimator.h" />
-    <ClInclude Include="AbstractRow.h" />
+    <ClInclude Include="Rows\AbstractRow.h" />
     <ClInclude Include="Griddler.h" />
     <ClInclude Include="GriddlerCandidate.h" />
-    <ClInclude Include="GriddlerRow.h" />
-    <ClInclude Include="GriddlerRowStd.h" />
+    <ClInclude Include="Rows\ConstrainedRow.h" />
+    <ClInclude Include="Rows\GriddlerRow.h" />
+    <ClInclude Include="Rows\MutableRow.h" />
     <ClInclude Include="RandomGenerator.h" />
     <ClInclude Include="Selectors\By5Selector.h" />
     <ClInclude Include="Selectors\RouletteSelector.h" />

@@ -28,9 +28,6 @@
     <ClInclude Include="GriddlerCandidate.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="GriddlerRow.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="RandomGenerator.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -64,13 +61,19 @@
     <ClInclude Include="Approach\BasicApproach.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="AbstractRow.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="Selectors\By5Selector.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="GriddlerRowStd.h">
+    <ClInclude Include="Rows\AbstractRow.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Rows\MutableRow.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Rows\GriddlerRow.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Rows\ConstrainedRow.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
