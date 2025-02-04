@@ -4,9 +4,17 @@
 #include <numeric>
 #include <algorithm>
 
+
+enum class CellState {
+	Blank,
+	Filled,
+	Unknown
+};
+
 typedef std::vector<int> ColumnCollection;
 typedef std::vector<int> BlockCollection;
 typedef std::vector<int> SpanCollection;
+typedef std::vector<CellState> CellCollection;
 
 //#include <algorithm>
 
@@ -64,11 +72,11 @@ public:
 
 
 public:
-	const std::vector<int> blocks;
+	const BlockCollection blocks;
 	const int imageWidth;
 
 protected:
-	std::vector<int> spans;
+	SpanCollection spans;
 private:
 	const int blockSum;
 
@@ -120,7 +128,7 @@ public:
 	}
 
 private:
-	static std::vector<int> _initializeSpans(const BlockCollection& _blocks, int imgwidth) {
+	static SpanCollection _initializeSpans(const BlockCollection& _blocks, int imgwidth) {
 		//empty row
 		if (_blocks.size() == 0 || (_blocks.size() == 1 && _blocks[0] == 0)) {
 			return { imgwidth };

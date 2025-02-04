@@ -35,13 +35,12 @@ spans(2): 0, 0
 class GriddlerRow : public AbstractRow
 {
 public:
-	GriddlerRow(const BlockCollection& _blocks, int imgwidth) :
-		AbstractRow(_blocks, imgwidth), final(_initFinal()) {
-		//if not final randomizeRow();
+	GriddlerRow(const BlockCollection& _blocks, int imgwidth)
+		: AbstractRow(_blocks, imgwidth), final(_initFinal()) {
 	}
 
-	GriddlerRow(const BlockCollection& _blocks, const SpanCollection &_spans, int imgwidth) :
-		AbstractRow(_blocks, _spans, imgwidth), final(true) {
+	GriddlerRow(const BlockCollection& _blocks, const SpanCollection &_spans, int imgwidth)
+		: AbstractRow(_blocks, _spans, imgwidth), final(true) {
 	}
 
 	//GriddlerRow(const GriddlerRow &row) :
@@ -99,7 +98,7 @@ private:
 
 	void fixMiddleZeroes() {
 		//get rid of zero-spans in the middle
-		std::transform(spans.begin() + 1, spans.end() - 1, spans.begin(), [](int span_value) {
+		std::transform(spans.begin() + 1, spans.end() - 1, spans.begin() + 1, [](int span_value) {
 			return span_value <= 0 ? 1 : span_value;
 		});
 	}

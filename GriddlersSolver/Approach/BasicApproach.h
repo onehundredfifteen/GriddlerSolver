@@ -4,7 +4,7 @@
 #include <iterator>
 #include <algorithm>
 #include "ApproachProvider.h"
-#include "../AbstractRow.h"
+#include "../Rows/AbstractRow.h"
 
 #define cFILLED 2
 #define cBLANK 1

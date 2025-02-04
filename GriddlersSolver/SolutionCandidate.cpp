@@ -4,19 +4,17 @@
 #include "stdafx.h"
 #include <algorithm>
 
-#include "GriddlerCandidate.h"
+#include "SolutionCandidate.h"
 
-GriddlerCandidate::GriddlerCandidate(BlockCollection blocks, ApproachProvider * approachProvider, int rows_cnt, int cols_cnt)
+SolutionCandidate::SolutionCandidate(const std::vector<BlockCollection> &block_group, const ApproachProvider& approachProvider, int row_cnt, int col_cnt)
+	: rowCount(row_cnt), colCount(col_cnt)
 {
-	init(rows_cnt, cols_cnt);
 
-	for(int i = 0; i < img_rows; ++i) {
-		if(approachProvider)
-			rows.push_back(new GriddlerRow(blocks[i], img_cols, approachProvider->getRow(i)));
-		else
-			rows.push_back(new GriddlerRow(blocks[i], img_cols));
+	for(int i = 0; i < rowCount; ++i) {
+		rows.emplace_back(block_group[i], colCount, approachProvider.getRow(i));
 	}
 }
+/*
 GriddlerCandidate::GriddlerCandidate(BlockCollection blocks, SpanCollection solved_spans, int rows_cnt, int cols_cnt)
 {
 	init(rows_cnt, cols_cnt);
@@ -36,30 +34,18 @@ GriddlerCandidate::GriddlerCandidate(const GriddlerCandidate &griddler)
 	for(int i = 0; i < img_rows; ++i) {
 		rows.push_back(new GriddlerRow(*(griddler.rows[i])));
 	}
-}
+}*/
 
-//destructor
-GriddlerCandidate::~GriddlerCandidate() {
-	for (std::vector<GriddlerRow*>::iterator it = rows.begin(); it != rows.end(); ++it) {
-		delete(*it);
-	}
-}
 
-//init collections
-void GriddlerCandidate::init(int r, int c)
-{
-	img_rows = r;
-	img_cols = c;
-	rows.reserve(img_rows);
-}
-
-//gets column result
-void GriddlerCandidate::FillListByColumnResult(std::vector<int> &result, int column) const
+//gets column result //FillListByColumnResult
+//looks like if we could find columns, they should be equal at some point to the pattern so griddler is resolved 
+ColumnCollection SolutionCandidate::GetColumnCollection(int column) const
 {
 	int cnt = 0;
+	ColumnCollection result(rowCount / 2);
 
-	for(int i = 0; i < img_rows; ++i) {
-		if(rows[i]->getCellByColumn(column)) {
+	for(int i = 0; i < rowCount; ++i) {
+		if(rows[i].getCellByColumn(column)) {
 			++cnt;
 		}
 		else if(cnt != 0) {
@@ -70,8 +56,11 @@ void GriddlerCandidate::FillListByColumnResult(std::vector<int> &result, int col
 	
 	if(cnt != 0) //if there is no span at the border
 		result.push_back(cnt);
+
+	return std::move(result);
 }
-void GriddlerCandidate::FillListByResult(bool *result) 
+//FillListByResult
+void SolutionCandidate::GetColumnResult(int column)
 {
 	for(int r = 0; r < img_rows; ++r) {
 		for(int i = 0; i < img_cols; ++i) {
@@ -79,8 +68,9 @@ void GriddlerCandidate::FillListByResult(bool *result)
 		}
 	}
 }
-void GriddlerCandidate::FillListByResult(bool *result, int row_no) 
+CellCollection SolutionCandidate::GetColumnResult(int column) const
 {
+	CellCollection result();
 	for(int i = 0; i < img_cols; ++i) {
 		result[i] = rows[row_no]->getCellByColumn(i);
 	}

@@ -85,9 +85,11 @@
     <ClInclude Include="Estimators\EntropyEstimator.h" />
     <ClInclude Include="Estimators\Estimator.h" />
     <ClInclude Include="Estimators\FairEstimator.h" />
+    <ClInclude Include="Mutations\BasicMutation.h" />
+    <ClInclude Include="Mutations\Mutation.h" />
     <ClInclude Include="Rows\AbstractRow.h" />
     <ClInclude Include="Griddler.h" />
-    <ClInclude Include="GriddlerCandidate.h" />
+    <ClInclude Include="SolutionCandidate.h" />
     <ClInclude Include="Rows\ConstrainedRow.h" />
     <ClInclude Include="Rows\GriddlerRow.h" />
     <ClInclude Include="Rows\MutableRow.h" />
@@ -101,7 +103,7 @@
   <ItemGroup>
     <ClCompile Include="Approach\BasicApproach.cpp" />
     <ClCompile Include="Griddler.cpp" />
-    <ClCompile Include="GriddlerCandidate.cpp" />
+    <ClCompile Include="SolutionCandidate.cpp" />
     <ClCompile Include="GriddlersSolver.cpp" />
     <ClCompile Include="stdafx.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>

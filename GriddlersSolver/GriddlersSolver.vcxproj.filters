@@ -25,9 +25,6 @@
     <ClInclude Include="targetver.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="GriddlerCandidate.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="RandomGenerator.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -76,6 +73,15 @@
     <ClInclude Include="Rows\ConstrainedRow.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="Mutations\Mutation.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Mutations\BasicMutation.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="SolutionCandidate.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
@@ -84,13 +90,13 @@
     <ClCompile Include="GriddlersSolver.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="GriddlerCandidate.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="Griddler.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Approach\BasicApproach.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="SolutionCandidate.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

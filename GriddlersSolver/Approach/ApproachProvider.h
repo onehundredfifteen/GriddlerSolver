@@ -1,6 +1,6 @@
 #pragma once
 
-#include "../AbstractRow.h"
+#include "../Rows/ConstrainedRow.h"
 #include <functional>
 
 class ApproachProvider
@@ -29,8 +29,8 @@ public:
 		delete [] cells;
 	}
 
-	virtual short* getRow(int row) {
-		return this->cells[row];
+	virtual const ConstrainedRow& getRow(int row) const {
+		return ConstrainedRow(); // this->cells[row];
 	}
 
 	virtual short& edgewiseCell(int row, int col) {

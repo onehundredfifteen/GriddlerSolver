@@ -4,7 +4,8 @@
 #include <algorithm>
 
 #include "GriddlerRow.h"
-//#include "RandomGenerator.h"
+#include "ConstrainedRow.h"
+#include "../Mutations/Mutation.h"
 
 /*
 MutableRow
@@ -13,50 +14,41 @@ MutableRow can mutate
 
 */
 
-typedef short Approach;
-
-class MutableRow : private GriddlerRow
+class MutableRow : public GriddlerRow
 {
 public:
-	MutableRow(const BlockCollection& _blocks, int imgwidth) :
-		GriddlerRow(_blocks, imgwidth), approach(nullptr) {
-		//generate
-		init();
+	MutableRow(const BlockCollection& _blocks, int imgwidth, const ConstrainedRow& constraintProvider)
+		: GriddlerRow(_blocks, imgwidth) {
+		if (false == this->final) {
+			randomizeRowConstraintWise(constraintProvider);
+		}
 	}
-
-	GriddlerRow(std::vector<int> &_blocks, int imgwidth, short *_approach) :
-		AbstractRow(_blocks, imgwidth), approach(_approach) {
-		//generate
-		init();
-	}
-
-	GriddlerRow(std::vector<int> &_blocks, std::vector<int> &_spans, int imgwidth) :
-		AbstractRow(_blocks, _spans, imgwidth), isFinal(true), approach(nullptr) {
-	}
-
-	GriddlerRow(const GriddlerRow &row) :
-		AbstractRow(row), isFinal(row.isFinal), approach(row.approach) {
-	}
-private: //set to priv
-
-	bool isFinal;
-	short *approach;
 
 private:
 
 
-	//gets effective row width
 	void randomizeRow() {
-		const int Q = getMaxSpanSize();
-		do {
-			//first span can be 0, last doesn't matter
-			spans.front() = RandomGenerator::Next()(0, Q);
-			//spans.back() = RandomGenerator::Next()(0, Q);
+		const int maxQ = getMaxSpanSize(); //max possible span, only 1 possible
+		const int Q = maxQ - 1; //max standard span
 
-			for (std::vector<int>::iterator it = spans.begin() + 1; it < spans.end(); ++it) {
-				*it = (Q == 1) ? 1 : RandomGenerator::Next()(1, Q);
-			}
-		} while (by_approach() || getWidth() > imageWidth);
+		//first span can be 0, last doesn't matter
+		spans.front() = RandomGenerator::Next()(0, maxQ);
+		bool maxSpanUsed = spans.front() == maxQ;
+
+		//set random span for each element and we want only 1 max span 
+		std::transform(spans.begin() + 1, spans.end() - 1, spans.begin() + 1, [&Q, &maxQ, &maxSpanUsed](int span_value) {
+			int new_value = (maxQ == 1) ? 1 : RandomGenerator::Next()(1, maxSpanUsed ? Q : maxQ);
+			
+			if (!maxSpanUsed && new_value == maxQ) maxSpanUsed = true;
+			return new_value;
+		});
+	}
+
+	void randomizeRowConstraintWise(const ConstrainedRow& constraintProvider) {
+		do {
+			randomizeRow();
+			sanitize();
+		} while (false == constraintProvider.compareAgainst(*this));
 		/*
 		if( this->getCellByColumn(1) ==false  && this->approach[1] == 2) {
 				bool f,ff = getCandidateWidth() > imageWidth;
@@ -66,183 +58,46 @@ private:
 	}
 
 	//
-	bool by_approach() {
-		if (nullptr == approach)
-			return false;
+	/*
+	
+	case 0: stream << '.'; break; unkwon
+				case 1: stream << '/'; break;
+				case 2: stream << 'O'; break;
+	*/
+	
+	
 
-		for (int n = 0; n < imageWidth; ++n) {
-			if (n == 1)
-				n = 1;
-			if (this->approach[n] == 0)
-				continue;
+public:
+	SpanCollection& getSpans() {
+		return this->spans;
+	}
 
-			bool v = this->getCellByColumn(n);
+	void CrossingOver(MutableRow& partner) {
 
-			//if(n==1 && this->approach[n] == 2)
-			//	n=1;
+		if (spans.size() <= 2)
+			return;
 
+		//assume same size of rows bigger than 2
+		int cross_point = RandomGenerator::Next()(1, spans.size() - 1);
 
-			if (v && this->approach[n] == 1)
-				return true;
-			else if (v == false && this->approach[n] == 2)
-				return true;
+		//xower
+		std::swap_ranges(spans.begin(), spans.begin() + cross_point, partner.spans.begin());
 
-			//if(v  && this->approach[n] != 2 && n == 1)
-				//n=1;
-		}
-
-		return false;
+		//keep valid
+		//sanitize();
+		//partner.sanitize();
 	}
 
 	
 
-public:
-	void CrossingOver(GriddlerRow * partner) {
+	void Mutate(Mutation &effect) {
+		effect.visit(*this);
 
-		//int cross_point = 0;
-
-		if (spans.size() <= 1)
-			return;
-
-		//assume same size of rows bigger than 1
-		int cross_point = RandomGenerator::Next()(0, spans.size() - 1);
-
-		//xower
-		std::swap_ranges(spans.begin(), spans.begin() + cross_point, partner->spans.begin());
-		//keep valid
-		this->sanitize();
-		partner->sanitize();
-	}
-
-	//increase or decrease single span by 1
-	void BasicMutation() {
-		const int mut_point = (spans.size() == 1) ? 0 : RandomGenerator::Next()(0, spans.size() - 1);
-
-		//prepare to operation
-		std::vector<int>::iterator it = spans.begin() + mut_point;
-		if (RandomGenerator::Next()(1, 10) > 5 && ((mut_point > 0 && *it > 1) || (mut_point == 0 && *it > 0))) //more likely to decrease
-			(*it)--;
-		else
-			(*it)++;
-
-		this->sanitize();
-	}
-
-	//swap random locii [spans]
-	void SwapMutation() {
-		//assume size of row bigger than 1
-		std::vector<int>::iterator a, b;
-		int swap_point1, swap_point2 = RandomGenerator::Next()(0, spans.size() - 1);
-
-		//get both random and different points
-		do {
-			swap_point1 = RandomGenerator::Next()(0, spans.size() - 1);
-		} while (swap_point1 == swap_point2);
-
-		//prepare to operation
-		a = spans.begin() + swap_point1;
-		b = spans.begin() + swap_point2;
-		std::iter_swap(a, b);
-
-		this->fixMiddleZeroes();
-		this->sanitize();
-	}
-
-	//reverse
-	void ReverseMutation() {
-		if (spans.size() < 3) {
-			std::reverse(spans.begin(), spans.end());
-		}
-		else {
-			std::vector<int>::iterator a, b;
-			int rev_point1, rev_point2 = RandomGenerator::Next()(0, spans.size() - 1);
-
-			//get both random and different points
-			do {
-				rev_point1 = RandomGenerator::Next()(0, spans.size() - 1);
-			} while (rev_point1 == rev_point2);
-
-			//prepare to operation
-			//a = spans.begin() + std::min(rev_point1, rev_point2);
-			//b = spans.begin() + std::max(rev_point1, rev_point2);
-			std::reverse(a, b);
-		}
-
-		this->fixMiddleZeroes();
-		this->sanitize();
-	}
-
-	void NewMutation() {
-		//assume size of row bigger than 1
-		const int mut_point = (spans.size() == 1) ? 0 : RandomGenerator::Next()(0, spans.size() - 1);
-		const int Q = getMaxSpanSize();
-
-		//prepare to operation
-		std::vector<int>::iterator it = spans.begin() + mut_point;
-		int low = (it == spans.begin()) ? 0 : 1;
-
-		*it = RandomGenerator::Next()(low, Q);
-
-		this->sanitize();
-	}
-
-	bool IsFinal() {
-		return isFinal;
-	}
-	/*
-	bool IsValid() {
-		return getMinimalWidth() <= imageWidth;
-	}*/
-
-	//gets effective row width
-	void randomizeRow() {
-		const int Q = getMaxSpanSize();
-		do {
-			//first span can be 0, last doesn't matter
-			spans.front() = RandomGenerator::Next()(0, Q);
-			//spans.back() = RandomGenerator::Next()(0, Q);
-
-			for (std::vector<int>::iterator it = spans.begin() + 1; it < spans.end(); ++it) {
-				*it = (Q == 1) ? 1 : RandomGenerator::Next()(1, Q);
-			}
-		} while (by_approach() || getWidth() > imageWidth);
-		/*
-		if( this->getCellByColumn(1) ==false  && this->approach[1] == 2) {
-				bool f,ff = getCandidateWidth() > imageWidth;
-				f= by_approach();
-				ff = true;
-		}*/
-	}
-
-	//
-	bool by_approach() {
-		if (nullptr == approach)
-			return false;
-
-		for (int n = 0; n < imageWidth; ++n) {
-			if (n == 1)
-				n = 1;
-			if (this->approach[n] == 0)
-				continue;
-
-			bool v = this->getCellByColumn(n);
-
-			//if(n==1 && this->approach[n] == 2)
-			//	n=1;
-
-
-			if (v && this->approach[n] == 1)
-				return true;
-			else if (v == false && this->approach[n] == 2)
-				return true;
-
-			//if(v  && this->approach[n] != 2 && n == 1)
-				//n=1;
-		}
-
-		return false;
+		//sanitize?
+		//return isvalid?
 	}
 
 
 
+	
 };
