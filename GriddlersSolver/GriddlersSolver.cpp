@@ -7,8 +7,8 @@
 #include <windows.h>
 #include <process.h>
 
-#include "Griddler.h"
-#include "GriddlerCandidate.h"
+#include "Griddlers/Griddler.h"
+#include "SolutionCandidate.h"
 
 #include "Estimators/ColumnwiseEstimator.h"
 #include "Estimators/BasicEstimator.h"
@@ -92,6 +92,7 @@ void Bulk()
 
 void Alg(std::vector<itrec> &poprec)
 {
+	/*
 	Griddler griddler(TEST_20x20_GRIDDLER); //SIMPLE_7x7_GRIDDLER TEST_20x20_GRIDDLER // SOLVED_20x20_GRIDDLER
 	
 
@@ -192,6 +193,8 @@ void Alg(std::vector<itrec> &poprec)
 			}*/
 
 			//ruchansko dzieci to pierwsze pol populacji
+
+/*
 			for (int i = 0; i < pop; ++i) {
 
 
@@ -242,6 +245,7 @@ void Alg(std::vector<itrec> &poprec)
 
 		
 		}*/
+/*
 		std::cout << Q[max_index] << std::endl;
 
 		final->PrintToStream(std::cout);
@@ -259,6 +263,7 @@ void Alg(std::vector<itrec> &poprec)
 		if(it == eresult.begin())
 			std::cout << "= ";
 	}*/
+/*
 	std::cout << estimator(elite) << std::endl;
 
 	elite->PrintToStream(std::cout);
@@ -286,15 +291,15 @@ void Alg(std::vector<itrec> &poprec)
 
 	int y;
 	std::cin >> y;
-	
+	*/
 }
 
 void Standard() {
-	Griddler griddler(SIMPLE_7x7_GRIDDLER); //SIMPLE_7x7_GRIDDLER TEST_20x20_GRIDDLER // SOLVED_20x20_GRIDDLER
+	///Griddler griddler(SIMPLE_7x7_GRIDDLER); //SIMPLE_7x7_GRIDDLER TEST_20x20_GRIDDLER // SOLVED_20x20_GRIDDLER
 
 
-	const int pop = 1200;
-	GriddlerCandidate ** population = new GriddlerCandidate *[pop];
+	//const int pop = 1200;
+	///GriddlerCandidate ** population = new GriddlerCandidate *[pop];
 }
 
 

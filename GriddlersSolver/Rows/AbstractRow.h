@@ -1,24 +1,9 @@
 #pragma once
 
-#include <vector>
 #include <numeric>
 #include <algorithm>
 
-
-enum class CellState {
-	Blank,
-	Filled,
-	Unknown
-};
-
-typedef std::vector<int> ColumnCollection;
-typedef std::vector<int> BlockCollection;
-typedef std::vector<int> SpanCollection;
-typedef std::vector<CellState> CellCollection;
-
-//#include <algorithm>
-
-//#include "RandomGenerator.h"
+#include "../types.h"
 
 /*
 AbstractRow
@@ -72,7 +57,7 @@ public:
 
 
 public:
-	const BlockCollection blocks;
+	const BlockCollection &blocks;
 	const int imageWidth;
 
 protected:
@@ -85,7 +70,7 @@ public:
 		return this->blocks == other.blocks && this->spans == other.spans;
     }
 
-	const SpanCollection& getSpans() {
+	const SpanCollection& getSpans() const {
 		return this->spans;
 	}
 

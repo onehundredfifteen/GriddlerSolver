@@ -317,35 +317,7 @@ Griddler::Griddler(int example)
 	approachProvider = new BasicApproach(pattern_rows, pattern_cols,imgRows,imgCols);
 }
 
-Griddler::~Griddler()
-{
-	if(isSolved())
-		delete [] solution;
 
-	delete [] pattern_cols;
-	delete [] pattern_rows;
-	delete approachProvider;
-}
-
-GriddlerCandidate * Griddler::GetNewCandidate()
-{
-	if(isSolved())
-		return new GriddlerCandidate(pattern_rows, solution, imgRows, imgCols);
-	else
-		return new GriddlerCandidate(pattern_rows, approachProvider, imgRows, imgCols);
-}
-ColumnCollection Griddler::GetColumnPattern()
-{
-	return pattern_cols;
-} 
-int Griddler::GetColumnPatternSize()
-{
-	return imgCols;
-}
-bool Griddler::isSolved()
-{
-	return (solution != nullptr);
-}
 
 /*
 GriddlerCandidate::GriddlerCandidate(int example)

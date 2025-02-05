@@ -40,9 +40,6 @@
     <ClInclude Include="Selectors\RouletteSelector.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Griddler.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="Estimators\FairEstimator.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -82,6 +79,21 @@
     <ClInclude Include="SolutionCandidate.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="types.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Griddlers\Griddler.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Griddlers\GriddlerPreset.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Griddlers\ConcreteGriddler7x7.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="SolutionContent.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
@@ -90,13 +102,16 @@
     <ClCompile Include="GriddlersSolver.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Griddler.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="Approach\BasicApproach.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="SolutionCandidate.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Griddlers\ConcreteGriddler7x7.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="SolutionContent.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

@@ -17,9 +17,7 @@ public:
     }
 
 	int operator()(int low, int high) { 
-
-		if(low >= high)
-		{
+		if(low >= high) {
 			high = 0;
 		}
         std::uniform_int_distribution<int> distribution(low, high);

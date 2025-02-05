@@ -85,10 +85,13 @@
     <ClInclude Include="Estimators\EntropyEstimator.h" />
     <ClInclude Include="Estimators\Estimator.h" />
     <ClInclude Include="Estimators\FairEstimator.h" />
+    <ClInclude Include="Griddlers\ConcreteGriddler7x7.h" />
+    <ClInclude Include="Griddlers\GriddlerPreset.h" />
     <ClInclude Include="Mutations\BasicMutation.h" />
     <ClInclude Include="Mutations\Mutation.h" />
+    <ClInclude Include="SolutionContent.h" />
     <ClInclude Include="Rows\AbstractRow.h" />
-    <ClInclude Include="Griddler.h" />
+    <ClInclude Include="Griddlers\Griddler.h" />
     <ClInclude Include="SolutionCandidate.h" />
     <ClInclude Include="Rows\ConstrainedRow.h" />
     <ClInclude Include="Rows\GriddlerRow.h" />
@@ -99,10 +102,12 @@
     <ClInclude Include="Selectors\Selector.h" />
     <ClInclude Include="stdafx.h" />
     <ClInclude Include="targetver.h" />
+    <ClInclude Include="types.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Approach\BasicApproach.cpp" />
-    <ClCompile Include="Griddler.cpp" />
+    <ClCompile Include="Griddlers\ConcreteGriddler7x7.cpp" />
+    <ClCompile Include="SolutionContent.cpp" />
     <ClCompile Include="SolutionCandidate.cpp" />
     <ClCompile Include="GriddlersSolver.cpp" />
     <ClCompile Include="stdafx.cpp">

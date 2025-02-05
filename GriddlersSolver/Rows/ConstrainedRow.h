@@ -3,7 +3,7 @@
 //#include <vector>
 #include <algorithm>
 
-#include "GriddlerRow.h"
+#include "AbstractRow.h"
 
 
 /*
@@ -26,11 +26,6 @@ public:
 		: AbstractRow(row), cells(_initializeCells(*this)) {
 	}
 
-	/*enum class CellState {_cells
-		Blank,
-		Filled,
-		Unknown
-	};**/
 	/*
 
 	case 0: stream << '.'; break; unkwon
@@ -38,12 +33,12 @@ public:
 				case 2: stream << 'O'; break;
 	*/
 
-private:
+public:
 	const CellCollection cells;
 
 public:
 	//produce something like this 011102033 -> [-xxx-x-xx]
-	std::vector<int> getRowImage(const GriddlerRow& row) const {
+	std::vector<int> getRowImage(const AbstractRow& row) const {
 		bool last = false;
 		int block_cnt = 1;
 		std::vector<int> image(row.imageWidth);
@@ -81,8 +76,22 @@ public:
 	}
 
 private:
+	//method won't yield unknown cells
 	static CellCollection _initializeCells(const AbstractRow& row) {
+		CellCollection _cells(row.imageWidth);
+			
+		if (row.blocks.size() == 0) {
+			_cells.insert(_cells.end(), row.getSpans().front(), CellState::Blank);
+		}
+		else {
+			auto bit = row.blocks.begin();
+			for (auto sit = row.getSpans().begin(); sit < row.getSpans().end(); ++sit) {
+				_cells.insert(_cells.end(), *sit, CellState::Blank);
+				_cells.insert(_cells.end(), *bit, CellState::Filled);
+				++bit;
+			}
+		}
 
-		return CellCollection(2);
+		return std::move(_cells);
 	}
 };

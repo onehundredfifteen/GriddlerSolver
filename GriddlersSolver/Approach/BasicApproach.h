@@ -26,6 +26,7 @@ public:
 		cells[4][3]=1;
 		cells[4][4]=2;
 		*/
+		/*
 		cells[5][6]=2;
 
 		int a = 0;
@@ -91,7 +92,7 @@ protected:
 	}
 
 	virtual int edgewiseBlock(int idx, int block) const {
-		switch(orientation) {
+		/*switch(orientation) {
 			case Orientation::esColumn: return col_blocks[idx][block];
 			case Orientation::esRevNormal: {
 				std::reverse_iterator< std::vector<int>::iterator > rev = blocks[idx].rbegin();
@@ -104,7 +105,8 @@ protected:
 			case Orientation::esNormal: 
 			default:
 				return blocks[idx][block];
-		}
+		}*/
+		return 115;
 	}
 
 	virtual std::vector<AbstractRow *>& edgewiseRows() {
@@ -135,6 +137,7 @@ private:
 	* Basic counter cover 
 	**/
 	void covers(BlockCollection pattern, std::vector<AbstractRow *> &_arr) {
+		/*
 		int dim = edgewiseDimension();
 		for(int i = 0; i < dim; ++i) {
 			AbstractRow * my_row = edgewiseRows()[i];
@@ -156,7 +159,7 @@ private:
 				if(my_row_img[c] && my_row_img[c] == rv_row_img[c]) 
 					edgewiseCell(i,c) = cFILLED;
 			}
-		}
+		}*/
 	}
 
 	/**
@@ -195,7 +198,7 @@ private:
 	void develop_blocks(BlockCollection pattern, std::vector<AbstractRow *> &_arr) {
 		int dim = edgewiseDimension();
 		int inv_dim = edgewiseInvDimension();
-
+		/*
 		for(int i = 0; i < dim; ++i) {
 			int last_blank_idx = -10;
 			int min = *std::min_element(pattern[i].begin(), pattern[i].end()); //get widest block
@@ -221,12 +224,13 @@ private:
 						continue;
 					}*/
 					//else if(last != my_row_img[c]) 
+					/*
 				}
 				else if(edgewiseCell(i,c) == cBLANK){
 					last_blank_idx = c;
 				}
-			}
-		}
+			}*/
+		//}
 
 	}
 };
