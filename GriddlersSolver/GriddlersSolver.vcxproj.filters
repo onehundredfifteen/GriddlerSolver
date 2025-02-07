@@ -58,13 +58,7 @@
     <ClInclude Include="Selectors\By5Selector.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Rows\AbstractRow.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="Rows\MutableRow.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Rows\GriddlerRow.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Rows\ConstrainedRow.h">
@@ -88,10 +82,19 @@
     <ClInclude Include="Griddlers\GriddlerPreset.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="SolutionContent.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\tests\catch\catch_amalgamated.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
     <ClInclude Include="Griddlers\ConcreteGriddler7x7.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="SolutionContent.h">
+    <ClInclude Include="PopulationGenerator.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Rows\GriddlerRow.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
@@ -102,16 +105,28 @@
     <ClCompile Include="GriddlersSolver.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Approach\BasicApproach.cpp">
+    <ClCompile Include="SolutionCandidate.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="SolutionCandidate.cpp">
+    <ClCompile Include="SolutionContent.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\tests\tests.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\tests\catch\catch_amalgamated.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Griddlers\ConcreteGriddler7x7.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="SolutionContent.cpp">
+    <ClCompile Include="Rows\GriddlerRow.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Rows\MutableRow.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Rows\ConstrainedRow.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

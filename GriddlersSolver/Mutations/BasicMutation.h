@@ -15,7 +15,7 @@ increase or decrease single span by 1
 class BasicMutation : public Mutation
 {
 public:
-	virtual void visit(MutableRow& row) override {
+	void visit(MutableRow& row) override {
         int mut_point = (row.getSpans().size() == 1) ? 0 : RandomGenerator::Next()(0, row.getSpans().size() - 1);
         auto& value = row.getSpans()[mut_point];
 

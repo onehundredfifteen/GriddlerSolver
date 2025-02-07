@@ -1,6 +1,6 @@
 #pragma once
 
-#include "../Rows/MutableRow.h"
+//#include "../Rows/MutableRow.h"
 
 
 /*
@@ -10,7 +10,7 @@ visitor pattern
 
 */
 
-
+class MutableRow; //fd
 class Mutation
 {
 public:

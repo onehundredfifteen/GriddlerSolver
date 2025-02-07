@@ -91,7 +91,7 @@ void GriddlerCandidate::DoCrossingOver(GriddlerCandidate* partner, double chance
 /*
 
 	int i = 0;
-	for (std::vector<GriddlerRow*>::iterator it = rows.begin(); it != rows.end(); ++it, ++i) {
+	for (std::vector<GriddlerRow2*>::iterator it = rows.begin(); it != rows.end(); ++it, ++i) {
 		if (false == (*it)->IsFinal()) {
 			(*it)->CrossingOver(partner->rows[i]);
 		}
@@ -114,7 +114,7 @@ void GriddlerCandidate::DoMutate(double chance)
 	}
 
 
-	/*for (std::vector<GriddlerRow*>::iterator it = rows.begin(); it != rows.end(); ++it, ++i) {
+	/*for (std::vector<GriddlerRow2*>::iterator it = rows.begin(); it != rows.end(); ++it, ++i) {
 		if(false == (*it)->IsFinal() && RandomGenerator::Next()(0.0, 1.0) >= chance) {
 			int f = RandomGenerator::Next()(1, 20);
 			if(f <= 3) {
@@ -127,7 +127,7 @@ void GriddlerCandidate::DoMutate(double chance)
 		}
 	}
 	int i = 0;
-	for (std::vector<GriddlerRow*>::iterator it = rows.begin(); it != rows.end(); ++it, ++i) {
+	for (std::vector<GriddlerRow2*>::iterator it = rows.begin(); it != rows.end(); ++it, ++i) {
 		if(false == (*it)->IsFinal() && RandomGenerator::Next()(0.0, 1.0) >= chance) {
 			int f = RandomGenerator::Next()(1, 20);
 			if(f <= 3) {
@@ -143,12 +143,19 @@ void GriddlerCandidate::DoMutate(double chance)
 /*
 void GriddlerCandidate::PrintToStream(std::ostream& stream)
 {
-	for (std::vector<GriddlerRow*>::iterator it = rows.begin(); it != rows.end(); ++it) {
+	for (std::vector<GriddlerRow2*>::iterator it = rows.begin(); it != rows.end(); ++it) {
 		for (int col = 0; col < img_cols; ++col) {
 			if ((*it)->getCellByColumn(col))
 				stream << '#';
 			else
 				stream << ' ';
+
+				/*
+
+	case 0: stream << '.'; break; unkwon
+				case 1: stream << '/'; break;
+				case 2: stream << 'O'; break;
+	
 		}
 
 		stream << "...";

@@ -379,9 +379,9 @@ GriddlerCandidate::GriddlerCandidate(int example)
 
 	for(int i = 0; i < img_rows; ++i) {
 		if(example == SOLVED_7x7_GRIDDLER)
-			rows.push_back(new GriddlerRow(g[i],s[i], img_cols));
+			rows.push_back(new GriddlerRow2(g[i],s[i], img_cols));
 		else //if(example == 2)
-			rows.push_back(new GriddlerRow(g[i], img_cols));
+			rows.push_back(new GriddlerRow2(g[i], img_cols));
 	}
 
 	delete [] g;

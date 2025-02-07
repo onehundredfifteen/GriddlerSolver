@@ -1,6 +1,6 @@
 #pragma once
 
-#include "../GriddlerCandidate.h"
+#include "../SolutionCandidate.h"
 
 class Estimator
 {
@@ -10,7 +10,7 @@ public:
 	}
 	virtual ~Estimator() {}
 
-	virtual double operator()(GriddlerCandidate * candidate) {
+	virtual double operator()(SolutionCandidate* candidate) {
 		return this->estimate(candidate) / this->MaxFitness();
 	}
 
@@ -22,5 +22,5 @@ protected:
 	const int col_cnt;
 
 protected:
-	virtual double estimate(GriddlerCandidate * _candidate) = 0;
+	virtual double estimate(SolutionCandidate* _candidate) = 0;
 };

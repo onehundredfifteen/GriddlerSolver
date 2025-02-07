@@ -8,7 +8,7 @@ class EntropyEstimator : public Estimator
 public:
 	EntropyEstimator(ColumnCollection _pattern, int _pattern_size) : Estimator(_pattern, _pattern_size) {}
 
-	virtual double estimate(GriddlerCandidate * candidate) {
+	virtual double estimate(SolutionCandidate* candidate) {
 		
 		double fit = 0.0, q;
 
@@ -19,12 +19,12 @@ private:
 	virtual double MaxFitness() {
 		double sum = 0;
 		for (int i = 0; i < this->col_cnt; ++i) {
-			sum += this->pattern[i].size();
+			//sum += this->pattern[i].size();
 		};
 		return sum;
 	}
 
-	double checka(GriddlerCandidate * candidate, const unsigned N)
+	double checka(SolutionCandidate* candidate, const unsigned N)
 	{
 		std::vector<std::vector<int>>  scan(N);
 		std::vector<std::vector<int>>  rev_scan(N);
@@ -33,7 +33,7 @@ private:
 		std::vector<int> scanline;
 		//get griddler scanlines
 		for (int i = 0; i < N; ++i) {
-			scanline = candidate->rows[i]->getRowImage();
+			//scanline = candidate->rows[i]->getRowImage();
 			scan[i] = scanline;
 			rev_scan[N - i - 1] = scanline;
 		}
@@ -44,9 +44,9 @@ private:
 		return (fit > fit2) ? fit : fit2;
 	}
 
-	double check(std::vector<std::vector<int>> &scan, GriddlerCandidate * candidate, const unsigned N, bool reverse) const
+	double check(std::vector<std::vector<int>> &scan, SolutionCandidate* candidate, const unsigned N, bool reverse) const
 	{
-		std::vector<int>::iterator it;
+		/*std::vector<int>::iterator it;
 		std::reverse_iterator< std::vector<int>::iterator > rev;
 		int last_empty, first_filled = 0;
 
@@ -95,8 +95,8 @@ private:
 			}
 
 		}
-
-		return fit;
+		*/
+		return 0;// fit;
 	}
 
 };

@@ -11,7 +11,7 @@ public:
 		return this->col_cnt;
 	}
 
-	virtual double estimate(GriddlerCandidate * candidate) {
+	virtual double estimate(SolutionCandidate* candidate) {
 		double fit = 0.0;
 		for(int i = 0; i < col_cnt; ++i) {
 			fit += estimateColumn(candidate, i);
@@ -20,8 +20,8 @@ public:
 		return fit;
 	};
 
-	virtual double estimateColumn( GriddlerCandidate * candidate, int column) {
-		std::vector<int> v;
+	virtual double estimateColumn(SolutionCandidate* candidate, int column) {
+		/*std::vector<int> v;
 
 		candidate->FillListByColumnResult(v, column);
 		
@@ -49,10 +49,10 @@ public:
 
 			
 			return 0.25 *(val_diff_fitness / diff_cnt);
-		}
+		}*/
 	}
 
-	virtual void FillListByFitting(std::vector<double> &fit, GriddlerCandidate * candidate) {
+	virtual void FillListByFitting(std::vector<double> &fit, SolutionCandidate* candidate) {
 		fit.push_back(this->estimate(candidate));
 		for (int i = 0; i < col_cnt; ++i) {
 			fit.push_back(estimateColumn(candidate, i));

@@ -1,5 +1,6 @@
 #pragma once
 
+#include <ostream>
 #include "./types.h"
 #include "SolutionCandidate.h"
 
@@ -31,21 +32,9 @@ private:
 	const int offset;
 	
 public:
+	void PrintToStream(std::ostream& stream) const;
+	CellState operator()(int row, int col) const;
+	//bool operator()(int row, int col);
 
-/*
-private:
-	static SpanCollection _initializeSpans(const BlockCollection& _blocks, int imgwidth) {
-		//empty row
-		if (_blocks.size() == 0 || (_blocks.size() == 1 && _blocks[0] == 0)) {
-			return { imgwidth };
-		}
-		//full row
-		else if (_blocks.size() == 1 && _blocks[0] == imgwidth) {
-			return { 0, 0 };
-		}
-
-		std::vector<int> spans(_blocks.size() + 1, 1);
-		spans.front() = 0;
-		return std::move(spans);
-	}*/
+	static char SolutionContent::CellStateToChar(const CellState& cs);
 };

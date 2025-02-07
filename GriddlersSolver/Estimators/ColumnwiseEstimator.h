@@ -13,7 +13,7 @@ public:
 		return 2.0 *  BasicEstimator::MaxFitness();
 	}
 
-	virtual double estimate(GriddlerCandidate * candidate) {
+	virtual double estimate(SolutionCandidate* candidate) {
 		double fit = 0.0;
 		std::vector<double> v, g(col_cnt, 1.0);
 
@@ -33,10 +33,10 @@ public:
 		return t * BasicEstimator::estimate(candidate);
 	}
 
-	virtual double estimateColumn(GriddlerCandidate * candidate, int column) {
+	virtual double estimateColumn(SolutionCandidate* candidate, int column) {
 		std::vector<int> v, p(this->pattern[column]);
 
-		candidate->FillListByColumnResult(v, column);
+		//candidate->FillListByColumnResult(v, column);
 
 		if(v.size() > p.size())
 			std::fill_n(std::back_inserter(p), v.size() - p.size(), 0);

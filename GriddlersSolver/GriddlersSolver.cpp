@@ -1,6 +1,8 @@
 // GriddlersSolver.cpp : Defines the entry point for the console application.
 //
 
+#define RunTests
+
 #include "stdafx.h"
 #include <iostream>
 #include <fstream>
@@ -8,6 +10,8 @@
 #include <process.h>
 
 #include "Griddlers/Griddler.h"
+//#include "Griddlers/ConcreteGriddler7x7.h"
+/*
 #include "SolutionCandidate.h"
 
 #include "Estimators/ColumnwiseEstimator.h"
@@ -15,7 +19,7 @@
 #include "Estimators/EntropyEstimator.h"
 
 #include "Selectors/RouletteSelector.h"
-#include "Selectors/By5Selector.h"
+#include "Selectors/By5Selector.h"*/
 
 struct itrec {
 	int iter;
@@ -28,9 +32,12 @@ void Alg(std::vector<itrec> &poprec);
 void Bulk();
 void Standard();
 
-int _tmain(int argc, _TCHAR* argv[])
+
+#ifndef RunTests
+int main(int argc, char* argv[])
 {
 	std::vector<itrec> r;
+	std::cout << "dupa";
 	///Alg(r);
 	//Bulk();
 
@@ -38,6 +45,7 @@ int _tmain(int argc, _TCHAR* argv[])
 
 	return 0;
 }
+#endif
 
 unsigned int __stdcall run_thread(void * arg) 
 {
@@ -307,7 +315,7 @@ void Standard() {
 void BruteForce()
 {
 	//kolumny
-	std::vector<int> * c = new std::vector<int>[7];
+	/*std::vector<int> * c = new std::vector<int>[7];
 	c[0].push_back(1);
 	c[0].push_back(1);
 	c[1].push_back(2);
@@ -349,6 +357,6 @@ void BruteForce()
 	}
 	//std::cout <<::
 
-	delete [] c;
+	delete [] c;*/
 }
 

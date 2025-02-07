@@ -47,10 +47,11 @@
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
-      <PrecompiledHeader>Use</PrecompiledHeader>
+      <PrecompiledHeader>NotUsing</PrecompiledHeader>
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
       <PreprocessorDefinitions>WIN32;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <LanguageStandard>stdcpp17</LanguageStandard>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -60,11 +61,12 @@
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <ClCompile>
       <WarningLevel>Level3</WarningLevel>
-      <PrecompiledHeader>Use</PrecompiledHeader>
+      <PrecompiledHeader>NotUsing</PrecompiledHeader>
       <Optimization>MaxSpeed</Optimization>
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <PreprocessorDefinitions>WIN32;NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <LanguageStandard>stdcpp17</LanguageStandard>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -78,6 +80,7 @@
     <None Include="ReadMe.txt" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="..\tests\catch\catch_amalgamated.hpp" />
     <ClInclude Include="Approach\ApproachProvider.h" />
     <ClInclude Include="Approach\BasicApproach.h" />
     <ClInclude Include="Estimators\BasicEstimator.h" />
@@ -89,12 +92,12 @@
     <ClInclude Include="Griddlers\GriddlerPreset.h" />
     <ClInclude Include="Mutations\BasicMutation.h" />
     <ClInclude Include="Mutations\Mutation.h" />
+    <ClInclude Include="PopulationGenerator.h" />
     <ClInclude Include="SolutionContent.h" />
-    <ClInclude Include="Rows\AbstractRow.h" />
+    <ClInclude Include="Rows\GriddlerRow.h" />
     <ClInclude Include="Griddlers\Griddler.h" />
     <ClInclude Include="SolutionCandidate.h" />
     <ClInclude Include="Rows\ConstrainedRow.h" />
-    <ClInclude Include="Rows\GriddlerRow.h" />
     <ClInclude Include="Rows\MutableRow.h" />
     <ClInclude Include="RandomGenerator.h" />
     <ClInclude Include="Selectors\By5Selector.h" />
@@ -105,8 +108,12 @@
     <ClInclude Include="types.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="Approach\BasicApproach.cpp" />
+    <ClCompile Include="..\tests\catch\catch_amalgamated.cpp" />
+    <ClCompile Include="..\tests\tests.cpp" />
     <ClCompile Include="Griddlers\ConcreteGriddler7x7.cpp" />
+    <ClCompile Include="Rows\ConstrainedRow.cpp" />
+    <ClCompile Include="Rows\GriddlerRow.cpp" />
+    <ClCompile Include="Rows\MutableRow.cpp" />
     <ClCompile Include="SolutionContent.cpp" />
     <ClCompile Include="SolutionCandidate.cpp" />
     <ClCompile Include="GriddlersSolver.cpp" />

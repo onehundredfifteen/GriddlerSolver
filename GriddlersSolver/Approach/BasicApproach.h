@@ -4,7 +4,7 @@
 #include <iterator>
 #include <algorithm>
 #include "ApproachProvider.h"
-#include "../Rows/AbstractRow.h"
+#include "../Rows/GriddlerRow.h"
 
 #define cFILLED 2
 #define cBLANK 1
@@ -32,10 +32,10 @@ public:
 		int a = 0;
 
 		for(int r = 0; r < height; ++r)  /// std::cbegin(_blocks); it < std::cend(_blocks); ++it)
-			rows.push_back(new AbstractRow(blocks[r], width));
+			rows.push_back(new GriddlerRow(blocks[r], width));
 
 		for(int c = 0; c < width; ++c)  /// std::cbegin(_blocks); it < std::cend(_blocks); ++it)
-			cols.push_back(new AbstractRow(col_blocks[c], height));
+			cols.push_back(new GriddlerRow(col_blocks[c], height));
 
 
 		covers(blocks, rows);
@@ -58,7 +58,7 @@ public:
 
 		PrintToStream(std::cout);
 		a=1;
-		//AbstractRow * colc = new AbstractRow(cols[5], height);
+		//GriddlerRow * colc = new GriddlerRow(cols[5], height);
 
 		/*int aaa[30];
 		int x=0;
@@ -71,8 +71,8 @@ public:
 private:
 	BlockCollection blocks;
 	ColumnCollection col_blocks;
-	std::vector<AbstractRow *> rows;
-	std::vector<AbstractRow *> cols;
+	std::vector<GriddlerRow *> rows;
+	std::vector<GriddlerRow *> cols;
 
 protected:
 	void PrintToStream(std::ostream &stream)
@@ -109,7 +109,7 @@ protected:
 		return 115;
 	}
 
-	virtual std::vector<AbstractRow *>& edgewiseRows() {
+	virtual std::vector<GriddlerRow *>& edgewiseRows() {
 		switch(orientation) {
 			case Orientation::esColumn: ;
 			case Orientation::esRevColumn: 
@@ -136,18 +136,18 @@ private:
 	/**
 	* Basic counter cover 
 	**/
-	void covers(BlockCollection pattern, std::vector<AbstractRow *> &_arr) {
+	void covers(BlockCollection pattern, std::vector<GriddlerRow *> &_arr) {
 		/*
 		int dim = edgewiseDimension();
 		for(int i = 0; i < dim; ++i) {
-			AbstractRow * my_row = edgewiseRows()[i];
+			GriddlerRow * my_row = edgewiseRows()[i];
 			std::vector<int> my_spans = my_row->getSpans();
 
 			if(my_spans.empty() == false) {//do reverse by increasing 1st span
 				my_spans.front() = width - my_row->getMinimalWidth();
 			}
 
-			AbstractRow reversed(pattern[i], my_spans, dim);
+			GriddlerRow reversed(pattern[i], my_spans, dim);
 			std::vector<int> my_row_img = my_row->getRowImage();
 			std::vector<int> rv_row_img = reversed.getRowImage();
 
@@ -175,10 +175,10 @@ private:
 				/*else if(depth-1 == front) {
 					edgewiseCell(i, 0) = cBLANK;
 					//save blank
-					AbstractRow * my_row = edgewiseRows()[i];
+					GriddlerRow * my_row = edgewiseRows()[i];
 					std::vector<int> my_spans = my_row->getSpans();
 					my_spans.front() = 1;
-					edgewiseRows()[i] = new AbstractRow(*my_row, my_spans);
+					edgewiseRows()[i] = new GriddlerRow(*my_row, my_spans);
 					delete my_row;
 				}*/
 
@@ -195,14 +195,14 @@ private:
 		}
 	}
 
-	void develop_blocks(BlockCollection pattern, std::vector<AbstractRow *> &_arr) {
+	void develop_blocks(BlockCollection pattern, std::vector<GriddlerRow *> &_arr) {
 		int dim = edgewiseDimension();
 		int inv_dim = edgewiseInvDimension();
 		/*
 		for(int i = 0; i < dim; ++i) {
 			int last_blank_idx = -10;
 			int min = *std::min_element(pattern[i].begin(), pattern[i].end()); //get widest block
-			AbstractRow * my_row = _arr[i];
+			GriddlerRow * my_row = _arr[i];
 			std::vector<int> my_row_img = my_row->getRowImage();
 
 			for(int c = 0; c < inv_dim; ++c) {

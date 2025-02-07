@@ -1,29 +1,25 @@
 #pragma once
 
 #include <cassert>
+#include <numeric>
 #include <algorithm>
 
-#include "AbstractRow.h"
-#include "../RandomGenerator.h"
+#include "../types.h"
 
 /*
 GriddlerRow
 
 GriddlerRow have collections of blocks and spans between them.
 
-[ xx xxx  x ]
+[-xx-xxx--x-]
 blocks(3): 2, 3, 1
 spans(4): 1, 1, 2, 1
 
-GriddlerRow acts as a chromosome where only spans are rendomized
-so they can affect candidate.
-GriddlerRow will deliver only a valid combination, even if mutated.
-
-First or last span can be 0 as the corresponding block 'sticks' to the image border, but 
+First or last span can be 0 as the corresponding block 'sticks' to the image border, but
 the last span is virtual.
 GriddlerRow will have always at least 2 spans even if all row cells are filled.
 
-[xxxxxxxxx ]
+[xxxxxxxxx-]
 blocks(1): 9
 spans(2): 0, 1
 
@@ -32,83 +28,60 @@ blocks(1): 10
 spans(2): 0, 0
 */
 
-class GriddlerRow : public AbstractRow
+class GriddlerRow
 {
 public:
-	GriddlerRow(const BlockCollection& _blocks, int imgwidth)
-		: AbstractRow(_blocks, imgwidth), final(_initFinal()) {
-	}
+	// Primary constructor
+	GriddlerRow(const BlockCollection& _blocks, const SpanCollection& _spans, int imgwidth);
+		
 
-	GriddlerRow(const BlockCollection& _blocks, const SpanCollection &_spans, int imgwidth)
-		: AbstractRow(_blocks, _spans, imgwidth), final(true) {
-	}
+	// Constructor with default span initialization
+	GriddlerRow(const BlockCollection& _blocks, int imgwidth);
+
+	// Copy constructor with new spans
+	GriddlerRow(const GriddlerRow& row, const SpanCollection& _spans);
 
 	//GriddlerRow(const GriddlerRow &row) :
-		//AbstractRow(row), isFinal(row.isFinal), approach(row.approach) {
+		//blocks(row.blocks), spans(row.spans), imageWidth(row.imageWidth) {
 	//}
-protected: 
-	const bool final;
 
 public:
-	bool isLegal() const {
-		return getMinimalWidth() <= imageWidth;
-	}
-
-	bool isValid() const {
-		return isLegal() && getCurrentWidth() <= imageWidth;
-	}
+	const BlockCollection& blocks;
+	const int imageWidth;
 
 protected:
-	void sanitize() {
-		fixMiddleZeroes();
+	SpanCollection spans;
+private:
+	const int blockSum;
 
-		auto _begin = spans.begin() + 1; //now we have at least 2 spans
-		//only one span
-		if (_begin == spans.end()) {
-			adjustLastSpan();
-		}
+public:
+	virtual bool operator==(const GriddlerRow& other) const;
 
-		if (isValid()) return;
+	const SpanCollection& getSpans() const;
 
-		while (!isValid()) {
-			trimSpansToWidth();
-		}
+public:
+	//because it can be empty by two ways -> blocks {} and {0} 
+	bool isEmpty() const;
 
-		assert(isValid());
-	}
+	//gets minimal possible row width
+	//as sum of blocks width + minimal spaces between them
+	int getMinimalWidth() const;
+
+	//gets current row width, as sum of blocks & spans /wo last span
+	int getCurrentWidth() const;
+
+	//gets widest possible span
+	int getMaxSpanSize() const;
+
+	//find whether a cell at given column is full or empty
+	bool getCellByColumn(int col) const;
+
+	unsigned int possibleCombinations() const;
+
+	std::size_t computeHash() const;
 
 private:
-	bool _initFinal() const {
-		//row is empty or one combination
-		return (blocks.size() < 1 || (blocks.size() == 1 && blocks[0] == 0) || getMinimalWidth() == imageWidth);
-	}
-
-	void trimSpansToWidth() {
-		auto _begin = spans.begin() + 1;
-
-		for (auto it = _begin; it < spans.end(); ++it) {
-			(*it)--;
-			if (isValid()) return;
-		}
-
-		while (!isValid() && spans.front() > 0) {
-			--spans.front();
-		}
-	}
-
-	void fixMiddleZeroes() {
-		//get rid of zero-spans in the middle
-		std::transform(spans.begin() + 1, spans.end() - 1, spans.begin() + 1, [](int span_value) {
-			return span_value <= 0 ? 1 : span_value;
-		});
-	}
-
-	void adjustLastSpan() {
-		//set last span value aligning to the image width
-		spans.back() = imageWidth - getCurrentWidth();
-	}
-
-
-
-
+	static unsigned long long _factorial(int n);
+	static unsigned long long _combinations(int n, int k);
+	static SpanCollection _initializeSpans(const BlockCollection& _blocks, int imgwidth);
 };
