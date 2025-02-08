@@ -33,6 +33,7 @@ GriddlerRow::GriddlerRow(const BlockCollection& _blocks, const SpanCollection& _
 	imageWidth(imgwidth),
 	blockSum(std::accumulate(blocks.begin(), blocks.end(), 0)) {
 		assert(getMinimalWidth() <= imageWidth);
+		assert(_blocks.size() == _spans.size() || isEmpty());
 }
 
 	// Constructor with default span initialization
@@ -66,7 +67,7 @@ int GriddlerRow::getMinimalWidth() const {
 
 //gets current row width, as sum of blocks & spans /wo last span
 int GriddlerRow::getCurrentWidth() const {
-	return blockSum + std::accumulate(spans.begin(), spans.end() - 1, 0);
+	return blockSum + std::accumulate(spans.begin(), spans.end(), 0);
 }
 
 //gets widest possible span
@@ -134,10 +135,10 @@ SpanCollection GriddlerRow::_initializeSpans(const BlockCollection& _blocks, int
 	}
 	//full row
 	else if (_blocks.size() == 1 && _blocks[0] == imgwidth) {
-		return { 0, 0 };
+		return { 0 };
 	}
 
-	std::vector<int> spans(_blocks.size() + 1, 1);
+	std::vector<int> spans(_blocks.size(), 1);
 	spans.front() = 0;
 	return std::move(spans);
 }

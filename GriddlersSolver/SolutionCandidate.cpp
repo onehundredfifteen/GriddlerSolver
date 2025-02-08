@@ -11,7 +11,6 @@
 SolutionCandidate::SolutionCandidate(const Griddler& pattern, const ApproachProvider& approachProvider)
 	: rowCount(pattern.GetRowPattern().size()), colCount(pattern.GetColumnPattern().size())
 {
-
 	for (int i = 0; i < rowCount; ++i) {
 		rows.emplace_back(pattern.GetRowPattern()[i], colCount, approachProvider.getRow(i));
 	}

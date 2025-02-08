@@ -6,7 +6,7 @@
 class ApproachProvider
 {
 public:
-	ApproachProvider(int rows_cnt, int cols_cnt) : height(rows_cnt), width(cols_cnt), orientation(Orientation::esNormal) {
+	ApproachProvider(GriddlerPattern, orientation(Orientation::esNormal) {
 		cells = new short * [height];
 		for(int r = 0; r < height; ++r) {
 			cells[r] = new short[width];

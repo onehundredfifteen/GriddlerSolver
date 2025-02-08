@@ -19,27 +19,53 @@ MutableRow::MutableRow(const BlockCollection& _blocks, int imgwidth, const Const
 }
 
 bool MutableRow::isValid() const {
+	bool o = getCurrentWidth() <= imageWidth &&
+		std::find(spans.begin() + 1, spans.end() - 1, 0) == spans.end() - 1; //middle zeroes;
 	return getCurrentWidth() <= imageWidth &&
-		std::find(spans.begin() + 1, spans.end() - 1, 0) == spans.end(); //middle zeroes
+		std::find(spans.begin() + 1, spans.end() - 1, 0) == spans.end() - 1; //middle zeroes
 }
 
 void MutableRow::sanitize() {
-	fixMiddleZeroes();
-
-	auto _begin = spans.begin() + 1; //now we have at least 2 spans
-	//only one span
-	if (_begin == spans.end()) {
-		adjustLastSpan();
-	}
-
+	
 	if (isValid()) return;
 
-	while (!isValid()) {
-		trimSpansToWidth();
-	}
+	fixMiddleZeroes();
+	fixImpossibleBigSpans();
+	ensureOneMaxSpanAtTime();
+	trimSpansToWidth();
 
 	assert(isValid());
 }
+
+SpanCollection& MutableRow::getSpans() {
+	return this->spans;
+}
+
+void MutableRow::crossingOver(MutableRow& partner) {
+
+	if (spans.size() <= 2)
+		return;
+
+	//assume same size of rows bigger than 2
+	int cross_point = RandomGenerator::Next()(1, spans.size() - 1);
+
+	//xower
+	std::swap_ranges(spans.begin(), spans.begin() + cross_point, partner.spans.begin());
+
+	//keep valid
+	//sanitize();
+	//partner.sanitize();
+}
+
+
+
+void MutableRow::mutate(Mutation& effect) {
+	effect.visit(*this);
+
+	//sanitize?
+	//return isvalid?
+}
+
 
 void MutableRow::randomizeRow() {
 	const int maxQ = getMaxSpanSize(); //max possible span, only 1 possible
@@ -60,15 +86,8 @@ void MutableRow::randomizeRow() {
 
 void MutableRow::randomizeRowConstraintWise(const ConstrainedRow& constraintProvider) {
 	do {
-		randomizeRow();
-		sanitize();
-	} while (false == constraintProvider.compareAgainst(*this));
-	/*
-	if( this->getCellByColumn(1) ==false  && this->approach[1] == 2) {
-			bool f,ff = getCandidateWidth() > imageWidth;
-			f= by_approach();
-			ff = true;
-	}*/
+		randomizeRow();	
+	} while (false == isValid() || false == constraintProvider.compareAgainst(*this));
 }
 
 bool MutableRow::_initFinal() const {
@@ -77,15 +96,11 @@ bool MutableRow::_initFinal() const {
 }
 
 void MutableRow::trimSpansToWidth() {
-	auto _begin = spans.begin() + 1;
-
-	for (auto it = _begin; it < spans.end(); ++it) {
-		(*it)--;
-		if (isValid()) return;
-	}
-
-	while (!isValid() && spans.front() > 0) {
-		--spans.front();
+	while (!isValid()) {
+		int unlucky = RandomGenerator::Next()(0, spans.size() - 1);
+		if (((unlucky == 0 || spans.size() - 1) && spans[unlucky] > 0) || spans[unlucky] > 1)
+			--spans[unlucky];
+		else assert(false);
 	}
 }
 
@@ -96,37 +111,39 @@ void MutableRow::fixMiddleZeroes() {
 	});
 }
 
-void MutableRow::adjustLastSpan() {
-	//set last span value aligning to the image width
-	spans.back() = imageWidth - getCurrentWidth();
+void MutableRow::fixImpossibleBigSpans() {
+	//get rid of spans bigger than max_span
+	const int max_span = this->getMaxSpanSize();
+	std::transform(spans.begin(), spans.end(), spans.begin(), [&max_span](int span_value) {
+		return span_value > max_span ? max_span : span_value;
+	});
+}
+//ensure we have *up to one* span with max possible widht
+void MutableRow::ensureOneMaxSpanAtTime() {
+	auto test_fun = [this](int value) {
+		return value == this->getMaxSpanSize();
+	};
+	//find max span both ways
+	auto lhs = std::find_if(spans.begin(), spans.end(), test_fun);
+	auto rhs_ = std::find_if(spans.rbegin(), spans.rend(), test_fun);
+
+	if (lhs == spans.end()) return; // nothing to do
+	//Convert reverse iterator to forward iterator
+	auto rhs = rhs_.base() - 1;
+	//do we have multiple max_spans?
+	if (lhs != rhs && lhs != spans.end()) {
+		//find them
+		const int max_span = *lhs;
+		std::vector<SpanCollection::iterator> _max_span_it;
+		for (auto it = spans.begin(); it < spans.end(); ++it) {
+			if (*it == max_span) {
+				_max_span_it.push_back(it);
+				--(*it); //we can decrement now
+			}
+		}
+		//now pick one a random and the rest will be decremented
+		int lucky = RandomGenerator::Next()(0, _max_span_it.size() - 1);
+		*(_max_span_it[lucky]) = max_span;
+	}
 }
 
-
-SpanCollection& MutableRow::getSpans() {
-	return this->spans;
-}
-
-void MutableRow::CrossingOver(MutableRow& partner) {
-
-	if (spans.size() <= 2)
-		return;
-
-	//assume same size of rows bigger than 2
-	int cross_point = RandomGenerator::Next()(1, spans.size() - 1);
-
-	//xower
-	std::swap_ranges(spans.begin(), spans.begin() + cross_point, partner.spans.begin());
-
-	//keep valid
-	//sanitize();
-	//partner.sanitize();
-}
-
-
-
-void MutableRow::Mutate(Mutation& effect) {
-	effect.visit(*this);
-
-	//sanitize?
-	//return isvalid?
-}

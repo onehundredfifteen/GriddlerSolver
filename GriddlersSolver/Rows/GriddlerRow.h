@@ -13,7 +13,8 @@ GriddlerRow have collections of blocks and spans between them.
 
 [-xx-xxx--x-]
 blocks(3): 2, 3, 1
-spans(4): 1, 1, 2, 1
+spans(3): 1, 1, 2
+last span is complementary
 
 First or last span can be 0 as the corresponding block 'sticks' to the image border, but
 the last span is virtual.
@@ -58,6 +59,7 @@ public:
 	virtual bool operator==(const GriddlerRow& other) const;
 
 	const SpanCollection& getSpans() const;
+	//SpanCollection getSpans(); todo version with virtual las one
 
 public:
 	//because it can be empty by two ways -> blocks {} and {0} 

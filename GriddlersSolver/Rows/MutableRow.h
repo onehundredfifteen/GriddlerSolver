@@ -27,26 +27,22 @@ public:
 
 	bool isValid() const;
 	void sanitize();
+	SpanCollection& getSpans();
+	void crossingOver(MutableRow& partner);
+	void mutate(Mutation& effect);
 
 private:
 	void randomizeRow();
 	void randomizeRowConstraintWise(const ConstrainedRow& constraintProvider);
+	
+	void trimSpansToWidth();
+	void fixMiddleZeroes();
+	void fixImpossibleBigSpans();
+	void ensureOneMaxSpanAtTime();
 
 	bool _initFinal() const;
-
-	void trimSpansToWidth();
-
-	void fixMiddleZeroes();
-
-	void adjustLastSpan();
-
-	
 public:
-	SpanCollection& getSpans();
-
-	void CrossingOver(MutableRow& partner);
-
-	void Mutate(Mutation& effect);
+	
 
 
 
