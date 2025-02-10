@@ -1,6 +1,12 @@
 #include "../stdafx.h"
 #include "ConcreteGriddler7x7.h"
 
+ConcreteGriddler7x7::ConcreteGriddler7x7(){
+	solution = this->initSolution();
+	pattern_rows = this->initRows();
+	pattern_cols = this->initCols();
+}
+
 std::vector<BlockCollection> ConcreteGriddler7x7::initRows() const {
 
 	/*//rowy
@@ -17,7 +23,6 @@ std::vector<BlockCollection> ConcreteGriddler7x7::initRows() const {
 		pattern_rows[5].push_back(1);
 		pattern_rows[6].push_back(1);
 		pattern_rows[6].push_back(5);*/
-
 	return { {4}, {2, 2}, {1}, {1, 1}, {1, 1}, {1, 1}, {1, 5} };
 }
 
@@ -45,7 +50,7 @@ std::vector<ColumnCollection> ConcreteGriddler7x7::initCols() const  {
 	return { {1, 1}, {2, 1}, {1, 1, 1}, {1, 1, 1}, {2, 1, 1}, {3, 1}, {2} };
 }
 
-std::vector<SpanCollection> ConcreteGriddler7x7::GetSolution() const {
+std::vector<SpanCollection> ConcreteGriddler7x7::initSolution() const {
 
 	/*//solution = new std::vector<int>[imgRows];
 			solution[0].push_back(1);
@@ -68,7 +73,7 @@ std::vector<SpanCollection> ConcreteGriddler7x7::GetSolution() const {
 			solution[6].push_back(1);
 			solution[6].push_back(0);*/
 
-	return { {1, 2}, {0, 2, 1}, {5, 1}, {3, 1, 1}, {2, 1, 2}, {1, 4, 0}, {0, 1, 0} };
+	return { {1}, {0, 2}, {5}, {3, 1}, {2, 1}, {1, 4}, {0, 1} };
 }
 
 

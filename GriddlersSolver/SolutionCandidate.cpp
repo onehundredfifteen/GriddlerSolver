@@ -7,9 +7,10 @@
 #include "Griddlers/Griddler.h"
 #include "Rows/ConstrainedRow.h"
 #include "SolutionCandidate.h"
+#include "Approach/ConstraintProvider.h"
 
-SolutionCandidate::SolutionCandidate(const Griddler& pattern, const ApproachProvider& approachProvider)
-	: rowCount(pattern.GetRowPattern().size()), colCount(pattern.GetColumnPattern().size())
+SolutionCandidate::SolutionCandidate(const Griddler& pattern, const ConstraintProvider& approachProvider)
+	: rowCount(pattern.GetImageHeight()), colCount(pattern.GetImageWidth())
 {
 	for (int i = 0; i < rowCount; ++i) {
 		rows.emplace_back(pattern.GetRowPattern()[i], colCount, approachProvider.getRow(i));

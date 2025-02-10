@@ -18,7 +18,7 @@ public:
 
 	int operator()(int low, int high) { 
 		if(low >= high) {
-			high = 0;
+			high = low;
 		}
         std::uniform_int_distribution<int> distribution(low, high);
         return distribution(generator);
@@ -27,7 +27,7 @@ public:
 	double operator()(double low, double high) { 
 		if(low >= high)
 		{
-			high = 0;
+			high = low;
 		}
         std::uniform_real_distribution<double> distribution(low, high);
         return distribution(generator);

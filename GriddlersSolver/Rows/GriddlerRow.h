@@ -33,8 +33,7 @@ class GriddlerRow
 {
 public:
 	// Primary constructor
-	GriddlerRow(const BlockCollection& _blocks, const SpanCollection& _spans, int imgwidth);
-		
+	GriddlerRow(const BlockCollection& _blocks, const SpanCollection& _spans, int imgwidth);	
 
 	// Constructor with default span initialization
 	GriddlerRow(const BlockCollection& _blocks, int imgwidth);

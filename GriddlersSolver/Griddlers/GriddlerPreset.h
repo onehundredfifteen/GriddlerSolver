@@ -5,17 +5,19 @@
 class GriddlerPreset : public Griddler
 {
 public:
-	GriddlerPreset()
-		: Griddler(initRows(), initCols()) 
-	{}
-
-public:
-	virtual std::vector<SpanCollection> getSolution() const = 0;
 	constexpr bool hasSolution() const {
 		return false;
 	}
+	std::vector<SpanCollection> solution;
 
 protected:
-	virtual std::vector<BlockCollection> initRows() const = 0;
-	virtual std::vector<ColumnCollection> initCols() const = 0;
+	virtual std::vector<SpanCollection> initSolution() const {
+		return {};
+	};
+	virtual std::vector<BlockCollection> initRows() const {
+		return {};
+	};
+	virtual std::vector<ColumnCollection> initCols() const {
+		return {};
+	};
 };

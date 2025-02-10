@@ -81,19 +81,23 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\tests\catch\catch_amalgamated.hpp" />
-    <ClInclude Include="Approach\ApproachProvider.h" />
+    <ClInclude Include="Array2DWrapper.h" />
+    <ClInclude Include="Approach\ConstraintProvider.h" />
     <ClInclude Include="Approach\BasicApproach.h" />
+    <ClInclude Include="Approach\NoApproach.h" />
     <ClInclude Include="Estimators\BasicEstimator.h" />
     <ClInclude Include="Estimators\ColumnwiseEstimator.h" />
     <ClInclude Include="Estimators\EntropyEstimator.h" />
     <ClInclude Include="Estimators\Estimator.h" />
     <ClInclude Include="Estimators\FairEstimator.h" />
+    <ClInclude Include="Approach\FullSolutionProvider.h" />
+    <ClInclude Include="GeneticAlgorithm.h" />
     <ClInclude Include="Griddlers\ConcreteGriddler7x7.h" />
     <ClInclude Include="Griddlers\GriddlerPreset.h" />
     <ClInclude Include="Mutations\BasicMutation.h" />
     <ClInclude Include="Mutations\Mutation.h" />
     <ClInclude Include="PopulationGenerator.h" />
-    <ClInclude Include="SolutionContent.h" />
+    <ClInclude Include="SolutionTable.h" />
     <ClInclude Include="Rows\GriddlerRow.h" />
     <ClInclude Include="Griddlers\Griddler.h" />
     <ClInclude Include="SolutionCandidate.h" />
@@ -110,11 +114,13 @@
   <ItemGroup>
     <ClCompile Include="..\tests\catch\catch_amalgamated.cpp" />
     <ClCompile Include="..\tests\tests.cpp" />
+    <ClCompile Include="Approach\NoApproach.cpp" />
+    <ClCompile Include="GeneticAlgorithm.cpp" />
     <ClCompile Include="Griddlers\ConcreteGriddler7x7.cpp" />
     <ClCompile Include="Rows\ConstrainedRow.cpp" />
     <ClCompile Include="Rows\GriddlerRow.cpp" />
     <ClCompile Include="Rows\MutableRow.cpp" />
-    <ClCompile Include="SolutionContent.cpp" />
+    <ClCompile Include="SolutionTable.cpp" />
     <ClCompile Include="SolutionCandidate.cpp" />
     <ClCompile Include="GriddlersSolver.cpp" />
     <ClCompile Include="stdafx.cpp">

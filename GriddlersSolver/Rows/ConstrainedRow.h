@@ -15,7 +15,7 @@ class ConstrainedRow : public GriddlerRow
 public:
 	ConstrainedRow();
 
-	ConstrainedRow(const BlockCollection& _blocks, const CellCollection& _cells);
+	ConstrainedRow(const CellCollection& _cells);
 
 	ConstrainedRow(const GriddlerRow& row);
 

@@ -7,6 +7,10 @@
 #include "../GriddlersSolver/Rows/ConstrainedRow.h"
 #include "../GriddlersSolver/Rows/MutableRow.h"
 
+#include "../GriddlersSolver/Approach/NoApproach.h"
+#include "../GriddlersSolver/Approach/FullSolutionProvider.h"
+#include "../GriddlersSolver/Griddlers/ConcreteGriddler7x7.h"
+#include "../GriddlersSolver/SolutionCandidate.h"
 ///////////////////////
 //Tests for griddler row
 //////////////////////
@@ -22,66 +26,66 @@ GriddlerRow empty_row2(empty_blocks2, 8);
 TEST_CASE("Basic griddler row", "rows") 
 {
    SECTION("common row [xx-xx---]") {
-        REQUIRE(common_row.isEmpty() == false);
-        REQUIRE(common_row.getMinimalWidth() == 5);
-        REQUIRE(common_row.getCurrentWidth() == common_row.getMinimalWidth());
-        REQUIRE(common_row.getMaxSpanSize() == 3);
-        REQUIRE(common_row.possibleCombinations() == 10);
+        CHECK(common_row.isEmpty() == false);
+        CHECK(common_row.getMinimalWidth() == 5);
+        CHECK(common_row.getCurrentWidth() == common_row.getMinimalWidth());
+        CHECK(common_row.getMaxSpanSize() == 3);
+        CHECK(common_row.possibleCombinations() == 10);
 
         auto [column, expected] = GENERATE(table<int, bool>({
            {0, true},  {1, true},  {2, false},  {3, true},  {4, true}, {5, false}, {6, false}, {7, false}
         }));
 
-        REQUIRE(common_row.getCellByColumn(column) == expected);
+        CHECK(common_row.getCellByColumn(column) == expected);
    }
    SECTION("full row [xxxxxxxx]") {
-       REQUIRE(full_row.isEmpty() == false);
-       REQUIRE(full_row.getMinimalWidth() == 8);
-       REQUIRE(full_row.getCurrentWidth() == full_row.getMinimalWidth());
-       REQUIRE(full_row.getMaxSpanSize() == 0);
-       REQUIRE(full_row.possibleCombinations() == 1);
+       CHECK(full_row.isEmpty() == false);
+       CHECK(full_row.getMinimalWidth() == 8);
+       CHECK(full_row.getCurrentWidth() == full_row.getMinimalWidth());
+       CHECK(full_row.getMaxSpanSize() == 0);
+       CHECK(full_row.possibleCombinations() == 1);
 
        auto [column, expected] = GENERATE(table<int, bool>({
            {0, true},  {1, true},  {2, true},  {3, true},  {4, true}, {5, true}, {6, true}, {7, true}
        }));
 
-       REQUIRE(full_row.getCellByColumn(column) == expected);
+       CHECK(full_row.getCellByColumn(column) == expected);
    }
    SECTION("empty row [--------]") {
-       REQUIRE(empty_row.isEmpty() == true);
-       REQUIRE(empty_row.getMinimalWidth() == 0);
-       REQUIRE(empty_row.getCurrentWidth() != empty_row.getMinimalWidth());
-       REQUIRE(empty_row.getMaxSpanSize() == 8);
-       REQUIRE(empty_row.possibleCombinations() == 1);
+       CHECK(empty_row.isEmpty() == true);
+       CHECK(empty_row.getMinimalWidth() == 0);
+       CHECK(empty_row.getCurrentWidth() != empty_row.getMinimalWidth());
+       CHECK(empty_row.getMaxSpanSize() == 8);
+       CHECK(empty_row.possibleCombinations() == 1);
 
-       REQUIRE(empty_row2.isEmpty() == true);
-       REQUIRE(empty_row2.getMinimalWidth() == 0);
-       REQUIRE(empty_row2.getCurrentWidth() != empty_row2.getMinimalWidth());
-       REQUIRE(empty_row2.getMaxSpanSize() == 8);
-       REQUIRE(empty_row2.possibleCombinations() == 1);
+       CHECK(empty_row2.isEmpty() == true);
+       CHECK(empty_row2.getMinimalWidth() == 0);
+       CHECK(empty_row2.getCurrentWidth() != empty_row2.getMinimalWidth());
+       CHECK(empty_row2.getMaxSpanSize() == 8);
+       CHECK(empty_row2.possibleCombinations() == 1);
 
        auto [column, expected] = GENERATE(table<int, bool>({
            {0, false},  {1, false},  {2, false},  {3, false},  {4, false}, {5, false}, {6, false}, {7, false}
        }));
 
-       REQUIRE(empty_row.getCellByColumn(column) == expected);
-       REQUIRE(empty_row2.getCellByColumn(column) == expected);
+       CHECK(empty_row.getCellByColumn(column) == expected);
+       CHECK(empty_row2.getCellByColumn(column) == expected);
    }
 
    SECTION("spanned row [-xx-xx--]") {
        BlockCollection spans = { 1, 1,};
        GriddlerRow spanned_row(common_blocks, spans, 8);
 
-       REQUIRE(spanned_row.getMinimalWidth() == 5);
-       REQUIRE(spanned_row.getCurrentWidth() == 6);
-       REQUIRE(spanned_row.getMaxSpanSize() == 3);
-       REQUIRE(spanned_row.possibleCombinations() == common_row.possibleCombinations());
+       CHECK(spanned_row.getMinimalWidth() == 5);
+       CHECK(spanned_row.getCurrentWidth() == 6);
+       CHECK(spanned_row.getMaxSpanSize() == 3);
+       CHECK(spanned_row.possibleCombinations() == common_row.possibleCombinations());
 
        auto [column, expected] = GENERATE(table<int, bool>({
            {0, false},  {1, true},  {2, true},  {3, false},  {4, true}, {5, true}, {6, false}, {7, false}
            }));
 
-       REQUIRE(spanned_row.getCellByColumn(column) == expected);
+       CHECK(spanned_row.getCellByColumn(column) == expected);
    }
 
   
@@ -208,7 +212,21 @@ TEST_CASE("Mutable row", "rows")
     }
 }
 
-TEST_CASE("Spanned griddler row", "rows")
-{
 
+
+ConcreteGriddler7x7 myGiddler;
+
+NoApproach ap;
+FullSolutionProvider fsp(myGiddler);
+
+TEST_CASE("Solution Candidate", "population")
+{
+    SolutionCandidate candidate(myGiddler, ap);
+    CHECK(candidate.isSolved(myGiddler) == false);
+}
+
+TEST_CASE("Solved Solution Candidate", "population")
+{
+    SolutionCandidate candidate(myGiddler, fsp);
+    CHECK(candidate.isSolved(myGiddler) == true);
 }

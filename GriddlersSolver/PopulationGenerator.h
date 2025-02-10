@@ -5,7 +5,7 @@
 
 class PopulationGenerator {
 public:
-    static std::vector<SolutionCandidate> Generate(const int N, const Griddler& pattern, const ApproachProvider& approachProvider) {
+    static std::vector<SolutionCandidate> Generate(const int N, const Griddler& pattern, const ConstraintProvider& approachProvider) {
         std::vector<SolutionCandidate> population;
         population.reserve(N);
         

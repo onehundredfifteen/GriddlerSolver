@@ -19,10 +19,8 @@ MutableRow::MutableRow(const BlockCollection& _blocks, int imgwidth, const Const
 }
 
 bool MutableRow::isValid() const {
-	bool o = getCurrentWidth() <= imageWidth &&
-		std::find(spans.begin() + 1, spans.end() - 1, 0) == spans.end() - 1; //middle zeroes;
 	return getCurrentWidth() <= imageWidth &&
-		std::find(spans.begin() + 1, spans.end() - 1, 0) == spans.end() - 1; //middle zeroes
+		std::find(spans.begin() + 1, spans.end(), 0) == spans.end(); //middle zeroes
 }
 
 void MutableRow::sanitize() {
@@ -76,7 +74,7 @@ void MutableRow::randomizeRow() {
 	bool maxSpanUsed = spans.front() == maxQ;
 
 	//set random span for each element and we want only 1 max span 
-	std::transform(spans.begin() + 1, spans.end() - 1, spans.begin() + 1, [&Q, &maxQ, &maxSpanUsed](int span_value) {
+	std::transform(spans.begin() + 1, spans.end(), spans.begin() + 1, [&Q, &maxQ, &maxSpanUsed](int span_value) {
 		int new_value = (maxQ == 1) ? 1 : RandomGenerator::Next()(1, maxSpanUsed ? Q : maxQ);
 
 		if (!maxSpanUsed && new_value == maxQ) maxSpanUsed = true;

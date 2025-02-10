@@ -2,12 +2,12 @@
 
 #include "Griddlers/Griddler.h"
 #include "Rows/MutableRow.h"
-#include "Approach/ApproachProvider.h"
+#include "Approach/ConstraintProvider.h"
 
 class SolutionCandidate
 {
 public:
-	SolutionCandidate(const Griddler &pattern, const ApproachProvider &approachProvider);
+	SolutionCandidate(const Griddler &pattern, const ConstraintProvider &approachProvider);
 	
 	ColumnCollection GetColumnCollection(int column) const;
 

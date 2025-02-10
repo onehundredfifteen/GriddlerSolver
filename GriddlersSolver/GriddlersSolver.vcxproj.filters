@@ -49,9 +49,6 @@
     <ClInclude Include="Estimators\EntropyEstimator.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Approach\ApproachProvider.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="Approach\BasicApproach.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -82,9 +79,6 @@
     <ClInclude Include="Griddlers\GriddlerPreset.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="SolutionContent.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="..\tests\catch\catch_amalgamated.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -97,6 +91,24 @@
     <ClInclude Include="Rows\GriddlerRow.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="GeneticAlgorithm.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Approach\NoApproach.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Array2DWrapper.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Approach\FullSolutionProvider.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Approach\ConstraintProvider.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="SolutionTable.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
@@ -106,9 +118,6 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="SolutionCandidate.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="SolutionContent.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="..\tests\tests.cpp">
@@ -127,6 +136,15 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Rows\ConstrainedRow.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneticAlgorithm.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Approach\NoApproach.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="SolutionTable.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

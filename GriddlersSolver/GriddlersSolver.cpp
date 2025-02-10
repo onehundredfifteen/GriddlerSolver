@@ -10,6 +10,7 @@
 #include <process.h>
 
 #include "Griddlers/Griddler.h"
+#include "GeneticAlgorithm.h"
 //#include "Griddlers/ConcreteGriddler7x7.h"
 /*
 #include "SolutionCandidate.h"
@@ -36,12 +37,12 @@ void Standard();
 #ifndef RunTests
 int main(int argc, char* argv[])
 {
-	std::vector<itrec> r;
-	std::cout << "dupa";
-	///Alg(r);
-	//Bulk();
-
-	Standard();
+	//std::vector<itrec> r;
+	//std::cout << "dupa";
+	///---Alg(r);
+	//--Bulk();
+	GA();
+	//Standard();
 
 	return 0;
 }

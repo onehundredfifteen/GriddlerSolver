@@ -14,8 +14,8 @@ ConstrainedRow::ConstrainedRow()
 	: GriddlerRow(dummy, 0), cells({}) {
 }
 
-ConstrainedRow::ConstrainedRow(const BlockCollection& _blocks, const CellCollection& _cells)
-	: GriddlerRow(_blocks, _cells.size()), cells(_cells) {
+ConstrainedRow::ConstrainedRow(const CellCollection& _cells)
+	: GriddlerRow(dummy, 0), cells(_cells) {
 }
 
 ConstrainedRow::ConstrainedRow(const GriddlerRow& row)
