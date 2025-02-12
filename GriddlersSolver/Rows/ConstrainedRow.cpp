@@ -24,7 +24,6 @@ ConstrainedRow::ConstrainedRow(const GriddlerRow& row)
 
 BlockCollection ConstrainedRow::dummy = {};
 
-
 //produce something like this 011102033 -> [-xxx-x-xx]
 std::vector<int> ConstrainedRow::getRowImage() const {
 	bool last = false;

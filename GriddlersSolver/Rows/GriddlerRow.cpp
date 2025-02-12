@@ -65,7 +65,7 @@ int GriddlerRow::getMinimalWidth() const {
 	return blockSum == 0 ? 0 : blockSum + blocks.size() - 1;
 }
 
-//gets current row width, as sum of blocks & spans /wo last span
+//gets current row width, as sum of blocks & spans
 int GriddlerRow::getCurrentWidth() const {
 	return blockSum + std::accumulate(spans.begin(), spans.end(), 0);
 }

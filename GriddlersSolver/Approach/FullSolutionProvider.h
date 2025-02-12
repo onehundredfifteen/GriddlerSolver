@@ -2,8 +2,6 @@
 #include "ConstraintProvider.h"
 #include "../Griddlers/GriddlerPreset.h"
 
-class GriddlerPreset;
-
 class FullSolutionProvider : public ConstraintProvider
 {
 public:
@@ -24,7 +22,6 @@ public:
 		return solved_rows.at(row);
 	}
 
-private:
+protected:
 	std::vector<ConstrainedRow> solved_rows;
 };
-

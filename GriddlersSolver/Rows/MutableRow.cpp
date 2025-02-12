@@ -96,7 +96,7 @@ bool MutableRow::_initFinal() const {
 void MutableRow::trimSpansToWidth() {
 	while (!isValid()) {
 		int unlucky = RandomGenerator::Next()(0, spans.size() - 1);
-		if (((unlucky == 0 || spans.size() - 1) && spans[unlucky] > 0) || spans[unlucky] > 1)
+		if ((unlucky == 0 && spans[unlucky] > 0) || spans[unlucky] > 1)
 			--spans[unlucky];
 		else assert(false);
 	}
@@ -104,7 +104,7 @@ void MutableRow::trimSpansToWidth() {
 
 void MutableRow::fixMiddleZeroes() {
 	//get rid of zero-spans in the middle
-	std::transform(spans.begin() + 1, spans.end() - 1, spans.begin() + 1, [](int span_value) {
+	std::transform(spans.begin() + 1, spans.end(), spans.begin() + 1, [](int span_value) {
 		return span_value <= 0 ? 1 : span_value;
 	});
 }

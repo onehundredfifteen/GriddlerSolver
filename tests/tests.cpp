@@ -9,8 +9,17 @@
 
 #include "../GriddlersSolver/Approach/NoApproach.h"
 #include "../GriddlersSolver/Approach/FullSolutionProvider.h"
+#include "../GriddlersSolver/Approach/WarpedSolution.h"
+
+#include "../GriddlersSolver/Griddlers/DiagonalGriddler5x5.h"
 #include "../GriddlersSolver/Griddlers/ConcreteGriddler7x7.h"
 #include "../GriddlersSolver/SolutionCandidate.h"
+
+#include "../GriddlersSolver/Estimators/BasicEstimator.h"
+
+#include "../GriddlersSolver/PopulationGenerator.h"
+#include "../GriddlersSolver/Selectors/RouletteSelector.h"
+
 ///////////////////////
 //Tests for griddler row
 //////////////////////
@@ -176,7 +185,7 @@ TEST_CASE("Mutable row", "rows")
     }
 
     SECTION("sanitize / fixMiddleZeroes") {
-        SpanCollection spans_zero_middle = { 1, 0, 2 };
+        SpanCollection spans_zero_middle = { 1, 0 };
 
         REQUIRE(row.isValid() == true);
         row.getSpans() = spans_zero_middle;
@@ -200,33 +209,119 @@ TEST_CASE("Mutable row", "rows")
     SECTION("sanitize / trimSpansToWidth") {
         ConstrainedRow constrained_row_but_empty;
         MutableRow row(common_blocks, 8, constrained_row_but_empty);
-        SpanCollection spans_over = {4,2}; 
-        SpanCollection expected = { 2,2 };
+        SpanCollection spans_over = {4, 2}; 
+        SpanCollection expected = {2, 2};
+        SpanCollection expected2 = {3, 1}; //sanitize is random and this is 2nd option
 
         CHECK(row.isValid() == true);
         row.getSpans() = spans_over;
         CHECK(row.isValid() == false);
         row.sanitize();
         CHECK(row.isValid() == true);
-        CHECK(row.getSpans() == expected);
+        auto res = row.getSpans();
+        CHECK((res == expected || res == expected2));
     }
 }
 
 
-
 ConcreteGriddler7x7 myGiddler;
+DiagonalGriddler5x5 testGiddler;
+BlockCollection warp_b = { 1 };
+SpanCollection warp_s = { 1 };
+GriddlerRow warped(warp_b, warp_s, 5);
+ConstrainedRow warped_constraint(warped);
 
-NoApproach ap;
-FullSolutionProvider fsp(myGiddler);
+NoApproach no_approach;
 
-TEST_CASE("Solution Candidate", "population")
+TEST_CASE("Random Solution Candidate", "population")
 {
-    SolutionCandidate candidate(myGiddler, ap);
+    SolutionCandidate candidate(myGiddler, no_approach);
     CHECK(candidate.isSolved(myGiddler) == false);
 }
 
 TEST_CASE("Solved Solution Candidate", "population")
 {
-    SolutionCandidate candidate(myGiddler, fsp);
-    CHECK(candidate.isSolved(myGiddler) == true);
+    FullSolutionProvider fsp(myGiddler);
+    SolutionCandidate solved_candidate(myGiddler, fsp);
+
+    ColumnCollection expected_cols = { 1, 1 };
+    CellCollection expected_cells = { CellState::Blank,CellState::Filled,CellState::Filled,CellState::Filled,CellState::Filled,CellState::Blank,CellState::Blank };
+
+    REQUIRE(solved_candidate.isSolved(myGiddler) == true);
+    CHECK(solved_candidate.GetSolvedColumnPattern(0) == expected_cols);
+    CHECK(solved_candidate.GetRowResult(0) == expected_cells);
+    CHECK(solved_candidate.GetSolvedColumnPattern() == myGiddler.GetColumnPattern());
+}
+
+TEST_CASE("Estimate Candidate of simple griddler", "estimators")
+{
+    BasicEstimator estimator(testGiddler);
+    SolutionCandidate candidate(testGiddler, no_approach);
+
+    FullSolutionProvider fsp(testGiddler);
+    SolutionCandidate solved_candidate(testGiddler, fsp);
+
+    //prepare almost perfect solution
+    WarpedSolution ws(testGiddler);
+    ws.warpRow(0, warped_constraint);
+
+    SolutionCandidate warped_candidate(testGiddler, ws);
+
+    double fitness = estimator.fitness(candidate);
+    double fitness_of_solved = estimator.fitness(solved_candidate);
+    double fitness_of_warped = estimator.fitness(warped_candidate);
+
+    CHECK(fitness_of_solved == 5.0);
+    CHECK(fitness < fitness_of_solved);
+    CHECK(fitness < fitness_of_warped);
+    CHECK(fitness_of_warped < fitness_of_solved);
+}
+
+TEST_CASE("Estimate Candidate of more complicated griddler", "estimators")
+{
+    BasicEstimator estimator(myGiddler);
+    SolutionCandidate candidate(myGiddler, no_approach);
+
+    FullSolutionProvider fsp(myGiddler);
+    SolutionCandidate solved_candidate(myGiddler, fsp);
+
+    double fitness = estimator.fitness(candidate);
+    double fitness_of_solved = estimator.fitness(solved_candidate);
+    CHECK(fitness_of_solved == 7.0);
+    CHECK(fitness < fitness_of_solved);
+}
+
+TEST_CASE("Population selection", "selection")
+{
+    BasicEstimator estimator(testGiddler);
+    SolutionCandidate candidate(testGiddler, no_approach);
+    SolutionCandidate candidate2(testGiddler, no_approach);
+
+    FullSolutionProvider fsp(testGiddler);
+    SolutionCandidate solved_candidate(testGiddler, fsp);
+
+    //prepare almost perfect solution
+    WarpedSolution ws(testGiddler);
+    ws.warpRow(0, warped_constraint);
+
+    SolutionCandidate warped_candidate(testGiddler, ws);
+
+    auto population = PopulationGenerator::createPopulationFromArgs(
+        solved_candidate, candidate, warped_candidate, candidate2);
+
+    RouletteSelector selector(population, estimator);
+    
+    std::vector<int> selection_histogram(population.size(), 0);
+    for (int i = 0; i < 10000; ++i) {
+        const auto &next = selector.Next();
+        auto it = std::find_if(population.begin(), population.end(),
+            [&](const SolutionCandidate& c) { return &c == &next; });
+        if (it != population.end()) {
+            selection_histogram[it - population.begin()]++;
+        }
+    }
+
+    CHECK(selector.Next() == selector.Next());
+    //CHECK(next == solved_candidate);
+    //CHECK(next == solved_candidate);
 }

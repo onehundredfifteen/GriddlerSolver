@@ -31,9 +31,6 @@
     <ClInclude Include="Estimators\Estimator.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Estimators\BasicEstimator.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="Selectors\Selector.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -109,6 +106,18 @@
     <ClInclude Include="SolutionTable.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="Approach\ApproachhProvider.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Griddlers\DiagonalGriddler5x5.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Estimators\BasicEstimator.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Approach\WarpedSolution.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
@@ -124,9 +133,6 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="..\tests\catch\catch_amalgamated.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Griddlers\ConcreteGriddler7x7.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Rows\GriddlerRow.cpp">
@@ -145,6 +151,9 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="SolutionTable.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Estimators\BasicEstimator.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

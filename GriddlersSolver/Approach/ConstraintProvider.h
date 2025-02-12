@@ -1,8 +1,5 @@
 #pragma once
 
-
-#include <functional>
-
 #include "../Griddlers/Griddler.h"
 #include "../Rows/ConstrainedRow.h"
 #include "../SolutionTable.h"

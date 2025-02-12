@@ -19,10 +19,11 @@ SolutionCandidate::SolutionCandidate(const Griddler& pattern, const ConstraintPr
 
 //gets column result //FillListByColumnResult
 //looks like if we could find columns, they should be equal at some point to the pattern so griddler is resolved 
-ColumnCollection SolutionCandidate::GetColumnCollection(int column) const
+ColumnCollection SolutionCandidate::GetSolvedColumnPattern(int column) const
 {
 	int cnt = 0;
-	ColumnCollection result(rowCount / 2);
+	ColumnCollection result;
+	result.reserve(rowCount / 2);
 
 	for (int i = 0; i < rowCount; ++i) {
 		if (rows[i].getCellByColumn(column)) {
@@ -34,14 +35,30 @@ ColumnCollection SolutionCandidate::GetColumnCollection(int column) const
 		}
 	}
 
-	if (cnt != 0) //if there is no span at the border
+	if (cnt != 0)
 		result.push_back(cnt);
+
+	return std::move(result);
+}
+
+std::vector<ColumnCollection> SolutionCandidate::GetSolvedColumnPattern() const
+{
+	std::vector<ColumnCollection> result;
+	result.reserve(colCount);
+
+	for (int i = 0; i < colCount; ++i) {
+		result.emplace_back(std::move(GetSolvedColumnPattern(i)));
+	}
 
 	return std::move(result);
 }
 
 CellCollection SolutionCandidate::GetRowResult(int row) const {
 	return ConstrainedRow(rows[row]).cells;
+}
+
+bool SolutionCandidate::operator==(const SolutionCandidate& other) const {
+	return this->rows == other.rows;
 }
 
 //FillListByResult
@@ -64,12 +81,11 @@ CellCollection SolutionCandidate::GetColumnResult(int column) const
 
 bool SolutionCandidate::isSolved(const Griddler& pattern) const {
 	int col_idx = 0;
-	for (auto cols : pattern.GetColumnPattern()) {
-		if (cols != GetColumnCollection(col_idx++)) {
+	for (const auto &cols : pattern.GetColumnPattern()) {
+		if (cols != GetSolvedColumnPattern(col_idx++)) {
 			return false;
 		}
 	}
-
 	return true;
 }
 /**

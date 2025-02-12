@@ -1,24 +1,17 @@
 #pragma once
 
-#include "../Rows/ConstrainedRow.h"
 #include <functional>
+#include "./ConstraintProvider.h"
 
-class ConstraintProvider
+
+class ApproachProvider : public ConstraintProvider
 {
 public:
-	ConstraintProvider(const Griddler& pattern)
-		: cells(pattern),
-		height(pattern.GetImageHeight()),
-		width(pattern.GetImageWidth()),
+	ApproachProvider(const Griddler& pattern)
+		: ConstraintProvider(pattern),
 		orientation(Orientation::esNormal)
 	{}
 
-protected:
-	ConstraintProvider()
-		: height(0), width(0), orientation(Orientation::esNormal)
-	{}
-
-public:
 	enum class Orientation {
 		esNormal = 1,
 		esColumn,
@@ -26,9 +19,11 @@ public:
 		esRevColumn
 	};
 
+protected:
+	Orientation orientation;
 
+public:
 	virtual const ConstrainedRow& getRow(int row) const = 0;
-
 	virtual CellState& edgewiseCell(int row, int col) {
 		/*switch(orientation) {
 			case Orientation::esColumn: return this->cells[col][row];
@@ -62,12 +57,4 @@ public:
 		turn(Orientation::esRevColumn);
 		fun();
 	}*/
-
-protected:
-	const int height;
-	const int width;
-	SolutionContent cells;
-
-	Orientation orientation;
-
 };

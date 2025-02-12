@@ -1,16 +1,19 @@
 #pragma once
 
+#include "../types.h"
+#include "../SolutionCandidate.h"
+#include "../Estimators/Estimator.h"
+
 class Selector
 {
 public:
-	Selector(double _Q[], int _Q_cnt) : Q(_Q), Q_cnt(_Q_cnt)
-	{
-	}
-	virtual ~Selector() {}
-
-	virtual int Next() = 0;
+	Selector(Population& _population, const Estimator& _estimator)
+		: population(_population), estimator(_estimator)
+	{}
+	
+	virtual SolutionCandidate& Next() = 0;
 
 protected:
-	const int Q_cnt;
-	const double * Q;
+	Population &population;
+	const Estimator &estimator;
 };

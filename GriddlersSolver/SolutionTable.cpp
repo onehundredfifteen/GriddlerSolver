@@ -46,7 +46,7 @@ CellCollection SolutionTable::operator()(int row) const {
 
 void SolutionTable::PrintToStream(std::ostream& stream) const {
 	int n = 0;
-	for (auto cell : content.container) {
+	for (const auto cell : content.container) {
 		stream << CellStateToChar(cell);
 		if(n % content.offset)
 			stream << '\n';
@@ -59,5 +59,6 @@ char SolutionTable::CellStateToChar(const CellState &cs) {
 		case CellState::Unknown: return '.';
 		case CellState::Blank: return '/';
 		case CellState::Filled: return '#';
+		default: return '?';
 	}
 }

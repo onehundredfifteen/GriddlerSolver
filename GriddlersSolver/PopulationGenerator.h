@@ -5,8 +5,8 @@
 
 class PopulationGenerator {
 public:
-    static std::vector<SolutionCandidate> Generate(const int N, const Griddler& pattern, const ConstraintProvider& approachProvider) {
-        std::vector<SolutionCandidate> population;
+    static Population Generate(const int N, const Griddler& pattern, const ConstraintProvider& approachProvider) {
+        Population population;
         population.reserve(N);
         
         for (int i = 0; i < N; ++i)
@@ -14,6 +14,26 @@ public:
 
         return std::move(population);
     }
+
+    /*template<typename... Args>
+    static Population createPopulationFromArgs(Args&&... args) {
+        Population population;
+        population.reserve(sizeof...(args)); // assuming each object takes 1 argument
+        (population.emplace_back(std::forward<Args>(args)...), ...);
+        return population;
+    }*/
+
+    template <typename T = SolutionCandidate, typename... Args>
+    static Population createPopulationFromArgs(Args const&... args)
+    {
+        return { args... };
+    }
+
+    /*template <typename T = SolutionCandidate>
+    static Population createPopulationFromArgs(std::initializer_list<T> elements)
+    {
+        return std::vector<T>(elements.begin(), elements.end());
+    }*/
 };
 
 /*// Factory class

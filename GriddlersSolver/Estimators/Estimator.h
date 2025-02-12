@@ -5,22 +5,21 @@
 class Estimator
 {
 public:
-	Estimator(ColumnCollection _pattern, int _pattern_size) 
-		: pattern(_pattern), col_cnt(_pattern_size) {
-	}
-	virtual ~Estimator() {}
+	Estimator(const Griddler& _pattern)
+		: pattern(_pattern) 
+	{}
 
-	virtual double operator()(SolutionCandidate* candidate) {
-		return this->estimate(candidate) / this->MaxFitness();
-	}
+	//double operator()(const SolutionCandidate& candidate) {
+		//return this->estimate(candidate);// / this->MaxFitness();
+	//}
 
-	virtual double MaxFitness() = 0;
+	virtual double fitness(const SolutionCandidate& candidate) const = 0;
 
-
-protected:
-	ColumnCollection pattern;
-	const int col_cnt;
+	//virtual double MaxFitness() = 0;
 
 protected:
-	virtual double estimate(SolutionCandidate* _candidate) = 0;
+	const Griddler& pattern;
+
+//protected:
+	////virtual double estimate(const SolutionCandidate &candidate) = 0;
 };

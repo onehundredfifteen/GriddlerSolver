@@ -21,7 +21,7 @@ public:
 
 public:
 	const CellCollection cells;
-
+	 
 private:
 	static BlockCollection ConstrainedRow::dummy;
 

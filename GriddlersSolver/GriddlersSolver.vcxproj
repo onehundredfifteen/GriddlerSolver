@@ -81,6 +81,8 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\tests\catch\catch_amalgamated.hpp" />
+    <ClInclude Include="Approach\ApproachhProvider.h" />
+    <ClInclude Include="Approach\WarpedSolution.h" />
     <ClInclude Include="Array2DWrapper.h" />
     <ClInclude Include="Approach\ConstraintProvider.h" />
     <ClInclude Include="Approach\BasicApproach.h" />
@@ -93,6 +95,7 @@
     <ClInclude Include="Approach\FullSolutionProvider.h" />
     <ClInclude Include="GeneticAlgorithm.h" />
     <ClInclude Include="Griddlers\ConcreteGriddler7x7.h" />
+    <ClInclude Include="Griddlers\DiagonalGriddler5x5.h" />
     <ClInclude Include="Griddlers\GriddlerPreset.h" />
     <ClInclude Include="Mutations\BasicMutation.h" />
     <ClInclude Include="Mutations\Mutation.h" />
@@ -115,8 +118,8 @@
     <ClCompile Include="..\tests\catch\catch_amalgamated.cpp" />
     <ClCompile Include="..\tests\tests.cpp" />
     <ClCompile Include="Approach\NoApproach.cpp" />
+    <ClCompile Include="Estimators\BasicEstimator.cpp" />
     <ClCompile Include="GeneticAlgorithm.cpp" />
-    <ClCompile Include="Griddlers\ConcreteGriddler7x7.cpp" />
     <ClCompile Include="Rows\ConstrainedRow.cpp" />
     <ClCompile Include="Rows\GriddlerRow.cpp" />
     <ClCompile Include="Rows\MutableRow.cpp" />
