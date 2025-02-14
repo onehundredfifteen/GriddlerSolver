@@ -107,7 +107,7 @@
     <ClInclude Include="Rows\ConstrainedRow.h" />
     <ClInclude Include="Rows\MutableRow.h" />
     <ClInclude Include="RandomGenerator.h" />
-    <ClInclude Include="Selectors\By5Selector.h" />
+    <ClInclude Include="Selectors\BestOfSelector.h" />
     <ClInclude Include="Selectors\RouletteSelector.h" />
     <ClInclude Include="Selectors\Selector.h" />
     <ClInclude Include="stdafx.h" />
@@ -120,6 +120,7 @@
     <ClCompile Include="Approach\NoApproach.cpp" />
     <ClCompile Include="Estimators\BasicEstimator.cpp" />
     <ClCompile Include="GeneticAlgorithm.cpp" />
+    <ClCompile Include="Mutations\Mutation.cpp" />
     <ClCompile Include="Rows\ConstrainedRow.cpp" />
     <ClCompile Include="Rows\GriddlerRow.cpp" />
     <ClCompile Include="Rows\MutableRow.cpp" />

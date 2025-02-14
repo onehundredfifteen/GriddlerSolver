@@ -88,6 +88,15 @@ bool SolutionCandidate::isSolved(const Griddler& pattern) const {
 	}
 	return true;
 }
+
+
+void SolutionCandidate::mutate(const Mutation& mutation) {
+	auto affectedChromosomes = mutation.getAffectedChromosomes(*this);
+
+	for (auto& chromosome : affectedChromosomes) {
+		mutation.visit(chromosome);
+	}
+}
 /**
 //Xover
 void GriddlerCandidate::DoCrossingOver(GriddlerCandidate* partner, double chance)
@@ -113,49 +122,7 @@ void GriddlerCandidate::DoCrossingOver(GriddlerCandidate* partner, double chance
 		}
 	}
 }
-//Operator mutation
-void GriddlerCandidate::DoMutate(double chance)
-{
-	if (RandomGenerator::Next()(0.0, 1.0) > chance) {
-		int chromosome = -1;
 
-		while (chromosome < 0 || rows[chromosome]->IsFinal()) {
-			chromosome = RandomGenerator::Next()(0, rows.size() - 1);
-		}
-
-		if (rows[chromosome]->spans.size() > 2 && RandomGenerator::Next()(0.0, 1.0) > 0.5)
-			rows[chromosome]->SwapMutation();
-		else
-			rows[chromosome]->BasicMutation();
-	}
-
-
-	/*for (std::vector<GriddlerRow2*>::iterator it = rows.begin(); it != rows.end(); ++it, ++i) {
-		if(false == (*it)->IsFinal() && RandomGenerator::Next()(0.0, 1.0) >= chance) {
-			int f = RandomGenerator::Next()(1, 20);
-			if(f <= 3) {
-				(*it)->BasicMutation();
-			}
-			//else if(f == 4)
-				//(*it)->BasicMutation();
-			//else if(f == 5)// || f==5)
-				//(*it)->BasicMutation();
-		}
-	}
-	int i = 0;
-	for (std::vector<GriddlerRow2*>::iterator it = rows.begin(); it != rows.end(); ++it, ++i) {
-		if(false == (*it)->IsFinal() && RandomGenerator::Next()(0.0, 1.0) >= chance) {
-			int f = RandomGenerator::Next()(1, 20);
-			if(f <= 3) {
-				(*it)->BasicMutation();
-			}
-			//else if(f == 4)
-				//(*it)->BasicMutation();
-			//else if(f == 5)// || f==5)
-				//(*it)->BasicMutation();
-		}
-	}*/
-//}
 /*
 void GriddlerCandidate::PrintToStream(std::ostream& stream)
 {

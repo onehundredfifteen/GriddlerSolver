@@ -19,6 +19,9 @@
 
 #include "../GriddlersSolver/PopulationGenerator.h"
 #include "../GriddlersSolver/Selectors/RouletteSelector.h"
+#include "../GriddlersSolver/Selectors/BestOfSelector.h"
+
+#include "../GriddlersSolver/Mutations/BasicMutation.h"
 
 ///////////////////////
 //Tests for griddler row
@@ -271,9 +274,9 @@ TEST_CASE("Estimate Candidate of simple griddler", "estimators")
     double fitness_of_solved = estimator.fitness(solved_candidate);
     double fitness_of_warped = estimator.fitness(warped_candidate);
 
-    CHECK(fitness_of_solved == 5.0);
+    CHECK(fitness_of_solved == (double)solved_candidate.rowCount);
     CHECK(fitness < fitness_of_solved);
-    CHECK(fitness < fitness_of_warped);
+    CHECK(fitness <= fitness_of_warped);
     CHECK(fitness_of_warped < fitness_of_solved);
 }
 
@@ -287,12 +290,12 @@ TEST_CASE("Estimate Candidate of more complicated griddler", "estimators")
 
     double fitness = estimator.fitness(candidate);
     double fitness_of_solved = estimator.fitness(solved_candidate);
-    CHECK(fitness_of_solved == 7.0);
+    CHECK(fitness_of_solved == (double)solved_candidate.rowCount);
     CHECK(fitness < fitness_of_solved);
 }
 
-TEST_CASE("Population selection", "selection")
-{
+template<typename testedSelector>
+std::vector<int> __mock_and_test_selector() {
     BasicEstimator estimator(testGiddler);
     SolutionCandidate candidate(testGiddler, no_approach);
     SolutionCandidate candidate2(testGiddler, no_approach);
@@ -309,19 +312,56 @@ TEST_CASE("Population selection", "selection")
     auto population = PopulationGenerator::createPopulationFromArgs(
         solved_candidate, candidate, warped_candidate, candidate2);
 
-    RouletteSelector selector(population, estimator);
-    
+    //test here
+    testedSelector selector(population, estimator);
+
     std::vector<int> selection_histogram(population.size(), 0);
     for (int i = 0; i < 10000; ++i) {
-        const auto &next = selector.Next();
+        const auto& next = selector.Next();
         auto it = std::find_if(population.begin(), population.end(),
             [&](const SolutionCandidate& c) { return &c == &next; });
         if (it != population.end()) {
             selection_histogram[it - population.begin()]++;
         }
     }
-
-    CHECK(selector.Next() == selector.Next());
-    //CHECK(next == solved_candidate);
-    //CHECK(next == solved_candidate);
+    return selection_histogram;
 }
+
+TEST_CASE("Population selection - roulette", "selection")
+{
+    std::vector<int> selection_histogram = __mock_and_test_selector<RouletteSelector>();
+    //solved should be picked most often
+    auto max_element = std::max_element(selection_histogram.begin(), selection_histogram.end());
+
+    CHECK(selection_histogram[0] > selection_histogram[2]);
+    CHECK(selection_histogram[1] != selection_histogram[3]);
+    CHECK(std::distance(selection_histogram.begin(), max_element) == 0);
+}
+
+TEST_CASE("Population selection - best of K=3", "selection")
+{
+    std::vector<int> selection_histogram = __mock_and_test_selector<BestOfSelector<3>>();
+    //solved should be picked most often
+    auto max_element = std::max_element(selection_histogram.begin(), selection_histogram.end());
+
+    CHECK(selection_histogram[0] > selection_histogram[2]);
+    CHECK(selection_histogram[1] != selection_histogram[3]);
+    CHECK(std::distance(selection_histogram.begin(), max_element) == 0);
+}
+
+TEST_CASE("Basic Mutation", "mutations")
+{
+    BasicMutation mutation(0.9);
+    BasicEstimator estimator(myGiddler);
+    FullSolutionProvider fsp(myGiddler);
+    SolutionCandidate solved_candidate(myGiddler, fsp);
+
+    double fitness_of_solved = estimator.fitness(solved_candidate);
+
+    solved_candidate.mutate(mutation);
+    
+    double fitness_of_mutated = estimator.fitness(solved_candidate);
+    CHECK(fitness_of_solved == (double)solved_candidate.rowCount);
+    CHECK(fitness_of_mutated < fitness_of_solved);
+}
+

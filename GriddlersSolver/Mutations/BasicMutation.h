@@ -1,36 +1,42 @@
 #pragma once
 
-
-#include "Mutation.h"
-
+#include "./Mutation.h"
+#include "../Rows/MutableRow.h"
 
 /*
 BasicMutation
 
 increase or decrease single span by 1
-
+can be harmful
 */
 
 
 class BasicMutation : public Mutation
 {
 public:
-	void visit(MutableRow& row) override {
-        int mut_point = (row.getSpans().size() == 1) ? 0 : RandomGenerator::Next()(0, row.getSpans().size() - 1);
-        auto& value = row.getSpans()[mut_point];
+	BasicMutation(double _mutation_rate)
+		: Mutation(_mutation_rate)
+	{}
 
-        if ((mut_point == 0 || mut_point == row.getSpans().size() - 1) && value == 0) {
-            value++;
-        }
-        else if (mut_point >= 0 && value == 1) {
-            value++;
-        }
-        else if (RandomGenerator::Next()(1, 100) < 48) {
-            value++;
-        }
-        else {
-            value--;
-        }
+	void visit(MutableRow& row) const override {
+		for (auto& span : row.getSpans()) {
+			if (RandomGenerator::Next()(0.0, 1.0) < mutation_rate) {
+				mutateRow(span);
+			}
+		}
+	}
+
+protected:
+	void mutateRow(int& span) const {
+		if (RandomGenerator::Next()(0.0, 1.0) < 0.5)
+			--span;
+		else ++span;
+	}
+
+	//mutate only one chromosome
+	virtual Chromosomes getAffectedChromosomes(SolutionCandidate& candidate) const {
+		int affected = RandomGenerator::Next()(0, candidate.rowCount);
+		return { getMutableRows(candidate)[affected] };
 	}
 
     /*//swap random locii [spans]

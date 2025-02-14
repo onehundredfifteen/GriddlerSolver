@@ -1,8 +1,8 @@
 #pragma once
 
-#include "Griddlers/Griddler.h"
-#include "Rows/MutableRow.h"
-#include "Approach/ConstraintProvider.h"
+#include "./Griddlers/Griddler.h"
+#include "./Rows/MutableRow.h"
+#include "./Approach/ConstraintProvider.h"
 
 class SolutionCandidate
 {
@@ -27,10 +27,12 @@ public:
 
 	bool isSolved(const Griddler& pattern) const;
 
+	void mutate(const Mutation& mutation);
+
+	friend class Mutation;
 public:
 	const int colCount;
 	const int rowCount;
-
 
 private:
 	std::vector<MutableRow> rows;

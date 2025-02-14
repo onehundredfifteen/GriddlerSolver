@@ -1,8 +1,5 @@
 #pragma once
 
-//#include "../Rows/MutableRow.h"
-
-
 /*
 Mutation
 
@@ -10,9 +7,23 @@ visitor pattern
 
 */
 
-class MutableRow; //fd
+#include <vector>
+
+class MutableRow;
+class SolutionCandidate;
+typedef std::vector<std::reference_wrapper<MutableRow>> Chromosomes;
+
 class Mutation
 {
 public:
-	virtual void visit(MutableRow& row) = 0;
+	Mutation(double _mutation_rate);
+
+	virtual void visit(MutableRow& row) const = 0;
+	virtual Chromosomes getAffectedChromosomes(SolutionCandidate& candidate) const = 0;
+
+protected:
+	std::vector<MutableRow>& getMutableRows(SolutionCandidate& candidate) const;
+
+protected:
+	double mutation_rate;
 };

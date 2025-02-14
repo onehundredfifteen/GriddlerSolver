@@ -2,9 +2,8 @@
 
 #include <algorithm>
 
-#include "ConstrainedRow.h"
-#include "GriddlerRow.h"
-#include "../RandomGenerator.h"
+#include "./ConstrainedRow.h"
+#include "./GriddlerRow.h"
 #include "../Mutations/Mutation.h"
 
 
@@ -41,10 +40,4 @@ private:
 	void ensureOneMaxSpanAtTime();
 
 	bool _initFinal() const;
-public:
-	
-
-
-
-	
 };
