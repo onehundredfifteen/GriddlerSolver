@@ -4,10 +4,11 @@
 #include "stdafx.h"
 #include <algorithm>
 
-#include "Griddlers/Griddler.h"
-#include "Rows/ConstrainedRow.h"
-#include "SolutionCandidate.h"
-#include "Approach/ConstraintProvider.h"
+#include "./RandomGenerator.h"
+#include "./Griddlers/Griddler.h"
+#include "./Rows/ConstrainedRow.h"
+#include "./SolutionCandidate.h"
+#include "./Approach/ConstraintProvider.h"
 
 SolutionCandidate::SolutionCandidate(const Griddler& pattern, const ConstraintProvider& approachProvider)
 	: rowCount(pattern.GetImageHeight()), colCount(pattern.GetImageWidth())
@@ -97,34 +98,22 @@ void SolutionCandidate::mutate(const Mutation& mutation) {
 		mutation.visit(chromosome);
 	}
 }
-/**
-//Xover
-void GriddlerCandidate::DoCrossingOver(GriddlerCandidate* partner, double chance)
-{
-	if (this == partner || RandomGenerator::Next()(0.0, 1.0) < chance)
+
+void SolutionCandidate::crossingOver(SolutionCandidate& partner, double chance) {
+	if (*this == partner)
 		return;
-*/
-	/*if(RandomGenerator::Next()(0.0, 1.0) >= chance) {
-		int chromosome = -1;
 
-		while(chromosome < 0 || rows[chromosome]->IsFinal()) {
-			chromosome = RandomGenerator::Next()(0, rows.size() - 1);
-		}
+	chance = std::clamp(chance, 0.0, 1.0);
 
-		rows[chromosome]->CrossingOver(partner->rows[chromosome]);
-	}*/
-/*
-
-	int i = 0;
-	for (std::vector<GriddlerRow2*>::iterator it = rows.begin(); it != rows.end(); ++it, ++i) {
-		if (false == (*it)->IsFinal()) {
-			(*it)->CrossingOver(partner->rows[i]);
+	for (auto it = rows.begin(), pit = partner.rows.begin(); it < rows.end(); ++it, ++pit) {
+		if (RandomGenerator::Next()(0.0, 1.0) < chance) {
+			(*it).crossingOver(*pit);
 		}
 	}
 }
 
 /*
-void GriddlerCandidate::PrintToStream(std::ostream& stream)
+void SolutionCandidate::PrintToStream(std::ostream& stream)
 {
 	for (std::vector<GriddlerRow2*>::iterator it = rows.begin(); it != rows.end(); ++it) {
 		for (int col = 0; col < img_cols; ++col) {

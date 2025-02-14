@@ -15,21 +15,16 @@ public:
 	CellCollection GetRowResult(int row) const;
 
 	bool SolutionCandidate::operator==(const SolutionCandidate& other) const;
-	//CellCollection GetColumnResult(int column) const;
-	//std::vector<CellCollection> GetResult() const;
+	
 	/*
-	void DoCrossingOver(GriddlerCandidate * partner, double chance);
-	void DoMutate(double chance);
-
-	void PrintToStream(std::ostream &stream);
-
-	//double Fitness;*/
+	void PrintToStream(std::ostream &stream);*/
 
 	bool isSolved(const Griddler& pattern) const;
 
-	void mutate(const Mutation& mutation);
-
 	friend class Mutation;
+	void mutate(const Mutation& mutation);
+	void crossingOver(SolutionCandidate& partner, double chance);
+	
 public:
 	const int colCount;
 	const int rowCount;

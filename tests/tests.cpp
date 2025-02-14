@@ -365,3 +365,22 @@ TEST_CASE("Basic Mutation", "mutations")
     CHECK(fitness_of_mutated < fitness_of_solved);
 }
 
+TEST_CASE("Crossing over", "mutations")
+{
+    BasicEstimator estimator(myGiddler);
+    FullSolutionProvider fsp(myGiddler);
+    SolutionCandidate candidate(myGiddler, no_approach);
+    SolutionCandidate solved_candidate(myGiddler, fsp);
+
+    double fitness_of_solved_before = estimator.fitness(solved_candidate);
+    double fitness_before = estimator.fitness(candidate);
+
+    solved_candidate.crossingOver(candidate, 0.95);
+
+    double fitness_of_solved_after = estimator.fitness(solved_candidate);
+    double fitness_after = estimator.fitness(candidate);
+
+    CHECK(fitness_of_solved_before == (double)solved_candidate.rowCount);
+    CHECK(fitness_of_solved_after < fitness_of_solved_before);
+}
+

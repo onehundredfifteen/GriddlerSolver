@@ -41,15 +41,31 @@ SpanCollection& MutableRow::getSpans() {
 
 void MutableRow::crossingOver(MutableRow& partner) {
 
-	if (spans.size() <= 2)
+	if (spans.size() < 2)
 		return;
 
-	//assume same size of rows bigger than 2
-	int cross_point = RandomGenerator::Next()(1, spans.size() - 1);
+	int no_cross_points = RandomGenerator::Next()(1, 2);
 
-	//xower
-	std::swap_ranges(spans.begin(), spans.begin() + cross_point, partner.spans.begin());
+	if (no_cross_points == 1 || spans.size() < 3) {
+		int cross_point = RandomGenerator::Next()(1, spans.size() - 1);
+		//xower
+		std::swap_ranges(spans.begin(), spans.begin() + cross_point, partner.spans.begin());
+	}
+	else if(no_cross_points == 2) {
+		int cross_point_begin = 0, cross_point_end = 0;
 
+		while (cross_point_begin != cross_point_end) {
+			cross_point_begin = RandomGenerator::Next()(1, spans.size() - 1);
+			cross_point_end = RandomGenerator::Next()(1, spans.size() - 1);
+		}
+
+		//xower
+		std::swap_ranges(spans.begin() + cross_point_begin,
+			spans.begin() + cross_point_end,
+			partner.spans.begin() + cross_point_begin);
+	}
+	else assert(false);
+	
 	//keep valid
 	//sanitize();
 	//partner.sanitize();
@@ -57,7 +73,7 @@ void MutableRow::crossingOver(MutableRow& partner) {
 
 
 
-void MutableRow::mutate(Mutation& effect) {
+void MutableRow::mutate(const Mutation& effect) {
 	effect.visit(*this);
 
 	//sanitize?

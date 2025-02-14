@@ -35,7 +35,7 @@ protected:
 
 	//mutate only one chromosome
 	virtual Chromosomes getAffectedChromosomes(SolutionCandidate& candidate) const {
-		int affected = RandomGenerator::Next()(0, candidate.rowCount);
+		int affected = RandomGenerator::Next()(0, candidate.rowCount - 1);
 		return { getMutableRows(candidate)[affected] };
 	}
 

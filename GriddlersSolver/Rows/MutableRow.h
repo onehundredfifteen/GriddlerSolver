@@ -23,12 +23,12 @@ private:
 	const bool final;
 
 public:
-
 	bool isValid() const;
 	void sanitize();
 	SpanCollection& getSpans();
+
 	void crossingOver(MutableRow& partner);
-	void mutate(Mutation& effect);
+	void mutate(const Mutation& effect);
 
 private:
 	void randomizeRow();
