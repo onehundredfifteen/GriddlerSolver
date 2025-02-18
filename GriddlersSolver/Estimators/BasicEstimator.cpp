@@ -8,8 +8,8 @@ BasicEstimator::BasicEstimator(const Griddler& _pattern)
 
 double BasicEstimator::fitness(const SolutionCandidate& candidate) const {
 	double fitness = 0.0, global_score = 0.0;
-	auto solution = candidate.GetSolvedColumnPattern();
-	auto target = pattern.GetColumnPattern();
+	auto solution = candidate.getSolvedColumnPattern();
+	auto target = pattern.getColumnPattern();
 
 	//sum col fitness
 	for (int n = 0; n < solution.size(); ++n)
@@ -38,6 +38,16 @@ double BasicEstimator::fitness(const SolutionCandidate& candidate) const {
 };
 
 double BasicEstimator::estimate_column(const ColumnCollection& solution, const ColumnCollection& target) const {
+
+	double a = estimate_column_countmap(solution, target);
+	double b = estimate_column_lcs(solution, target);
+
+		
+	return estimate_column_countmap(solution, target) + 
+		   estimate_column_lcs(solution, target);
+}
+
+double BasicEstimator::estimate_column_countmap(const ColumnCollection& solution, const ColumnCollection& target) const {
 	std::map<int, int> freq_solution, freq_target;
 
 	//1. Count elements fitness
@@ -49,7 +59,7 @@ double BasicEstimator::estimate_column(const ColumnCollection& solution, const C
 		count_score -= std::abs(freq_solution[length] - count);
 	}
 
-	return count_score + estimate_column_lcs(solution, target);
+	return count_score / target.size();
 }
 
 double BasicEstimator::estimate_column_lcs(const ColumnCollection& solution, const ColumnCollection& target) const {
@@ -86,6 +96,6 @@ double BasicEstimator::estimate_column_lcs(const ColumnCollection& solution, con
 
 	//1.0 - full match
 	//0.0 - no common elements & order
-
-	return lcs(n, t) / std::max(n, t);
+	double lcd = lcs(n, t);
+	return lcs(n, t) / target.size();
 }

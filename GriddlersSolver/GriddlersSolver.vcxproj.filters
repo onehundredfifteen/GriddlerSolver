@@ -118,6 +118,9 @@
     <ClInclude Include="Selectors\BestOfSelector.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="PopulationAnalyser.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
@@ -157,6 +160,15 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Mutations\Mutation.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Selectors\BestOfSelector.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Selectors\RouletteSelector.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="PopulationAnalyser.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

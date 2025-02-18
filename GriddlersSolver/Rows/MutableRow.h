@@ -20,6 +20,7 @@ public:
 	MutableRow(const BlockCollection& _blocks, int imgwidth, const ConstrainedRow& constraintProvider);
 
 private:
+	//MutableRow(const MutableRow& other);
 	const bool final;
 
 public:

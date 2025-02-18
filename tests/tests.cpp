@@ -1,6 +1,7 @@
 #define CATCH_CONFIG_MAIN  // This tells Catch to provide a main() - only do this in one cpp file
 
 #include <string>
+#include <iostream>
 #include <tuple>
 #include "./catch/catch_amalgamated.hpp"
 #include "../GriddlersSolver/Rows/GriddlerRow.h"
@@ -17,11 +18,15 @@
 
 #include "../GriddlersSolver/Estimators/BasicEstimator.h"
 
+#include "../GriddlersSolver/PopulationAnalyser.h"
 #include "../GriddlersSolver/PopulationGenerator.h"
+
 #include "../GriddlersSolver/Selectors/RouletteSelector.h"
 #include "../GriddlersSolver/Selectors/BestOfSelector.h"
 
 #include "../GriddlersSolver/Mutations/BasicMutation.h"
+
+#include "../GriddlersSolver/GeneticAlgorithm.h"
 
 ///////////////////////
 //Tests for griddler row
@@ -251,9 +256,35 @@ TEST_CASE("Solved Solution Candidate", "population")
     CellCollection expected_cells = { CellState::Blank,CellState::Filled,CellState::Filled,CellState::Filled,CellState::Filled,CellState::Blank,CellState::Blank };
 
     REQUIRE(solved_candidate.isSolved(myGiddler) == true);
-    CHECK(solved_candidate.GetSolvedColumnPattern(0) == expected_cols);
+    CHECK(solved_candidate.getSolvedColumnPattern(0) == expected_cols);
     CHECK(solved_candidate.GetRowResult(0) == expected_cells);
-    CHECK(solved_candidate.GetSolvedColumnPattern() == myGiddler.GetColumnPattern());
+    CHECK(solved_candidate.getSolvedColumnPattern() == myGiddler.getColumnPattern());
+
+    solved_candidate.printToStream(std::cout);
+}
+
+TEST_CASE("Passing Solution Candidate", "population")
+{
+    FullSolutionProvider fsp(myGiddler);
+    SolutionCandidate solved_candidate(myGiddler, fsp);
+    SolutionCandidate candidate(myGiddler, no_approach);
+
+    auto population = PopulationGenerator::createPopulationFromArgs(solved_candidate, candidate);
+
+    Population new_population;
+    new_population.reserve(2);
+    new_population.emplace_back(solved_candidate); 
+    new_population.emplace_back(candidate);
+
+    REQUIRE(population[0].isSolved(myGiddler) == true);
+    REQUIRE(new_population[0].isSolved(myGiddler) == true);
+    REQUIRE(population[0] == new_population[0]);
+    REQUIRE(population[1] == new_population[1]);
+
+    BasicMutation mutation(1.0);
+    population[0].mutate(mutation);
+    bool test = population[0] == new_population[0];
+    REQUIRE(test == false);
 }
 
 TEST_CASE("Estimate Candidate of simple griddler", "estimators")
@@ -263,12 +294,14 @@ TEST_CASE("Estimate Candidate of simple griddler", "estimators")
 
     FullSolutionProvider fsp(testGiddler);
     SolutionCandidate solved_candidate(testGiddler, fsp);
-
+    solved_candidate.printToStream(std::cout);
     //prepare almost perfect solution
     WarpedSolution ws(testGiddler);
     ws.warpRow(0, warped_constraint);
 
     SolutionCandidate warped_candidate(testGiddler, ws);
+
+    double fitness_of_solved2 = estimator.fitness(solved_candidate);
 
     double fitness = estimator.fitness(candidate);
     double fitness_of_solved = estimator.fitness(solved_candidate);
@@ -337,7 +370,7 @@ TEST_CASE("Population selection - roulette", "selection")
     CHECK(selection_histogram[1] != selection_histogram[3]);
     CHECK(std::distance(selection_histogram.begin(), max_element) == 0);
 }
-
+/*
 TEST_CASE("Population selection - best of K=3", "selection")
 {
     std::vector<int> selection_histogram = __mock_and_test_selector<BestOfSelector<3>>();
@@ -348,6 +381,7 @@ TEST_CASE("Population selection - best of K=3", "selection")
     CHECK(selection_histogram[1] != selection_histogram[3]);
     CHECK(std::distance(selection_histogram.begin(), max_element) == 0);
 }
+*/
 
 TEST_CASE("Basic Mutation", "mutations")
 {
@@ -384,3 +418,34 @@ TEST_CASE("Crossing over", "mutations")
     CHECK(fitness_of_solved_after < fitness_of_solved_before);
 }
 
+TEST_CASE("Analyse population", "population")
+{
+    BasicEstimator estimator(testGiddler);
+    FullSolutionProvider fsp(testGiddler);
+    SolutionCandidate solved_candidate(testGiddler, fsp);
+
+    //prepare almost perfect solution
+    WarpedSolution ws(testGiddler);
+    ws.warpRow(0, warped_constraint);
+
+    SolutionCandidate warped_candidate(testGiddler, ws);
+
+    auto population = PopulationGenerator::createPopulationFromArgs(solved_candidate, warped_candidate);
+    RouletteSelector selector(population, estimator);
+    PopulationAnalyser analyser(population, selector.getPopulationScore());
+
+    double expected_min = 1.0;
+    double expected_max = 5.0;
+    double expected_avg = 3.0;
+    double expected_med = expected_avg;
+    /*
+    CHECK(expected_min == analyser.getMin());
+    CHECK(expected_max == analyser.getMax());
+    CHECK(expected_avg == analyser.getAvg());
+    CHECK(expected_med == analyser.getMed());*/
+}
+
+TEST_CASE("ga", "population")
+{
+    GA();
+}

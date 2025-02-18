@@ -99,6 +99,7 @@
     <ClInclude Include="Griddlers\GriddlerPreset.h" />
     <ClInclude Include="Mutations\BasicMutation.h" />
     <ClInclude Include="Mutations\Mutation.h" />
+    <ClInclude Include="PopulationAnalyser.h" />
     <ClInclude Include="PopulationGenerator.h" />
     <ClInclude Include="SolutionTable.h" />
     <ClInclude Include="Rows\GriddlerRow.h" />
@@ -121,9 +122,12 @@
     <ClCompile Include="Estimators\BasicEstimator.cpp" />
     <ClCompile Include="GeneticAlgorithm.cpp" />
     <ClCompile Include="Mutations\Mutation.cpp" />
+    <ClCompile Include="PopulationAnalyser.cpp" />
     <ClCompile Include="Rows\ConstrainedRow.cpp" />
     <ClCompile Include="Rows\GriddlerRow.cpp" />
     <ClCompile Include="Rows\MutableRow.cpp" />
+    <ClCompile Include="Selectors\BestOfSelector.cpp" />
+    <ClCompile Include="Selectors\RouletteSelector.cpp" />
     <ClCompile Include="SolutionTable.cpp" />
     <ClCompile Include="SolutionCandidate.cpp" />
     <ClCompile Include="GriddlersSolver.cpp" />

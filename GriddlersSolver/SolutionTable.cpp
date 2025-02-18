@@ -3,7 +3,7 @@
 
 #include "stdafx.h"
 #include <cassert>
-#include "SolutionTable.h"
+#include "./SolutionTable.h"
 #include "./SolutionCandidate.h"
 #include "./Griddlers/GriddlerPreset.h"
 
@@ -18,12 +18,12 @@ SolutionTable::SolutionTable(const CellCollection& cells, int offset)
 	content.container = cells;
 }
 
-SolutionTable::SolutionTable(const SolutionCandidate& sc)
-	: SolutionTable(sc.rowCount, sc.colCount)
+SolutionTable::SolutionTable(const SolutionCandidate& candidate)
+	: content(candidate.colCount)
 {
-	for (int i = 0; i < sc.rowCount; ++i) {
+	for (int i = 0; i < candidate.colCount; ++i) {
 		// Move cells into content
-		auto res = sc.GetRowResult(i);
+		auto res = candidate.GetRowResult(i);
 		content.container.insert(content.container.end(), 
 			std::make_move_iterator(res.begin()), std::make_move_iterator(res.end()));
 	}
@@ -44,17 +44,30 @@ CellCollection SolutionTable::operator()(int row) const {
 	return CellCollection(content.container.begin() + start, content.container.begin() + end);
 }
 
-void SolutionTable::PrintToStream(std::ostream& stream) const {
+void SolutionTable::printToStream(std::ostream& stream) const {
+	/*int n = 0;
+	for (const auto cell : content.container) {
+		stream << cellStateToChar(cell);
+		if (++n % content.offset == 0)
+			stream << '\n';
+	}
+	stream << std::flush;*/
+	printToStream(stream, [](std::ostream&, int) {});
+}
+
+void SolutionTable::printToStream(std::ostream& stream, std::function<void(std::ostream&, int)> afterLineCb) const {
 	int n = 0;
 	for (const auto cell : content.container) {
-		stream << CellStateToChar(cell);
-		if(n % content.offset)
-			stream << '\n';
+		stream << cellStateToChar(cell);
+		if (++n % content.offset == 0){
+			afterLineCb(stream, n);
+			stream << '\n';		
+		}
 	}
 	stream << std::flush;
 }
 
-char SolutionTable::CellStateToChar(const CellState &cs) {
+char SolutionTable::cellStateToChar(const CellState &cs) {
 	switch (cs) {
 		case CellState::Unknown: return '.';
 		case CellState::Blank: return '/';

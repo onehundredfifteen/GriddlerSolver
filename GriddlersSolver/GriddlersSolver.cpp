@@ -126,8 +126,8 @@ void Alg(std::vector<itrec> &poprec)
 
 	GriddlerCandidate * elite = nullptr;
 	
-	ColumnwiseEstimator estimator(griddler.GetColumnPattern(), griddler.GetColumnPatternSize());
-	BasicEstimator estimator2(griddler.GetColumnPattern(), griddler.GetColumnPatternSize());
+	ColumnwiseEstimator estimator(griddler.getColumnPattern(), griddler.getColumnPatternSize());
+	BasicEstimator estimator2(griddler.getColumnPattern(), griddler.getColumnPatternSize());
 
 	while(!to_break)
 	{
@@ -280,9 +280,9 @@ void Alg(std::vector<itrec> &poprec)
 	std::cout << "\nColumn Pattern:\n";
 	
 	for(int line = 0; line < 7; ++line) {
-		for(int i = 0; i < griddler.GetColumnPatternSize(); i+=1) {
-			if(line < griddler.GetColumnPattern()[i].size()) {
-				int cc = griddler.GetColumnPattern()[i][line];
+		for(int i = 0; i < griddler.getColumnPatternSize(); i+=1) {
+			if(line < griddler.getColumnPattern()[i].size()) {
+				int cc = griddler.getColumnPattern()[i][line];
 				if(cc > 9) {
 					char r = 'A';
 					r += (cc - 10);

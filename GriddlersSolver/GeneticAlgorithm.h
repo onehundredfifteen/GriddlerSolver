@@ -1,7 +1,7 @@
 #pragma once
-class GeneticAlgorithm
+/*class GeneticAlgorithm
 {
 
-};
+};*/
 
 void GA();

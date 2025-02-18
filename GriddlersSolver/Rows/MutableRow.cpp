@@ -13,10 +13,15 @@ MutableRow
 MutableRow::MutableRow(const BlockCollection& _blocks, int imgwidth, const ConstrainedRow& constraintProvider)
 	: GriddlerRow(_blocks, imgwidth), final(_initFinal()) {
 
-	if (!final) {
+	if (false == final) {
 		randomizeRowConstraintWise(constraintProvider);
 	}
 }
+/*
+MutableRow::MutableRow(const MutableRow& other)
+	: GriddlerRow(other.blocks, other.spans, other.imageWidth), final(other.final) {
+
+}*/
 
 bool MutableRow::isValid() const {
 	return getCurrentWidth() <= imageWidth &&
@@ -41,7 +46,7 @@ SpanCollection& MutableRow::getSpans() {
 
 void MutableRow::crossingOver(MutableRow& partner) {
 
-	if (spans.size() < 2)
+	if (final || spans.size() < 2)
 		return;
 
 	int no_cross_points = RandomGenerator::Next()(1, 2);
@@ -67,19 +72,20 @@ void MutableRow::crossingOver(MutableRow& partner) {
 	else assert(false);
 	
 	//keep valid
-	//sanitize();
-	//partner.sanitize();
+	//TODO strategy?
+	sanitize();
+	partner.sanitize();
 }
-
-
 
 void MutableRow::mutate(const Mutation& effect) {
+	if (final)
+		return;
+	
+	//TODO rollback, leave, sanitize startegies
 	effect.visit(*this);
 
-	//sanitize?
-	//return isvalid?
+	sanitize();
 }
-
 
 void MutableRow::randomizeRow() {
 	const int maxQ = getMaxSpanSize(); //max possible span, only 1 possible

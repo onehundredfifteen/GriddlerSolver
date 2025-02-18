@@ -25,7 +25,7 @@ public:
 	const std::vector<BlockCollection>& GetRowPattern() const {
 		return pattern_rows;
 	}
-	const std::vector<ColumnCollection>& GetColumnPattern() const {
+	const std::vector<ColumnCollection>& getColumnPattern() const {
 		return pattern_cols;
 	}
 
