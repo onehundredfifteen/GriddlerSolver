@@ -23,7 +23,7 @@ SolutionTable::SolutionTable(const SolutionCandidate& candidate)
 {
 	for (int i = 0; i < candidate.colCount; ++i) {
 		// Move cells into content
-		auto res = candidate.GetRowResult(i);
+		auto res = candidate.getRowAsCells(i);
 		content.container.insert(content.container.end(), 
 			std::make_move_iterator(res.begin()), std::make_move_iterator(res.end()));
 	}
@@ -51,6 +51,7 @@ void SolutionTable::printToStream(std::ostream& stream) const {
 		if (++n % content.offset == 0)
 			stream << '\n';
 	}
+
 	stream << std::flush;*/
 	printToStream(stream, [](std::ostream&, int) {});
 }
@@ -74,4 +75,13 @@ char SolutionTable::cellStateToChar(const CellState &cs) {
 		case CellState::Filled: return '#';
 		default: return '?';
 	}
+}
+
+void SolutionTable::digitMayBeNotEnough(const int d, std::ostream& stream) {	
+	if (d > 9) {
+		char r = 'A';
+		r += (d - 10);
+		stream << r;
+	}
+	else stream << d;
 }

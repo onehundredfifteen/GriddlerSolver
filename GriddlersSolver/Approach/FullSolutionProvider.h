@@ -11,7 +11,7 @@ public:
 		solved_rows.reserve(preset.GetImageWidth() * preset.GetImageHeight());
 		auto solution_row = preset.solution.begin();
 
-		for (auto row : preset.GetRowPattern()) {
+		for (auto row : preset.getRowPattern()) {
 			// Move cells into content
 			GriddlerRow solved(row, *(solution_row++), preset.GetImageWidth());
 			solved_rows.emplace_back(solved);

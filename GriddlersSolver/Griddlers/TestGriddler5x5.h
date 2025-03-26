@@ -3,20 +3,17 @@
 #include "GriddlerPreset.h"
 
 /*
-	/####//
-	##//##/
-	/////#/
-	///#/#/
-	//#/#//
-	/#////#
-	#/#####
+		#//#/
+		/#//#
+		//#/#
+		#//#/
+		##//#
 */
 
-
-class ConcreteGriddler7x7 : public GriddlerPreset
+class TestGriddler5x5 : public GriddlerPreset
 {
 public:
-	ConcreteGriddler7x7() {
+	TestGriddler5x5() {
 		solution = this->initSolution();
 		pattern_rows = this->initRows();
 		pattern_cols = this->initCols();
@@ -28,14 +25,14 @@ public:
 
 protected:
 	std::vector<SpanCollection> initSolution() const override {
-		return { {1}, {0, 2}, {5}, {3, 1}, {2, 1}, {1, 4}, {0, 1} };
+		return { {0, 2}, {1, 2}, {2, 1}, {0, 2}, {0, 2} };
 	}
 
 	std::vector<BlockCollection> initRows() const override {
-		return { {4}, {2, 2}, {1}, {1, 1}, {1, 1}, {1, 1}, {1, 5} };
+		return { {1, 1}, {1, 1}, {1, 1}, {1, 1}, {2, 1} };
 	}
 
 	std::vector<ColumnCollection> initCols() const override {
-		return { {1, 1}, {2, 1}, {1, 1, 1}, {1, 1, 1}, {2, 1, 1}, {3, 1}, {2} };
+		return { {1, 2}, {1, 1}, {1}, {1, 1}, {2, 1} };
 	}
 };

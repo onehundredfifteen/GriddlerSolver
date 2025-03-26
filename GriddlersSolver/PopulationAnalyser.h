@@ -17,7 +17,7 @@ public:
 	PopulationAnalyser(const Population& _population, const Scores& _scores);
 
 	void refresh();
-    std::optional<std::reference_wrapper<const SolutionCandidate>> getSolvedCandidate(const Griddler& pattern) const;
+    std::optional<std::reference_wrapper<const SolutionCandidate>> getSolvedCandidate() const;
     
     const SolutionCandidate& getElite() const {
         return *elite;

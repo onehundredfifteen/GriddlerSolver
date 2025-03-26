@@ -35,4 +35,5 @@ public:
 	CellCollection operator()(int row) const;
 
 	static char SolutionTable::cellStateToChar(const CellState& cs);
+	static void SolutionTable::digitMayBeNotEnough(const int c, std::ostream& stream);
 };

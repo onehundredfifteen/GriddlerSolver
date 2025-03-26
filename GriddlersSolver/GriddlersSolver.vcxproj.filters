@@ -121,6 +121,9 @@
     <ClInclude Include="PopulationAnalyser.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="Griddlers\TestGriddler5x5.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">

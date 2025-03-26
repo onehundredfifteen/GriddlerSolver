@@ -72,7 +72,7 @@ int GriddlerRow::getCurrentWidth() const {
 
 //gets widest possible span
 int GriddlerRow::getMaxSpanSize() const {
-	return imageWidth - getMinimalWidth();
+	return imageWidth - getMinimalWidth() + 1; //+ (blocks.size() == 2 ? 1 : 0);
 }
 
 //find whether a cell at given column is full or empty

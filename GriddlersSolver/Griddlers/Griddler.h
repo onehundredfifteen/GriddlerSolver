@@ -22,7 +22,7 @@ protected:
 	std::vector<ColumnCollection> pattern_cols;
 
 public:
-	const std::vector<BlockCollection>& GetRowPattern() const {
+	const std::vector<BlockCollection>& getRowPattern() const {
 		return pattern_rows;
 	}
 	const std::vector<ColumnCollection>& getColumnPattern() const {

@@ -12,6 +12,7 @@
 #include "../GriddlersSolver/Approach/FullSolutionProvider.h"
 #include "../GriddlersSolver/Approach/WarpedSolution.h"
 
+#include "../GriddlersSolver/Griddlers/TestGriddler5x5.h"
 #include "../GriddlersSolver/Griddlers/DiagonalGriddler5x5.h"
 #include "../GriddlersSolver/Griddlers/ConcreteGriddler7x7.h"
 #include "../GriddlersSolver/SolutionCandidate.h"
@@ -46,7 +47,7 @@ TEST_CASE("Basic griddler row", "rows")
         CHECK(common_row.isEmpty() == false);
         CHECK(common_row.getMinimalWidth() == 5);
         CHECK(common_row.getCurrentWidth() == common_row.getMinimalWidth());
-        CHECK(common_row.getMaxSpanSize() == 3);
+        CHECK(common_row.getMaxSpanSize() == 4);
         CHECK(common_row.possibleCombinations() == 10);
 
         auto [column, expected] = GENERATE(table<int, bool>({
@@ -90,12 +91,12 @@ TEST_CASE("Basic griddler row", "rows")
    }
 
    SECTION("spanned row [-xx-xx--]") {
-       BlockCollection spans = { 1, 1,};
+       SpanCollection spans = { 1, 1,};
        GriddlerRow spanned_row(common_blocks, spans, 8);
 
        CHECK(spanned_row.getMinimalWidth() == 5);
        CHECK(spanned_row.getCurrentWidth() == 6);
-       CHECK(spanned_row.getMaxSpanSize() == 3);
+       CHECK(spanned_row.getMaxSpanSize() == 4);
        CHECK(spanned_row.possibleCombinations() == common_row.possibleCombinations());
 
        auto [column, expected] = GENERATE(table<int, bool>({
@@ -105,7 +106,21 @@ TEST_CASE("Basic griddler row", "rows")
        CHECK(spanned_row.getCellByColumn(column) == expected);
    }
 
-  
+   SECTION("spanned row [xx----xx]") {
+       SpanCollection spans = { 0, 4 };
+       GriddlerRow spanned_row(common_blocks, spans, 8);
+
+       CHECK(spanned_row.getMinimalWidth() == 5);
+       CHECK(spanned_row.getCurrentWidth() == 8);
+       CHECK(spanned_row.getMaxSpanSize() == 4);
+       CHECK(spanned_row.possibleCombinations() == common_row.possibleCombinations());
+
+       auto [column, expected] = GENERATE(table<int, bool>({
+           {0, true},  {1, true},  {2, false},  {3, false},  {4, false}, {5, false}, {6, true}, {7, true}
+           }));
+
+       CHECK(spanned_row.getCellByColumn(column) == expected);
+   }
     /*
      BlockCollection blocks = { 2, 2 };
     GriddlerRow common_row(blocks, 8);
@@ -233,7 +248,7 @@ TEST_CASE("Mutable row", "rows")
 
 
 ConcreteGriddler7x7 myGiddler;
-DiagonalGriddler5x5 testGiddler;
+TestGriddler5x5 testGiddler;
 BlockCollection warp_b = { 1 };
 SpanCollection warp_s = { 1 };
 GriddlerRow warped(warp_b, warp_s, 5);
@@ -244,7 +259,7 @@ NoApproach no_approach;
 TEST_CASE("Random Solution Candidate", "population")
 {
     SolutionCandidate candidate(myGiddler, no_approach);
-    CHECK(candidate.isSolved(myGiddler) == false);
+    CHECK(candidate.isSolved() == false);
 }
 
 TEST_CASE("Solved Solution Candidate", "population")
@@ -255,14 +270,50 @@ TEST_CASE("Solved Solution Candidate", "population")
     ColumnCollection expected_cols = { 1, 1 };
     CellCollection expected_cells = { CellState::Blank,CellState::Filled,CellState::Filled,CellState::Filled,CellState::Filled,CellState::Blank,CellState::Blank };
 
-    REQUIRE(solved_candidate.isSolved(myGiddler) == true);
+    REQUIRE(solved_candidate.isSolved() == true);
     CHECK(solved_candidate.getSolvedColumnPattern(0) == expected_cols);
-    CHECK(solved_candidate.GetRowResult(0) == expected_cells);
+    CHECK(solved_candidate.getRowAsCells(0) == expected_cells);
     CHECK(solved_candidate.getSolvedColumnPattern() == myGiddler.getColumnPattern());
 
     solved_candidate.printToStream(std::cout);
 }
+/*
+TEST_CASE("Solution Candidate special case 1", "population")
+{
+    /*
+        #////
+        ////#
+        /#///
+        //#//
+        ///#/
 
+        ////# test
+        /#///
+        //#//
+        ///#/  
+        #////
+    *//*
+    BlockCollection warp_b = { 1 };
+    std::vector<BlockCollection> warp_s = { { 0 } , { 4 }, { 1 }, { 2 }, { 3 } };
+    ConstrainedRow warped_constraint0(GriddlerRow(warp_b, warp_s[0], 5));
+    ConstrainedRow warped_constraint1(GriddlerRow(warp_b, warp_s[1], 5));
+    ConstrainedRow warped_constraint2(GriddlerRow(warp_b, warp_s[2], 5));
+    ConstrainedRow warped_constraint3(GriddlerRow(warp_b, warp_s[3], 5));
+    ConstrainedRow warped_constraint4(GriddlerRow(warp_b, warp_s[4], 5));
+
+    WarpedSolution warpedSolution(testGiddler);
+    warpedSolution.warpRow(0, warped_constraint0);
+    warpedSolution.warpRow(1, warped_constraint1);
+    warpedSolution.warpRow(2, warped_constraint2);
+    warpedSolution.warpRow(3, warped_constraint3);
+    warpedSolution.warpRow(4, warped_constraint4);
+
+    SolutionCandidate warped_candidate(testGiddler, warpedSolution);
+    
+    warped_candidate.printToStream(std::cout);
+    REQUIRE(warped_candidate.isSolved() == false);
+}
+*/
 TEST_CASE("Passing Solution Candidate", "population")
 {
     FullSolutionProvider fsp(myGiddler);
@@ -276,8 +327,8 @@ TEST_CASE("Passing Solution Candidate", "population")
     new_population.emplace_back(solved_candidate); 
     new_population.emplace_back(candidate);
 
-    REQUIRE(population[0].isSolved(myGiddler) == true);
-    REQUIRE(new_population[0].isSolved(myGiddler) == true);
+    REQUIRE(population[0].isSolved() == true);
+    REQUIRE(new_population[0].isSolved() == true);
     REQUIRE(population[0] == new_population[0]);
     REQUIRE(population[1] == new_population[1]);
 
@@ -380,8 +431,7 @@ TEST_CASE("Population selection - best of K=3", "selection")
     CHECK(selection_histogram[0] > selection_histogram[2]);
     CHECK(selection_histogram[1] != selection_histogram[3]);
     CHECK(std::distance(selection_histogram.begin(), max_element) == 0);
-}
-*/
+}*/
 
 TEST_CASE("Basic Mutation", "mutations")
 {

@@ -10,11 +10,11 @@
 #include "./Rows/ConstrainedRow.h"
 #include "./Approach/ConstraintProvider.h"
 
-SolutionCandidate::SolutionCandidate(const Griddler& pattern, const ConstraintProvider& approachProvider)
-	: rowCount(pattern.GetImageHeight()), colCount(pattern.GetImageWidth())
+SolutionCandidate::SolutionCandidate(const Griddler& _pattern, const ConstraintProvider& _approachProvider)
+	: pattern(_pattern), rowCount(_pattern.GetImageHeight()), colCount(_pattern.GetImageWidth())
 {
 	for (int i = 0; i < rowCount; ++i) {
-		rows.emplace_back(pattern.GetRowPattern()[i], colCount, approachProvider.getRow(i));
+		rows.emplace_back(pattern.getRowPattern()[i], colCount, _approachProvider.getRow(i));
 	}
 }
 /*
@@ -75,8 +75,12 @@ std::vector<ColumnCollection> SolutionCandidate::getSolvedColumnPattern() const
 	return std::move(result);
 }
 
-CellCollection SolutionCandidate::GetRowResult(int row) const {
+CellCollection SolutionCandidate::getRowAsCells(int row) const {
 	return ConstrainedRow(rows[row]).cells;
+}
+
+const Griddler& SolutionCandidate::getPattern() const {
+	return pattern;
 }
 
 bool SolutionCandidate::operator==(const SolutionCandidate& other) const {
@@ -101,7 +105,7 @@ CellCollection SolutionCandidate::GetColumnResult(int column) const
 	}
 }*/
 
-bool SolutionCandidate::isSolved(const Griddler& pattern) const {
+bool SolutionCandidate::isSolved() const {
 	int col_idx = 0;
 	for (const auto &cols : pattern.getColumnPattern()) {
 		auto d = getSolvedColumnPattern(col_idx++);
@@ -147,36 +151,33 @@ void SolutionCandidate::crossingOver(SolutionCandidate& partner, double chance) 
 void SolutionCandidate::printToStream(std::ostream& stream) const
 {
 	SolutionTable image(*this);
- 	image.printToStream(stream);
-	/*
-	int max_line = 0;
-	std::vector< std::vector<int>> c;
-	for (int col = 0; col < img_cols; ++col) {
-		std::vector<int> v;
-		FillListByColumnResult(v, col);
-		c.push_back(v);
+	
+	std::vector<ColumnCollection> scp = getSolvedColumnPattern();
+	auto longestColumns = std::max_element(scp.begin(), scp.end(),
+		[](const auto& a, const auto& b) {
+		return a.size() < b.size();
+	});
 
-		if (max_line < v.size())
-			max_line = v.size();
-	}
-
-	for (int line = 0; line < max_line; ++line) {
-		for (int i = 0; i < img_cols; ++i) {
-			if (line < c[i].size()) {
-				if (c[i][line] > 9) {
-					char r = 'A';
-					r += (c[i][line] - 10);
-					stream << r;
-				}
-				else
-					stream << c[i][line];
+	for (int line = 0; line < longestColumns->size(); ++line) {
+		for (int i = 0; i < colCount; ++i) {
+			if (line < scp[i].size()) {
+				SolutionTable::digitMayBeNotEnough(scp[i][line], stream);
 			}
 			else
 				stream << ' ';
-
 		}
 		stream << '\n';
-	}*/
+	}
+	
+ 	image.printToStream(stream, [this](std::ostream& s, int idx) {
+		const int row_no = (idx / this->rowCount) - 1;
+		const auto& blocks = this->getPattern().getRowPattern();
+		s << "->";
+		for (const auto& b : blocks[row_no]) {
+			SolutionTable::digitMayBeNotEnough(b, s);
+			s << ' ';
+		}
+	});
 
 	stream << std::endl;
 }

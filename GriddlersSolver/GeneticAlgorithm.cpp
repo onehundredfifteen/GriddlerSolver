@@ -41,7 +41,7 @@ void GA() {
 		PopulationAnalyser pa(population, selector.getPopulationScore());
 		
 
-		auto solved = pa.getSolvedCandidate(myGiddler);
+		auto solved = pa.getSolvedCandidate();
 		if (solved) {
 			std::cout << "SOLVED at generation #" << generation 
 					  << " final fitness: " << estimator.fitness(solved->get()) 

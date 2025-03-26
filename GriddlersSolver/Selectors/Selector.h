@@ -6,9 +6,17 @@
 
 class Selector
 {
+protected:
+	Population& population;
+	const Estimator& estimator;
+
+	Scores population_score;
+
 public:
 	Selector(Population& _population, const Estimator& _estimator)
-		: population(_population), estimator(_estimator), population_score(population.size(), -0.1e+09)
+		: population(_population), 
+		estimator(_estimator), 
+		population_score(population.size(), Estimator::LOW_FITNESS)
 	{}
 	
 	virtual SolutionCandidate& Next() = 0;
@@ -16,10 +24,4 @@ public:
 	virtual const Scores& getPopulationScore() {
 		return population_score;
 	}
-
-protected:
-	Population &population;
-	const Estimator &estimator;
-
-	Scores population_score;
 };

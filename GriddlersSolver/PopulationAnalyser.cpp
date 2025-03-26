@@ -30,14 +30,18 @@ void PopulationAnalyser::refresh() {
  	pop_med = findMedian();
 }
 
-std::optional<std::reference_wrapper<const SolutionCandidate>> PopulationAnalyser::getSolvedCandidate(const Griddler& pattern) const {
+std::optional<std::reference_wrapper<const SolutionCandidate>> PopulationAnalyser::getSolvedCandidate() const {
 	auto solved = std::find_if(population.begin(), population.end(), 
-		[&pattern](const auto& ind) {
-			return ind.isSolved(pattern);
+		[](const auto& ind) {
+			return ind.isSolved();
 		});
 	
-	if (solved != population.end())
+	if (solved != population.end()) {
+		bool g = solved->isSolved();
+
 		return std::cref(*solved);
+	}
+		
 	
 	return std::nullopt;
 }

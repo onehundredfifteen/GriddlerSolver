@@ -22,16 +22,6 @@ SolutionCandidate& BestOfSelector<K>::Next() {
 }
 
 template<int K>
-double BestOfSelector<K>::cachedFitness(int a) {
-	if (known_fitness.find(a) == known_fitness.end()) {
-		double fitness = estimator.fitness(population[a]);
-		known_fitness[a] = fitness;
-		return fitness;
-	}
-	else return known_fitness.at(a);
-}
-
-template<int K>
 const Scores& BestOfSelector<K>::getPopulationScore() {
 	int i = 0;
 	for (const auto p : population) {
@@ -43,3 +33,14 @@ const Scores& BestOfSelector<K>::getPopulationScore() {
 
 	return population_score;
 }
+
+template<int K>
+double BestOfSelector<K>::cachedFitness(int a) {
+	if (known_fitness.find(a) == known_fitness.end()) {
+		double fitness = estimator.fitness(population[a]);
+		known_fitness[a] = fitness;
+		return fitness;
+	}
+	else return known_fitness.at(a);
+}
+

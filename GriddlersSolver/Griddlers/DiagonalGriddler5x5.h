@@ -2,6 +2,16 @@
 
 #include "GriddlerPreset.h"
 
+/*
+		#////
+		/#///
+		//#//
+		///#/
+		////#
+
+		multiple solutions
+*/
+
 class DiagonalGriddler5x5 : public GriddlerPreset
 {
 public:

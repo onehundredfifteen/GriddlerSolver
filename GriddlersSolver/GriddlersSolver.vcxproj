@@ -97,6 +97,7 @@
     <ClInclude Include="Griddlers\ConcreteGriddler7x7.h" />
     <ClInclude Include="Griddlers\DiagonalGriddler5x5.h" />
     <ClInclude Include="Griddlers\GriddlerPreset.h" />
+    <ClInclude Include="Griddlers\TestGriddler5x5.h" />
     <ClInclude Include="Mutations\BasicMutation.h" />
     <ClInclude Include="Mutations\Mutation.h" />
     <ClInclude Include="PopulationAnalyser.h" />
