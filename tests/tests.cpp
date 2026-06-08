@@ -1,9 +1,8 @@
-#define CATCH_CONFIG_MAIN  // This tells Catch to provide a main() - only do this in one cpp file
-
 #include <string>
 #include <iostream>
 #include <tuple>
-#include "./catch/catch_amalgamated.hpp"
+#include <catch2/catch_all.hpp>
+
 #include "../GriddlersSolver/Rows/GriddlerRow.h"
 #include "../GriddlersSolver/Rows/ConstrainedRow.h"
 #include "../GriddlersSolver/Rows/MutableRow.h"

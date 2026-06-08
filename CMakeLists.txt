@@ -4,12 +4,11 @@ set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 add_compile_options(-fpermissive)
 
-add_executable(griddlersolver
+set(GRIDDLE_SOLVER_SOURCES
     GriddlersSolver/Approach/BasicApproach.cpp
     GriddlersSolver/Approach/NoApproach.cpp
     GriddlersSolver/Estimators/BasicEstimator.cpp
     GriddlersSolver/GeneticAlgorithm.cpp
-    GriddlersSolver/GriddlersSolver.cpp
     GriddlersSolver/Mutations/Mutation.cpp
     GriddlersSolver/PopulationAnalyser.cpp
     GriddlersSolver/Rows/ConstrainedRow.cpp
@@ -21,7 +20,11 @@ add_executable(griddlersolver
     GriddlersSolver/SolutionTable.cpp
 )
 
-Include(FetchContent)
+add_library(griddlersolver_lib STATIC ${GRIDDLE_SOLVER_SOURCES})
+add_executable(griddlersolver GriddlersSolver/GriddlersSolver.cpp)
+target_link_libraries(griddlersolver PRIVATE griddlersolver_lib)
+
+include(FetchContent)
 
 FetchContent_Declare(
   Catch2
@@ -31,6 +34,9 @@ FetchContent_Declare(
 
 FetchContent_MakeAvailable(Catch2)
 
-add_executable(tests test.cpp)
-target_link_libraries(tests PRIVATE Catch2::Catch2WithMain)
+add_executable(tests tests/tests.cpp)
+target_link_libraries(tests PRIVATE Catch2::Catch2WithMain griddlersolver_lib)
+include(CTest)
+include(Catch)
+catch_discover_tests(tests)
 
