@@ -25,7 +25,7 @@ public:
 	CellCollection getRowAsCells(int row) const;
 	const Griddler& getPattern() const;
 
-	bool SolutionCandidate::operator==(const SolutionCandidate& other) const;
+	bool operator==(const SolutionCandidate& other) const;
 	void printToStream(std::ostream &stream) const;
 
 	bool isSolved() const;

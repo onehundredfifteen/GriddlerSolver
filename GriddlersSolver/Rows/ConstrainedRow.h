@@ -23,7 +23,7 @@ public:
 	const CellCollection cells;
 	 
 private:
-	static BlockCollection ConstrainedRow::dummy;
+	static BlockCollection dummy;
 
 public:
 	//produce something like this 011102033 -> [-xxx-x-xx]

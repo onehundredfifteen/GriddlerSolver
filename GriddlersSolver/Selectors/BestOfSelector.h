@@ -8,6 +8,7 @@ class BestOfSelector : Selector
 {
 private:
 	std::map<int, double> known_fitness;
+	int element_counter;
 
 public:
 	BestOfSelector(Population& _population, const Estimator& _estimator);

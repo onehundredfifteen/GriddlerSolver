@@ -34,6 +34,6 @@ public:
 	//bool operator()(int row, int col);
 	CellCollection operator()(int row) const;
 
-	static char SolutionTable::cellStateToChar(const CellState& cs);
-	static void SolutionTable::digitMayBeNotEnough(const int c, std::ostream& stream);
+	static char cellStateToChar(const CellState& cs);
+	static void digitMayBeNotEnough(const int c, std::ostream& stream);
 };

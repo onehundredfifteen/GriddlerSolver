@@ -5,8 +5,11 @@
 
 #include <iostream>
 #include <fstream>
+
+#ifdef _WIN32
 #include <windows.h>
 #include <process.h>
+#endif
 
 #include "Griddlers/Griddler.h"
 #include "GeneticAlgorithm.h"
@@ -33,7 +36,6 @@ void Bulk();
 void Standard();
 
 
-#ifndef RunTests
 int main(int argc, char* argv[])
 {
 	//std::vector<itrec> r;
@@ -45,8 +47,8 @@ int main(int argc, char* argv[])
 
 	return 0;
 }
-#endif
 
+/*
 unsigned int __stdcall run_thread(void * arg) 
 {
 	std::vector<itrec>* v = reinterpret_cast< std::vector<itrec>* >(arg) ;
@@ -56,7 +58,7 @@ unsigned int __stdcall run_thread(void * arg)
 
 	return 0;
 }
-
+*/
 void savetocsvmax(std::ofstream &f, std::vector<std::vector<itrec>> &v, int tcnt)
 {
 	f << "iter;max;avg;sum" << std::endl;
@@ -72,7 +74,7 @@ void savetocsv(std::ofstream &f, std::vector<itrec> &v, int thrid)
 		f << (*it).iter << ";" << (*it).max << ";" << (*it).avg << ";" << (*it).sum << std::endl;
 	}
 }
-
+/*
 void Bulk()
 {
 	const int thsiz = 3;
@@ -97,7 +99,7 @@ void Bulk()
 	}
 	str.close();
 }
-
+*/
 void Alg(std::vector<itrec> &poprec)
 {
 	/*
