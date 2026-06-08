@@ -1,4 +1,3 @@
-#include "../stdafx.h"
 #include "./BestOfSelector.h"
 #include "../RandomGenerator.h"
 

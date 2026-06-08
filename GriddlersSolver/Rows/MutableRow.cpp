@@ -1,7 +1,6 @@
 // MutableRow.cpp : 
 //
 
-#include "../stdafx.h"
 #include "MutableRow.h"
 #include "../RandomGenerator.h"
 

@@ -1,7 +1,6 @@
 // GriddlerRow.cpp : 
 //
 
-#include "../stdafx.h"
 #include "GriddlerRow.h"
 
 

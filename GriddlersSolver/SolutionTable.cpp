@@ -1,7 +1,6 @@
 // SolutionTable.cpp : Defines a solution helper
 //
 
-#include "stdafx.h"
 #include <cassert>
 #include "./SolutionTable.h"
 #include "./SolutionCandidate.h"

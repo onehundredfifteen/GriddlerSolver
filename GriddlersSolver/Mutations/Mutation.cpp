@@ -1,4 +1,3 @@
-#include "../stdafx.h"
 #include "./Mutation.h"
 #include "../SolutionCandidate.h"
 

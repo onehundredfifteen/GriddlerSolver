@@ -1,7 +1,6 @@
 // ConstrainedRow.cpp : 
 //
 
-#include "../stdafx.h"
 #include "ConstrainedRow.h"
 
 

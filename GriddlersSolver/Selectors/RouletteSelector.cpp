@@ -1,4 +1,3 @@
-#include "../stdafx.h"
 #include "./RouletteSelector.h"
 #include "../RandomGenerator.h"
 

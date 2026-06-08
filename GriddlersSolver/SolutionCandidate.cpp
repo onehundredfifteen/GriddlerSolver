@@ -1,7 +1,6 @@
 // GriddlerCandidate.cpp : Defines a new griddler entity
 //
 
-#include "stdafx.h"
 #include <algorithm>
 
 #include "./SolutionCandidate.h"

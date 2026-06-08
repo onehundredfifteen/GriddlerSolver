@@ -21,8 +21,16 @@ x86/
 [Aa][Rr][Mm]/
 [Aa][Rr][Mm]64/
 bld/
+build/
 [Bb]in/
 [Oo]bj/
+
+# CMake build files
+CMakeCache.txt
+CMakeFiles/
+Makefile
+cmake_install.cmake
+compile_commands.json
 
 # Visual Studio Code
 .vscode/
