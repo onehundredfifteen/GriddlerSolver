@@ -64,6 +64,8 @@ public:
 	//because it can be empty by two ways -> blocks {} and {0} 
 	bool isEmpty() const;
 
+	bool isFull() const;
+
 	//gets minimal possible row width
 	//as sum of blocks width + minimal spaces between them
 	int getMinimalWidth() const;

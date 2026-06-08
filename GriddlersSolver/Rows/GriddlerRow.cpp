@@ -58,6 +58,11 @@ bool GriddlerRow::isEmpty() const {
 	return blocks.size() == 0 || (blocks.size() == 1 && blocks[0] == 0);
 }
 
+//full row, no space for spans 
+bool GriddlerRow::isFull() const {
+	return blocks.size() == 1 && blocks[0] == imageWidth;
+}
+
 //gets minimal possible row width
 //as sum of blocks width + minimal spaces between them
 int GriddlerRow::getMinimalWidth() const {
@@ -71,7 +76,14 @@ int GriddlerRow::getCurrentWidth() const {
 
 //gets widest possible span
 int GriddlerRow::getMaxSpanSize() const {
-	return imageWidth - getMinimalWidth() + 1; //+ (blocks.size() == 2 ? 1 : 0);
+	if(isEmpty()) {
+		return imageWidth;
+	}
+	else if(isFull()) {
+		//full row, no space for spans
+		return 0;
+	}
+	return imageWidth - getMinimalWidth() + 1;
 }
 
 //find whether a cell at given column is full or empty
@@ -90,7 +102,7 @@ bool GriddlerRow::getCellByColumn(int col) const {
 }
 
 unsigned int GriddlerRow::possibleCombinations() const {
-	if (isEmpty()) {
+	if (isEmpty() || isFull()) {
 		return 1;
 	}
 
