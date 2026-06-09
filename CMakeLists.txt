@@ -14,7 +14,6 @@ set(GRIDDLE_SOLVER_SOURCES
     GriddlersSolver/Rows/ConstrainedRow.cpp
     GriddlersSolver/Rows/GriddlerRow.cpp
     GriddlersSolver/Rows/MutableRow.cpp
-    GriddlersSolver/Selectors/BestOfSelector.cpp
     GriddlersSolver/Selectors/RouletteSelector.cpp
     GriddlersSolver/SolutionCandidate.cpp
     GriddlersSolver/SolutionTable.cpp
