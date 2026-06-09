@@ -115,10 +115,11 @@ bool MutableRow::_initFinal() const {
 }
 
 void MutableRow::trimSpansToWidth() {
+	//pick random spans and trim them to fit the width
 	while (!isValid()) {
 		int unlucky = RandomGenerator::Next()(0, spans.size() - 1);
-		if ((unlucky == 0 && spans[unlucky] > 0) || spans[unlucky] > 1)
-			--spans[unlucky];
+		if ((unlucky == 0 && spans.at(unlucky) > 0) || spans.at(unlucky) > 1)
+			--spans.at(unlucky);
 		else assert(false);
 	}
 }

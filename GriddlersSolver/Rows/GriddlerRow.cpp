@@ -55,12 +55,12 @@ const SpanCollection& GriddlerRow::getSpans() const {
 
 //because it can be empty by two ways -> blocks {} and {0} 
 bool GriddlerRow::isEmpty() const {
-	return blocks.size() == 0 || (blocks.size() == 1 && blocks[0] == 0);
+	return blocks.size() == 0 || (blocks.size() == 1 && blocks.front() == 0);
 }
 
 //full row, no space for spans 
 bool GriddlerRow::isFull() const {
-	return blocks.size() == 1 && blocks[0] == imageWidth;
+	return blocks.size() == 1 && blocks.front() == imageWidth;
 }
 
 //gets minimal possible row width
@@ -109,11 +109,10 @@ unsigned int GriddlerRow::possibleCombinations() const {
 	const int k = blocks.size();
 	const int total_len = (k - 1) + blockSum;
 	int free_space = imageWidth - total_len;
+
 	return _combinations(free_space + k, k);
 	/*
-	if (blocks.size() == 1 && blocks[0] == 0) {
-		return 1;
-	}
+	
 	return combinations(this->getMinimalWidth() + blocks.size(), blocks.size());*/
 }
 
@@ -141,15 +140,16 @@ unsigned long long GriddlerRow::_combinations(int n, int k) {
 
 SpanCollection GriddlerRow::_initializeSpans(const BlockCollection& _blocks, int imgwidth) {
 	//empty row
-	if (_blocks.size() == 0 || (_blocks.size() == 1 && _blocks[0] == 0)) {
+	if (_blocks.size() == 0 || (_blocks.size() == 1 && _blocks.front() == 0)) {
 		return { imgwidth };
 	}
 	//full row
-	else if (_blocks.size() == 1 && _blocks[0] == imgwidth) {
+	else if (_blocks.size() == 1 && _blocks.front() == imgwidth) {
 		return { 0 };
 	}
 
 	std::vector<int> spans(_blocks.size(), 1);
 	spans.front() = 0;
+
 	return std::move(spans);
 }

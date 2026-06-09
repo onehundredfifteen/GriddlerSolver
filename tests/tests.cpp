@@ -90,7 +90,7 @@ TEST_CASE("Basic griddler row", "rows")
    }
 
    SECTION("spanned row [-xx-xx--]") {
-       SpanCollection spans = { 1, 1,};
+       SpanCollection spans = { 1, 1 };
        GriddlerRow spanned_row(common_blocks, spans, 8);
 
        CHECK(spanned_row.getMinimalWidth() == 5);
@@ -116,6 +116,23 @@ TEST_CASE("Basic griddler row", "rows")
 
        auto [column, expected] = GENERATE(table<int, bool>({
            {0, true},  {1, true},  {2, false},  {3, false},  {4, false}, {5, false}, {6, true}, {7, true}
+           }));
+
+       CHECK(spanned_row.getCellByColumn(column) == expected);
+   }
+
+   SECTION("spanned row [xx--x-xx]") {
+       SpanCollection spans = { 0, 2, 1 };
+       BlockCollection my_blocks = { 2, 1, 2 };
+       GriddlerRow spanned_row(my_blocks, spans, 8);
+
+       CHECK(spanned_row.getMinimalWidth() == 7);
+       CHECK(spanned_row.getCurrentWidth() == 8);
+       CHECK(spanned_row.getMaxSpanSize() == 2);
+       CHECK(spanned_row.possibleCombinations() == 4);
+
+       auto [column, expected] = GENERATE(table<int, bool>({
+           {0, true},  {1, true},  {2, false},  {3, false},  {4, true}, {5, false}, {6, true}, {7, true}
            }));
 
        CHECK(spanned_row.getCellByColumn(column) == expected);
