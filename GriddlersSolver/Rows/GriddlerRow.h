@@ -61,9 +61,7 @@ public:
 	//SpanCollection getSpans(); todo version with virtual las one
 
 public:
-	//because it can be empty by two ways -> blocks {} and {0} 
 	bool isEmpty() const;
-
 	bool isFull() const;
 
 	//gets minimal possible row width

@@ -227,7 +227,7 @@ TEST_CASE("Mutable row", "rows")
         SpanCollection spans_zero_middle = { 1, 0 };
 
         REQUIRE(row.isValid() == true);
-        row.getSpans() = spans_zero_middle;
+        row.setSpans(spans_zero_middle);
         CHECK(row.isValid() == false);
         row.sanitize();
         REQUIRE(row.isValid() == true);
@@ -239,7 +239,7 @@ TEST_CASE("Mutable row", "rows")
         SpanCollection spans_over = { 3, 3 };
 
         REQUIRE(row.isValid() == true);
-        row.getSpans() = spans_over;
+        row.setSpans(spans_over);
         CHECK(row.isValid() == false);
         row.sanitize();
         CHECK(row.isValid() == true);
@@ -253,7 +253,7 @@ TEST_CASE("Mutable row", "rows")
         SpanCollection expected2 = {3, 1}; //sanitize is random and this is 2nd option
 
         CHECK(row.isValid() == true);
-        row.getSpans() = spans_over;
+        row.setSpans(spans_over);
         CHECK(row.isValid() == false);
         row.sanitize();
         CHECK(row.isValid() == true);

@@ -19,11 +19,14 @@ public:
 	{}
 
 	void visit(MutableRow& row) const override {
-		for (auto& span : row.getSpans()) {
+		SpanCollection spans = row.getSpans();
+		
+		for (auto& span : spans) {
 			if (RandomGenerator::Next()(0.0, 1.0) < mutation_rate) {
 				mutateRow(span);
 			}
 		}
+		row.setSpans(spans);
 	}
 
 protected:

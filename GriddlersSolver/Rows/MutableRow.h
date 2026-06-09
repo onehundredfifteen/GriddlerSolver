@@ -26,7 +26,8 @@ private:
 public:
 	bool isValid() const;
 	void sanitize();
-	SpanCollection& getSpans();
+
+	void setSpans(const SpanCollection& newSpans);
 
 	void crossingOver(MutableRow& partner);
 	void mutate(const Mutation& effect);

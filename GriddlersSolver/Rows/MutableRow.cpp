@@ -39,8 +39,8 @@ void MutableRow::sanitize() {
 	assert(isValid());
 }
 
-SpanCollection& MutableRow::getSpans() {
-	return this->spans;
+void MutableRow::setSpans(const SpanCollection& newSpans) {
+	spans = newSpans;
 }
 
 void MutableRow::crossingOver(MutableRow& partner) {
@@ -115,13 +115,21 @@ bool MutableRow::_initFinal() const {
 }
 
 void MutableRow::trimSpansToWidth() {
-	//pick random spans and trim them to fit the width
-	while (!isValid()) {
+	fixMiddleZeroes();
+
+	//while is not valid and have something to trim
+	while (!isValid() && (
+			spans.front() > 0 || //first span can be 0 afterwards
+			std::find_if(spans.begin() + 1, spans.end(), [](const auto& span) 
+				{ return span > 1; }) != spans.end() //but any other span should be bigger than 1 to trim
+			)) 
+	{
 		int unlucky = RandomGenerator::Next()(0, spans.size() - 1);
 		if ((unlucky == 0 && spans.at(unlucky) > 0) || spans.at(unlucky) > 1)
 			--spans.at(unlucky);
-		else assert(false);
+		else continue;
 	}
+
 }
 
 void MutableRow::fixMiddleZeroes() {
@@ -138,7 +146,7 @@ void MutableRow::fixImpossibleBigSpans() {
 		return span_value > max_span ? max_span : span_value;
 	});
 }
-//ensure we have *up to one* span with max possible widht
+//ensure we have *up to one* span with max possible width
 void MutableRow::ensureOneMaxSpanAtTime() {
 	auto test_fun = [this](int value) {
 		return value == this->getMaxSpanSize();
