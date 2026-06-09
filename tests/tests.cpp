@@ -265,10 +265,7 @@ TEST_CASE("Mutable row", "rows")
 
 ConcreteGriddler7x7 myGiddler;
 TestGriddler5x5 testGiddler;
-BlockCollection warp_b = { 1 };
-SpanCollection warp_s = { 1 };
-GriddlerRow warped(warp_b, warp_s, 5);
-ConstrainedRow warped_constraint(warped);
+ConstrainedRow warped_constraint(GriddlerRow({1, 1}, {1, 1}, 5)); //for testGiddler
 
 NoApproach no_approach;
 
@@ -338,7 +335,8 @@ TEST_CASE("Passing Solution Candidate", "population")
 
     auto population = PopulationGenerator::createPopulationFromArgs(solved_candidate, candidate);
 
-    Population new_population;
+    //two ways to create polulation, one with createPopulationFromArgs and one with emplace_back
+    Population new_population; 
     new_population.reserve(2);
     new_population.emplace_back(solved_candidate); 
     new_population.emplace_back(candidate);
@@ -368,15 +366,13 @@ TEST_CASE("Estimate Candidate of simple griddler", "estimators")
 
     SolutionCandidate warped_candidate(testGiddler, ws);
 
-    double fitness_of_solved2 = estimator.fitness(solved_candidate);
-
     double fitness = estimator.fitness(candidate);
     double fitness_of_solved = estimator.fitness(solved_candidate);
     double fitness_of_warped = estimator.fitness(warped_candidate);
 
     CHECK(fitness_of_solved == (double)solved_candidate.rowCount);
     CHECK(fitness < fitness_of_solved);
-    CHECK(fitness <= fitness_of_warped);
+    CHECK(fitness != fitness_of_warped);
     CHECK(fitness_of_warped < fitness_of_solved);
 }
 
@@ -437,7 +433,7 @@ TEST_CASE("Population selection - roulette", "selection")
     CHECK(selection_histogram[1] != selection_histogram[3]);
     CHECK(std::distance(selection_histogram.begin(), max_element) == 0);
 }
-/*
+
 TEST_CASE("Population selection - best of K=3", "selection")
 {
     std::vector<int> selection_histogram = __mock_and_test_selector<BestOfSelector<3>>();
@@ -447,7 +443,7 @@ TEST_CASE("Population selection - best of K=3", "selection")
     CHECK(selection_histogram[0] > selection_histogram[2]);
     CHECK(selection_histogram[1] != selection_histogram[3]);
     CHECK(std::distance(selection_histogram.begin(), max_element) == 0);
-}*/
+}
 
 TEST_CASE("Basic Mutation", "mutations")
 {
@@ -504,14 +500,14 @@ TEST_CASE("Analyse population", "population")
     double expected_max = 5.0;
     double expected_avg = 3.0;
     double expected_med = expected_avg;
-    /*
+    
     CHECK(expected_min == analyser.getMin());
     CHECK(expected_max == analyser.getMax());
     CHECK(expected_avg == analyser.getAvg());
-    CHECK(expected_med == analyser.getMed());*/
+    CHECK(expected_med == analyser.getMed());
 }
-
+/*
 TEST_CASE("ga", "population")
 {
     GA();
-}
+}*/

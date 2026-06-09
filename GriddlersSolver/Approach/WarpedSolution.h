@@ -3,7 +3,7 @@
 #include <map>
 #include "FullSolutionProvider.h"
 
-//for test estimators purpose
+//for testing estimators purpose
 class WarpedSolution : public FullSolutionProvider
 {
 public:
@@ -12,15 +12,15 @@ public:
 	{	
 	}
 
-	void warpRow(int row, const ConstrainedRow &new_row) {
-		warped_rows.emplace(row, new_row);
+	void warpRow(int index, const ConstrainedRow &new_row) {
+		warped_rows.emplace(index, new_row);
 	}
 
-	const ConstrainedRow& getRow(int row) const override {
-		auto it = warped_rows.find(row);
+	const ConstrainedRow& getRow(int index) const override {
+		auto it = warped_rows.find(index);
 		if (it != warped_rows.end())
 			return it->second;
-		else return FullSolutionProvider::getRow(row);
+		else return FullSolutionProvider::getRow(index);
 	}
 
 protected:

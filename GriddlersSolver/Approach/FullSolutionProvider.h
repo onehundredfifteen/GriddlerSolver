@@ -18,8 +18,8 @@ public:
 		}
 	}
 
-	const ConstrainedRow& getRow(int row) const override {
-		return solved_rows.at(row);
+	const ConstrainedRow& getRow(int index) const override {
+		return solved_rows.at(index);
 	}
 
 protected:
