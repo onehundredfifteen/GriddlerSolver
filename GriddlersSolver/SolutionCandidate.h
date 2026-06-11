@@ -23,7 +23,6 @@ public:
 	ColumnCollection getSolvedColumnPattern(int column) const;
 	std::vector<ColumnCollection> getSolvedColumnPattern() const;
 	CellCollection getRowAsCells(int row) const;
-	const Griddler& getPattern() const;
 
 	bool operator==(const SolutionCandidate& other) const;
 	void printToStream(std::ostream &stream) const;

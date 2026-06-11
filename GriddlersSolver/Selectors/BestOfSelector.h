@@ -12,11 +12,11 @@ private:
 	int element_counter;
 
 public:
-	BestOfSelector(Population& _population, const Estimator& _estimator)
+	BestOfSelector(const Population& _population, const Estimator& _estimator)
 		: Selector(_population, _estimator), element_counter(0)
 	{}
 
-	virtual SolutionCandidate& Next() override {
+	virtual const SolutionCandidate& Next() override {
 		int best = -1;
 
 		for (size_t i = 0; i < K; ++i) {

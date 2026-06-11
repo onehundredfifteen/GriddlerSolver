@@ -44,7 +44,7 @@ void GA() {
 		auto solved = pa.getSolvedCandidate();
 		if (solved) {
 			std::cout << "SOLVED at generation #" << generation 
-					  << " final fitness: " << estimator.candidateFitness(solved->get()) 
+					 // << " final fitness: " << estimator.candidateFitness(solved->get()) 
 				<< std::endl;
 			solved->get().printToStream(std::cout);
 			return;
@@ -73,7 +73,7 @@ void GA() {
 		while (new_population.size() < population.size()) {
 			auto candidate1 = selector.Next();
 			auto candidate2 = selector.Next();
-
+/*
 			//save elites
 			if (save_elites && estimator.candidateFitness(candidate1) >= pa.getMax()) {
 				//candidate1.
@@ -81,7 +81,7 @@ void GA() {
 			}
 			else if (save_elites &&  estimator.candidateFitness(candidate2) >= pa.getMax())
 				new_population.emplace_back(candidate2);
-
+*/
 			candidate1.crossingOver(candidate2, xo_rate);
 			candidate1.mutate(mutation);
 

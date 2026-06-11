@@ -17,6 +17,7 @@
 #include "../GriddlersSolver/SolutionCandidate.h"
 
 #include "../GriddlersSolver/Estimators/BasicEstimator.h"
+#include "../GriddlersSolver/Estimators/ChainedEstimator.h"
 
 #include "../GriddlersSolver/PopulationAnalyser.h"
 #include "../GriddlersSolver/PopulationGenerator.h"
@@ -374,6 +375,22 @@ TEST_CASE("Estimate Candidate of simple griddler", "estimators")
     CHECK(fitness < fitness_of_solved);
     CHECK(fitness != fitness_of_warped);
     CHECK(fitness_of_warped < fitness_of_solved);
+}
+
+TEST_CASE("Chain estimator candidate fitness", "estimators")
+{
+    BasicEstimator basic(testGiddler);
+    ChainedEstimator chain(testGiddler, {
+        { &basic, 1.0 },
+        { &basic, 2.0 }
+    });
+
+    SolutionCandidate candidate(testGiddler, no_approach);
+    double expected = basic.candidateFitness(candidate);
+    double chained = chain.candidateFitness(candidate);
+
+    CHECK(chained == expected);
+    CHECK(chain.candidateFitness(candidate) == expected);
 }
 
 TEST_CASE("Estimate Candidate of more complicated griddler", "estimators")

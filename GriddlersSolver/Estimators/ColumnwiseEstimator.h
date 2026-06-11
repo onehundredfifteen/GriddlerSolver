@@ -1,5 +1,26 @@
 #pragma once
 
+#include "Estimator.h"
+
+class ColumnwiseEstimator : public Estimator
+{
+public:
+	ColumnwiseEstimator(const Griddler& _pattern)
+		: Estimator(_pattern)
+	{}
+
+	//virtual double candidateFitness(const std::vector<ColumnCollection>& candidate) const;
+
+	virtual double columnFitness(const ColumnCollection& candidateColumns, const ColumnCollection& solution) const = 0;
+
+	virtual double columnFitness(const SolutionCandidate& candidate, int columnIndex) {
+		return columnFitness(candidate.getSolvedColumnPattern(columnIndex), pattern.getColumnPattern()[columnIndex]);
+	}
+};
+
+/*
+#pragma once
+
 #include "BasicEstimator.h"
 #include <algorithm>
 #include <iterator>
@@ -116,48 +137,7 @@ public:
 			diff_fitness = ((double)diff_cnt / (double)_pattern.size());
 			return 1.0-diff_fitness;
 		}
-	}*/
-
-};
-
-/*
-virtual double estimate( GriddlerCandidate * candidate) {
-		ColumnCollection result = new std::vector<int>[col_cnt];
-		int * progress = new int[col_cnt];
-
-		for (int i = 0; i < col_cnt; ++i)
-			candidate->FillListByColumnResult(result[i], i);
-
-		for (int r = 0; i < candidate->rows[i]-> img_rows; ++r) {
-			for (int c = 0; i < col_cnt; ++c) {
-				if (result[c][r]) {
-
-
-
-				}
-			}
-		}
-
-
-
-		return (sizeFitness(v, pattern[column]) + differenceFitness(v, pattern[column]));
 	}
 
-	virtual double estimateColumn(GriddlerCandidate * candidate, int * progress, int column) {
-		std::vector<int> v;
 
-
-
-		//candidate->FillListByColumnResult(v, column);
-		//int diff_index = std::distance(v.begin(), std::mismatch(v.begin(), v.end(), this->pattern[column].begin()).first);
-		//std::vector<int>::iterator _it = this->pattern[c].size() > result[c].size() ? this->pattern[c].begin() : result[c].begin();
-		//std::abs(diff_index - this->pattern[column].size())
-		//if(this->pattern[c].size() >= result[c].size()) {
-			//return
-		//}
-		//else {
-			//return std::distance(this->pattern[c].begin(), std::mismatch(this->pattern[c].begin(), this->pattern[c].end(), result[c].begin()).first)
-		//}
-
-	}
 */

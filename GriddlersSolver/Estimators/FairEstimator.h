@@ -1,70 +1,106 @@
 #pragma once
 
-#include "BasicEstimator.h"
+
+//#include "BasicEstimator.h"
 
 class FairEstimator : public BasicEstimator
 {
-public:
-	FairEstimator(ColumnCollection _pattern, int _pattern_size) : BasicEstimator(_pattern, _pattern_size) {}
+};/*
+#include "BasicEstimator.h"
 
-	virtual double MaxFitness() {
-		return col_cnt;
+double BasicEstimator::candidateFitness(const SolutionCandidate& candidate) const 
+{
+	double fitness = 0.0, global_score = 0.0;
+	auto solution = candidate.getSolvedColumnPattern();
+	auto target = pattern.getColumnPattern();
+
+	//sum col fitness
+	for (int n = 0; n < solution.size(); ++n)
+		fitness += columnFitness(solution[n], target[n]);
+
+	//find longest column
+	size_t max_col_size = 0;
+	for (const auto& e : solution) max_col_size = std::max(max_col_size, e.size());
+	for (const auto& e : target) max_col_size = std::max(max_col_size, e.size());
+
+	//global fitness
+	for (size_t c = 0; c < max_col_size; ++c) {
+		int sum_solution = 0, sum_target = 0;
+		for (size_t r = 0; r < solution.size(); ++r) {
+
+			if (c < solution[r].size())
+				sum_solution += solution[r][c];
+
+			if (c < target[r].size())
+				sum_target += target[r][c];
+		}
+		global_score -= std::abs(sum_solution - sum_target);
 	}
 
-	virtual double estimate(GriddlerCandidate * candidate) {
-		int * iter = new int[col_cnt];
-		int * jump = new int[col_cnt];
-		bool * res = new bool[col_cnt];
+	return fitness + global_score;
+};
 
-		ColumnCollection col_res = new std::vector<int>[col_cnt];
+double BasicEstimator::columnFitness(const ColumnCollection& solution, const ColumnCollection& target) const {
 
-		int row_cnt = col_cnt; //todo
-		int fitness = 0;
-
-		////
-		memset(iter, 0, col_cnt * sizeof(int));
-		memset(jump, 0, col_cnt * sizeof(int));
+	double a = estimate_column_countmap(solution, target);
+	double b = estimate_column_lcs(solution, target);
 
 		
-		for(int i = 0; i < col_cnt; ++i)
-			candidate->FillListByColumnResult(col_res[i], i);
-		//
+	return estimate_column_countmap(solution, target) + 
+		   estimate_column_lcs(solution, target);
+}
 
-		for(int r = 0; r < row_cnt && fitness == 0; ++r) {
+double BasicEstimator::estimate_column_countmap(const ColumnCollection& solution, const ColumnCollection& target) const {
+	std::map<int, int> freq_solution, freq_target;
 
-			candidate->FillListByResult(res, r);
+	//1. Count elements fitness
+	for (int len : solution) ++freq_solution[len];
+	for (int len : target) ++freq_target[len];
 
-			for(int i = 0; i < col_cnt; ++i) {
-				if(candidate->rows[i]->IsFinal())
-					continue;
+	double count_score = 0.0;
+	for (const auto& [length, count] : freq_target) {
+		count_score -= std::abs(freq_solution[length] - count);
+	}
 
-				if(res[i] && (jump[i] == 0 || jump[i] >= r )) {
-					//badaj czy blad
-					if( iter[i] < col_res[i].size() && iter[i] < pattern[i].size() &&
-						col_res[i][ iter[i] ] == pattern[i][ iter[i] ]) {
-						//
-						jump[i] = pattern[i][ iter[i] ] + 1;
-						++iter[i];
-					}
-					else {
-						fitness = r;
-						break;
-					}
-					 
-				}
+	return count_score / target.size();
+}
+
+double BasicEstimator::estimate_column_lcs(const ColumnCollection& solution, const ColumnCollection& target) const {
+	//longest common subsequence
+	int n = solution.size();
+	int t = target.size();
+	/*
+	std::vector<std::vector<int>> dp(n + 1, std::vector(t + 1, 0));
+
+	for (int i = 1; i <= n; ++i) {
+		for (int j = 1; j <= t; ++j) {
+			if (solution[i - 1] == target[j - 1]) {
+				dp[i][j] = dp[i - 1][j - 1] + 1;
 			}
-
-			
-		   //;
+			else {
+				dp[i][j] = std::max(dp[i - 1][j], dp[i][j - 1]);
+			}
 		}
+	}*/
+/*
+	Array2DWrapper<std::vector<int>> lcs(t + 1, (t + 1) * (n + 1), 0);
 
+	for (int i = 1; i <= n; ++i) {
+		for (int j = 1; j <= t; ++j) {
+			if (solution[i - 1] == target[j - 1]) {
+				lcs(i, j) = lcs(i - 1, j - 1) + 1;
+			}
+			else {
+				lcs(i, j) = std::max(lcs(i - 1, j), lcs(i, j - 1));
+			}
+		}
+	}
+	//double order_score2 = lcs(n, t);
+	//double order_score3 = dp[n][t];
 
-		delete [] iter;
-		delete [] res;
-		delete [] jump;
-		delete [] col_res;
-
-		return double (fitness > 0 ? fitness : MaxFitness());
-	};
-
-};
+	//1.0 - full match
+	//0.0 - no common elements & order
+	double lcd = lcs(n, t);
+	return lcs(n, t) / target.size();
+}
+	*/

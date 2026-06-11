@@ -10,8 +10,8 @@ private:
 	double shift;
 
 public:
-	RouletteSelector(Population& _population, const Estimator& _estimator);
+	RouletteSelector(const Population& _population, const Estimator& _estimator);
 	
-	virtual SolutionCandidate& Next() override;
+	virtual const SolutionCandidate& Next() override;
 	using Selector::getPopulationScore;
 };

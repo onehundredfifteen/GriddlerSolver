@@ -1,13 +1,19 @@
 #include <map>
 #include "BasicEstimator.h"
 
-BasicEstimator::BasicEstimator(const Griddler& _pattern)
-	: Estimator(_pattern)
-{}
+double BasicEstimator::candidateFitness(const std::vector<ColumnCollection>& candidate) const 
+{
+	double fitness = 0.0;
+	auto target = pattern.getColumnPattern();
 
-double BasicEstimator::candidateFitness(const SolutionCandidate& candidate) const {
-	double fitness = 0.0, global_score = 0.0;
-	auto solution = candidate.getSolvedColumnPattern();
+	//sum col fitness
+	for (int n = 0; n < candidate.size(); n++)
+		fitness += columnFitness(candidate[n], target[n]);
+
+	return fitness / target.size();	
+
+	/*double fitness = 0.0, global_score = 0.0;
+	auto solution = candidate;
 	auto target = pattern.getColumnPattern();
 
 	//sum col fitness
@@ -34,20 +40,20 @@ double BasicEstimator::candidateFitness(const SolutionCandidate& candidate) cons
 	}
 
 	return fitness + global_score;
+	*/
 };
 
 double BasicEstimator::columnFitness(const ColumnCollection& solution, const ColumnCollection& target) const {
 
-	double a = estimate_column_countmap(solution, target);
-	double b = estimate_column_lcs(solution, target);
-
+	double a = longestCommonSubsequence(solution, target);
+	//double b = sizeDifference(solution, target);
+	double c = frequenceMap(solution, target);
 		
-	return estimate_column_countmap(solution, target) + 
-		   estimate_column_lcs(solution, target);
+	return std::clamp<double>(c + a, 0.0, 1.0);
 }
 
-double BasicEstimator::estimate_column_countmap(const ColumnCollection& solution, const ColumnCollection& target) const {
-	std::map<int, int> freq_solution, freq_target;
+double BasicEstimator::frequenceMap(const ColumnCollection& solution, const ColumnCollection& target) const {
+	std::unordered_map<int, int> freq_solution, freq_target;
 
 	//1. Count elements fitness
 	for (int len : solution) ++freq_solution[len];
@@ -61,11 +67,11 @@ double BasicEstimator::estimate_column_countmap(const ColumnCollection& solution
 	return count_score / target.size();
 }
 
-double BasicEstimator::estimate_column_lcs(const ColumnCollection& solution, const ColumnCollection& target) const {
+double BasicEstimator::longestCommonSubsequence(const ColumnCollection& solution, const ColumnCollection& target) const {
 	//longest common subsequence
 	int n = solution.size();
 	int t = target.size();
-	/*
+	
 	std::vector<std::vector<int>> dp(n + 1, std::vector(t + 1, 0));
 
 	for (int i = 1; i <= n; ++i) {
@@ -77,8 +83,8 @@ double BasicEstimator::estimate_column_lcs(const ColumnCollection& solution, con
 				dp[i][j] = std::max(dp[i - 1][j], dp[i][j - 1]);
 			}
 		}
-	}*/
-	Array2DWrapper<std::vector<int>> lcs(t + 1, (t + 1) * (n + 1), 0);
+	}
+	/*Array2DWrapper<std::vector<int>> lcs(t + 1, (t + 1) * (n + 1), 0);
 
 	for (int i = 1; i <= n; ++i) {
 		for (int j = 1; j <= t; ++j) {
@@ -90,11 +96,14 @@ double BasicEstimator::estimate_column_lcs(const ColumnCollection& solution, con
 			}
 		}
 	}
+		*/
 	//double order_score2 = lcs(n, t);
 	//double order_score3 = dp[n][t];
 
 	//1.0 - full match
 	//0.0 - no common elements & order
-	double lcd = lcs(n, t);
-	return lcs(n, t) / target.size();
+	//double lcd = lcs(n, t);
+	double lcd = dp[n][t];
+	return lcd / target.size();
+	//eturn lcs(n, t) / target.size();
 }

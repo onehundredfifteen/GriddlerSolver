@@ -76,10 +76,6 @@ CellCollection SolutionCandidate::getRowAsCells(int row) const {
 	return ConstrainedRow(rows[row]).cells;
 }
 
-const Griddler& SolutionCandidate::getPattern() const {
-	return pattern;
-}
-
 bool SolutionCandidate::operator==(const SolutionCandidate& other) const {
 	return this->rows == other.rows;
 }
@@ -163,7 +159,7 @@ void SolutionCandidate::printToStream(std::ostream& stream) const
 	
  	image.printToStream(stream, [this](std::ostream& s, int idx) {
 		const int row_no = (idx / this->rowCount) - 1;
-		const auto& blocks = this->getPattern().getRowPattern();
+		const auto& blocks = pattern.getRowPattern();
 		s << "->";
 		for (const auto& b : blocks[row_no]) {
 			SolutionTable::digitMayBeNotEnough(b, s);

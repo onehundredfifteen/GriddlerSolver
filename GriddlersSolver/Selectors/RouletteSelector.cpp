@@ -1,7 +1,7 @@
 #include "./RouletteSelector.h"
 #include "../RandomGenerator.h"
 
-RouletteSelector::RouletteSelector(Population& _population, const Estimator& _estimator)
+RouletteSelector::RouletteSelector(const Population& _population, const Estimator& _estimator)
 		: Selector(_population, _estimator), shift(0.0), sum_pop_finess(0.0)
 {
 	int i = -1;
@@ -22,7 +22,7 @@ RouletteSelector::RouletteSelector(Population& _population, const Estimator& _es
 	}
 }
 
-SolutionCandidate& RouletteSelector::Next() {
+const SolutionCandidate& RouletteSelector::Next() {
 	double _sum = 0.0;
 	double hit = RandomGenerator::Next()(0.0, sum_pop_finess);
 

@@ -14,13 +14,14 @@ protected:
 
 public:
 	Estimator(const Griddler& _pattern)
-		: pattern(_pattern) 
+		: pattern(_pattern)
 	{}
 
-	virtual double candidateFitness(const SolutionCandidate& candidate) const = 0;
-	virtual double columnFitness(const ColumnCollection& candidateColumns, const ColumnCollection& solution) const = 0;
+	virtual ~Estimator() = default;
 
-	virtual double columnFitness(const SolutionCandidate& candidate, int columnIndex) {
-		return columnFitness(candidate.getSolvedColumnPattern(columnIndex), pattern.getColumnPattern()[columnIndex]);
+	virtual double candidateFitness(const std::vector<ColumnCollection>& candidate) const = 0;
+
+	double candidateFitness(const SolutionCandidate& candidate) const {
+		return candidateFitness(candidate.getSolvedColumnPattern());
 	}
 };
