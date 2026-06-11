@@ -13,9 +13,8 @@ public:
 		: pattern_rows(_pattern_rows), pattern_cols(_pattern_cols)
 	{}
 
-	Griddler() {
-
-	}
+	Griddler() 
+	{}
 
 protected:
 	std::vector<BlockCollection> pattern_rows;

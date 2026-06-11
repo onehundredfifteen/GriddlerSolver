@@ -5,14 +5,14 @@ BasicEstimator::BasicEstimator(const Griddler& _pattern)
 	: Estimator(_pattern)
 {}
 
-double BasicEstimator::fitness(const SolutionCandidate& candidate) const {
+double BasicEstimator::candidateFitness(const SolutionCandidate& candidate) const {
 	double fitness = 0.0, global_score = 0.0;
 	auto solution = candidate.getSolvedColumnPattern();
 	auto target = pattern.getColumnPattern();
 
 	//sum col fitness
 	for (int n = 0; n < solution.size(); ++n)
-		fitness += estimate_column(solution[n], target[n]);
+		fitness += columnFitness(solution[n], target[n]);
 
 	//find longest column
 	size_t max_col_size = 0;
@@ -36,7 +36,7 @@ double BasicEstimator::fitness(const SolutionCandidate& candidate) const {
 	return fitness + global_score;
 };
 
-double BasicEstimator::estimate_column(const ColumnCollection& solution, const ColumnCollection& target) const {
+double BasicEstimator::columnFitness(const ColumnCollection& solution, const ColumnCollection& target) const {
 
 	double a = estimate_column_countmap(solution, target);
 	double b = estimate_column_lcs(solution, target);

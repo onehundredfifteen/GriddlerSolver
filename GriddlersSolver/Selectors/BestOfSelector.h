@@ -33,7 +33,7 @@ public:
 		int i = 0;
 		for (const auto p : population) {
 			if (known_fitness.find(i) == known_fitness.end())
-				population_score[i] = estimator.fitness(p);
+				population_score[i] = estimator.candidateFitness(p);
 
 			++i;
 		}
@@ -44,7 +44,7 @@ public:
 private:
 	double cachedFitness(int a) {
 		if (known_fitness.find(a) == known_fitness.end()) {
-			double fitness = estimator.fitness(population[a]);
+			double fitness = estimator.candidateFitness(population[a]);
 			known_fitness[a] = fitness;
 			return fitness;
 		}

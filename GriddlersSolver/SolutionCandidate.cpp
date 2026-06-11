@@ -9,11 +9,11 @@
 #include "./Rows/ConstrainedRow.h"
 #include "./Approach/ConstraintProvider.h"
 
-SolutionCandidate::SolutionCandidate(const Griddler& _pattern, const ConstraintProvider& _approachProvider)
+SolutionCandidate::SolutionCandidate(const Griddler& _pattern, const ConstraintProvider& approachProvider)
 	: pattern(_pattern), rowCount(_pattern.GetImageHeight()), colCount(_pattern.GetImageWidth())
 {
-	for (int i = 0; i < rowCount; ++i) {
-		rows.emplace_back(pattern.getRowPattern()[i], colCount, _approachProvider.getRow(i));
+	for (int i = 0; i < rowCount; i++) {
+		rows.emplace_back(pattern.getRowPattern()[i], colCount, approachProvider.getRow(i));
 	}
 }
 /*
@@ -43,12 +43,11 @@ SolutionCandidate& SolutionCandidate::operator=(const SolutionCandidate& other)
 ColumnCollection SolutionCandidate::getSolvedColumnPattern(int column) const
 {
 	int cnt = 0;
-	ColumnCollection result;
-	result.reserve(rowCount / 2);
+	ColumnCollection result(rowCount / 2);
 
-	for (int i = 0; i < rowCount; ++i) {
+	for (int i = 0; i < rowCount; i++) {
 		if (rows[i].getCellByColumn(column)) {
-			++cnt;
+			cnt++;
 		}
 		else if (cnt != 0) {
 			result.push_back(cnt);
@@ -64,14 +63,13 @@ ColumnCollection SolutionCandidate::getSolvedColumnPattern(int column) const
 
 std::vector<ColumnCollection> SolutionCandidate::getSolvedColumnPattern() const
 {
-	std::vector<ColumnCollection> result;
-	result.reserve(colCount);
+	std::vector<ColumnCollection> result(colCount);
 
-	for (int i = 0; i < colCount; ++i) {
+	for (int i = 0; i < colCount; i++) {
 		result.emplace_back(std::move(getSolvedColumnPattern(i)));
 	}
 
-	return std::move(result);
+	return result;
 }
 
 CellCollection SolutionCandidate::getRowAsCells(int row) const {
@@ -113,11 +111,6 @@ bool SolutionCandidate::isSolved() const {
 		}
 	}
 	return true;
-	/*const auto& columnPattern = pattern.getColumnPattern();
-	return std::equal(columnPattern.begin(), columnPattern.end(),
-		[this](const auto& col, int index) {
-		return col == getSolvedColumnPattern(index);
-	});*/
 }
 
 bool SolutionCandidate::isLethal() const {

@@ -7,7 +7,7 @@ RouletteSelector::RouletteSelector(Population& _population, const Estimator& _es
 	int i = -1;
 	for (const auto& candidate : population)
 	{
-		double fitness = estimator.fitness(candidate);
+		double fitness = estimator.candidateFitness(candidate);
 		
 		population_score[++i] = fitness;
 		sum_pop_finess += fitness;

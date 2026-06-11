@@ -15,7 +15,7 @@ private:
 	const Griddler& pattern;
 
 public:
-	SolutionCandidate(const Griddler &_pattern, const ConstraintProvider &_approachProvider);
+	SolutionCandidate(const Griddler &_pattern, const ConstraintProvider &approachProvider);
 	//SolutionCandidate(const SolutionCandidate& other);
 
 	//SolutionCandidate& operator=(const SolutionCandidate& other);

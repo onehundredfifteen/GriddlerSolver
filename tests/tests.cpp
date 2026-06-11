@@ -366,9 +366,9 @@ TEST_CASE("Estimate Candidate of simple griddler", "estimators")
 
     SolutionCandidate warped_candidate(testGiddler, ws);
 
-    double fitness = estimator.fitness(candidate);
-    double fitness_of_solved = estimator.fitness(solved_candidate);
-    double fitness_of_warped = estimator.fitness(warped_candidate);
+    double fitness = estimator.candidateFitness(candidate);
+    double fitness_of_solved = estimator.candidateFitness(solved_candidate);
+    double fitness_of_warped = estimator.candidateFitness(warped_candidate);
 
     CHECK(fitness_of_solved == (double)solved_candidate.rowCount);
     CHECK(fitness < fitness_of_solved);
@@ -384,8 +384,8 @@ TEST_CASE("Estimate Candidate of more complicated griddler", "estimators")
     FullSolutionProvider fsp(myGiddler);
     SolutionCandidate solved_candidate(myGiddler, fsp);
 
-    double fitness = estimator.fitness(candidate);
-    double fitness_of_solved = estimator.fitness(solved_candidate);
+    double fitness = estimator.candidateFitness(candidate);
+    double fitness_of_solved = estimator.candidateFitness(solved_candidate);
     CHECK(fitness_of_solved == (double)solved_candidate.rowCount);
     CHECK(fitness < fitness_of_solved);
 }
@@ -452,11 +452,11 @@ TEST_CASE("Basic Mutation", "mutations")
     FullSolutionProvider fsp(myGiddler);
     SolutionCandidate solved_candidate(myGiddler, fsp);
 
-    double fitness_of_solved = estimator.fitness(solved_candidate);
+    double fitness_of_solved = estimator.candidateFitness(solved_candidate);
 
     solved_candidate.mutate(mutation);
     
-    double fitness_of_mutated = estimator.fitness(solved_candidate);
+    double fitness_of_mutated = estimator.candidateFitness(solved_candidate);
     CHECK(fitness_of_solved == (double)solved_candidate.rowCount);
     CHECK(fitness_of_mutated < fitness_of_solved);
 }
@@ -468,19 +468,19 @@ TEST_CASE("Crossing over", "mutations")
     SolutionCandidate candidate(myGiddler, no_approach);
     SolutionCandidate solved_candidate(myGiddler, fsp);
 
-    double fitness_of_solved_before = estimator.fitness(solved_candidate);
-    double fitness_before = estimator.fitness(candidate);
+    double fitness_of_solved_before = estimator.candidateFitness(solved_candidate);
+    double fitness_before = estimator.candidateFitness(candidate);
 
     solved_candidate.crossingOver(candidate, 0.95);
 
-    double fitness_of_solved_after = estimator.fitness(solved_candidate);
-    double fitness_after = estimator.fitness(candidate);
+    double fitness_of_solved_after = estimator.candidateFitness(solved_candidate);
+    double fitness_after = estimator.candidateFitness(candidate);
 
     CHECK(fitness_of_solved_before == (double)solved_candidate.rowCount);
     CHECK(fitness_of_solved_after < fitness_of_solved_before);
 }
 
-TEST_CASE("Analyse population", "population")
+TEST_CASE("Analyse the population", "population")
 {
     BasicEstimator estimator(testGiddler);
     FullSolutionProvider fsp(testGiddler);
