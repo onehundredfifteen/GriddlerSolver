@@ -43,7 +43,8 @@ SolutionCandidate& SolutionCandidate::operator=(const SolutionCandidate& other)
 ColumnCollection SolutionCandidate::getSolvedColumnPattern(int column) const
 {
 	int cnt = 0;
-	ColumnCollection result(rowCount / 2);
+	ColumnCollection result;
+	result.reserve(rowCount / 2);
 
 	for (int i = 0; i < rowCount; i++) {
 		if (rows[i].getCellByColumn(column)) {
@@ -63,7 +64,8 @@ ColumnCollection SolutionCandidate::getSolvedColumnPattern(int column) const
 
 std::vector<ColumnCollection> SolutionCandidate::getSolvedColumnPattern() const
 {
-	std::vector<ColumnCollection> result(colCount);
+	std::vector<ColumnCollection> result;
+	result.reserve(colCount);
 
 	for (int i = 0; i < colCount; i++) {
 		result.emplace_back(std::move(getSolvedColumnPattern(i)));
