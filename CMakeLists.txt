@@ -7,7 +7,6 @@ add_compile_options(-fpermissive)
 set(GRIDDLE_SOLVER_SOURCES
     GriddlersSolver/Approach/BasicApproach.cpp
     GriddlersSolver/Approach/NoApproach.cpp
-    GriddlersSolver/Estimators/Estimator.cpp
     GriddlersSolver/GeneticAlgorithm.cpp
     GriddlersSolver/Mutations/Mutation.cpp
     GriddlersSolver/PopulationAnalyser.cpp

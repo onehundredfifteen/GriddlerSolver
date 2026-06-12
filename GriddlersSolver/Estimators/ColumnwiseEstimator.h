@@ -10,16 +10,12 @@ public:
 		: EstimatorBase<Derived>(_pattern)
 	{}
 
-	using EstimatorBase<Derived>::EstimatorBase; // Inherit constructors
-
-	//virtual double candidateFitness(const std::vector<ColumnCollection>& candidate) const;
-
-	double columnFitness(const ColumnCollection& candidateColumns, const ColumnCollection& solution) const {
-		return static_cast<Derived*>(this)->columnFitness(candidateColumns, solution);
+	double columnFitness(const ColumnCollection& candidateColumns, const ColumnCollection& solutionProposal) const {
+		return static_cast<const Derived*>(this)->columnFitness(candidateColumns, solutionProposal);
 	}
-
+	
 	double columnFitness(const SolutionCandidate& candidate, int columnIndex) const {
-		return columnFitness(candidate.getSolvedColumnPattern(columnIndex), this->pattern.getColumnPattern()[columnIndex]);
+		return static_cast<const Derived*>(this)->columnFitness(candidate.getSolvedColumnPattern(columnIndex), this->pattern.getColumnPattern()[columnIndex]);
 	}
 };
 

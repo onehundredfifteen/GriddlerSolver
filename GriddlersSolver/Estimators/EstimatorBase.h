@@ -20,11 +20,11 @@ public:
 
 	virtual ~EstimatorBase() = default;
 
-	double candidateFitness(const std::vector<ColumnCollection>& candidate) const {
-		return static_cast<const Derived*>(this)->candidateFitness(candidate);
+	double candidateFitness(const std::vector<ColumnCollection>& solutionProposal) const {
+		return static_cast<const Derived*>(this)->candidateFitness(solutionProposal);
 	}
 
 	double candidateFitness(const SolutionCandidate& candidate) const {
-		return candidateFitness(candidate.getSolvedColumnPattern());
+		return static_cast<const Derived*>(this)->candidateFitness(candidate.getSolvedColumnPattern());
 	}
 };
