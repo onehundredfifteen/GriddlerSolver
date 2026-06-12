@@ -46,7 +46,7 @@ public:
 	//}
 
 public:
-	const BlockCollection& blocks;
+	const BlockCollection blocks;
 	const int imageWidth;
 
 protected:

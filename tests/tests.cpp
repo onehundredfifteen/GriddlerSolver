@@ -371,10 +371,11 @@ TEST_CASE("Estimate Candidate of simple griddler", "estimators")
     double fitness_of_solved = estimator.candidateFitness(solved_candidate);
     double fitness_of_warped = estimator.candidateFitness(warped_candidate);
 
-    CHECK(fitness_of_solved == (double)solved_candidate.rowCount);
+    CHECK(fitness_of_solved == 1.0);
     CHECK(fitness < fitness_of_solved);
-    CHECK(fitness != fitness_of_warped);
+    std::cout << "Fitness of candidate: " << fitness << std::endl;
     CHECK(fitness_of_warped < fitness_of_solved);
+    CHECK(fitness != fitness_of_warped);
 }
 /*
 TEST_CASE("Chain estimator candidate fitness", "estimators")
@@ -402,8 +403,9 @@ TEST_CASE("Estimate Candidate of more complicated griddler", "estimators")
     SolutionCandidate solved_candidate(myGiddler, fsp);
 
     double fitness = estimator.candidateFitness(candidate);
+    std::cout << "Fitness of candidate2: " << fitness << std::endl;
     double fitness_of_solved = estimator.candidateFitness(solved_candidate);
-    CHECK(fitness_of_solved == (double)solved_candidate.rowCount);
+    CHECK(fitness_of_solved == 1.0);
     CHECK(fitness < fitness_of_solved);
 }
 
@@ -429,7 +431,7 @@ std::vector<int> __mock_and_test_selector() {
     testedSelector selector(population, estimator);
 
     std::vector<int> selection_histogram(population.size(), 0);
-    for (int i = 0; i < 10000; ++i) {
+    for (int i = 0; i < 10000; i++) {
         const auto& next = selector.Next();
         auto it = std::find_if(population.begin(), population.end(),
             [&](const SolutionCandidate& c) { return &c == &next; });
@@ -474,7 +476,7 @@ TEST_CASE("Basic Mutation", "mutations")
     solved_candidate.mutate(mutation);
     
     double fitness_of_mutated = estimator.candidateFitness(solved_candidate);
-    CHECK(fitness_of_solved == (double)solved_candidate.rowCount);
+    CHECK(fitness_of_solved == 1.0);
     CHECK(fitness_of_mutated < fitness_of_solved);
 }
 

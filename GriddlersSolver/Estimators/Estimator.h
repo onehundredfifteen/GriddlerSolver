@@ -21,7 +21,7 @@ public:
 		for (int n = 0; n < solutionProposal.size(); n++)
 			fitness += columnFitness(solutionProposal[n], target[n]);
 
-		return fitness / target.size();
+		return fitness / solutionProposal.size();
 	}
 
 	double columnFitness(const ColumnCollection& candidateColumns, const ColumnCollection& solutionProposal) const {
@@ -36,7 +36,11 @@ protected:
 			dot += A[i] * B[i];
 			denom_a += A[i] * A[i];
 			denom_b += B[i] * B[i];
-		}
-		return dot / (sqrt(denom_a * denom_b));
+		}		
+		
+		if (denom_a == 0.0 || denom_b == 0.0)
+			return 0.0;		
+		else
+			return dot / (sqrt(denom_a * denom_b));
 	}
 };
