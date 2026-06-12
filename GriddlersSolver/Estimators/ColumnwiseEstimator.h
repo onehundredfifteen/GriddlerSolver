@@ -1,20 +1,25 @@
 #pragma once
 
-#include "Estimator.h"
+#include "EstimatorBase.h"
 
-class ColumnwiseEstimator : public Estimator
+template<typename Derived>
+class ColumnwiseEstimator : public EstimatorBase<Derived>
 {
 public:
 	ColumnwiseEstimator(const Griddler& _pattern)
-		: Estimator(_pattern)
+		: EstimatorBase<Derived>(_pattern)
 	{}
+
+	using EstimatorBase<Derived>::EstimatorBase; // Inherit constructors
 
 	//virtual double candidateFitness(const std::vector<ColumnCollection>& candidate) const;
 
-	virtual double columnFitness(const ColumnCollection& candidateColumns, const ColumnCollection& solution) const = 0;
+	double columnFitness(const ColumnCollection& candidateColumns, const ColumnCollection& solution) const {
+		return static_cast<Derived*>(this)->columnFitness(candidateColumns, solution);
+	}
 
-	virtual double columnFitness(const SolutionCandidate& candidate, int columnIndex) {
-		return columnFitness(candidate.getSolvedColumnPattern(columnIndex), pattern.getColumnPattern()[columnIndex]);
+	double columnFitness(const SolutionCandidate& candidate, int columnIndex) const {
+		return columnFitness(candidate.getSolvedColumnPattern(columnIndex), this->pattern.getColumnPattern()[columnIndex]);
 	}
 };
 

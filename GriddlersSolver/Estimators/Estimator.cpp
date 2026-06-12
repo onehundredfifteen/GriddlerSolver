@@ -1,7 +1,7 @@
 #include <map>
-#include "BasicEstimator.h"
+#include "Estimator.h"
 
-double BasicEstimator::candidateFitness(const std::vector<ColumnCollection>& candidate) const 
+double Estimator::candidateFitness(const std::vector<ColumnCollection>& candidate) const 
 {
 	double fitness = 0.0;
 	auto target = pattern.getColumnPattern();
@@ -43,7 +43,7 @@ double BasicEstimator::candidateFitness(const std::vector<ColumnCollection>& can
 	*/
 };
 
-double BasicEstimator::columnFitness(const ColumnCollection& solution, const ColumnCollection& target) const {
+double Estimator::columnFitness(const ColumnCollection& solution, const ColumnCollection& target) const {
 
 	double a = longestCommonSubsequence(solution, target);
 	//double b = sizeDifference(solution, target);
@@ -52,7 +52,7 @@ double BasicEstimator::columnFitness(const ColumnCollection& solution, const Col
 	return std::clamp<double>(c + a, 0.0, 1.0);
 }
 
-double BasicEstimator::frequenceMap(const ColumnCollection& solution, const ColumnCollection& target) const {
+double Estimator::frequenceMap(const ColumnCollection& solution, const ColumnCollection& target) const {
 	std::unordered_map<int, int> freq_solution, freq_target;
 
 	//1. Count elements fitness
@@ -67,7 +67,7 @@ double BasicEstimator::frequenceMap(const ColumnCollection& solution, const Colu
 	return count_score / target.size();
 }
 
-double BasicEstimator::longestCommonSubsequence(const ColumnCollection& solution, const ColumnCollection& target) const {
+double Estimator::longestCommonSubsequence(const ColumnCollection& solution, const ColumnCollection& target) const {
 	//longest common subsequence
 	int n = solution.size();
 	int t = target.size();

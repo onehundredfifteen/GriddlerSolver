@@ -18,7 +18,7 @@
 #include "SolutionCandidate.h"
 
 #include "Estimators/ColumnwiseEstimator.h"
-#include "Estimators/BasicEstimator.h"
+#include "Estimators/Estimator.h"
 #include "Estimators/EntropyEstimator.h"
 
 #include "Selectors/RouletteSelector.h"

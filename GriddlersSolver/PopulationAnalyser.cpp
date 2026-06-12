@@ -4,8 +4,8 @@
 PopulationAnalyser::PopulationAnalyser(const Population& _population, const Scores& _scores)
 	: population(_population), scores(_scores), elite(population.cbegin()) {
 	
-	pop_min = Estimator::LOW_FITNESS;
-	pop_max = Estimator::HIGH_FITNESS;
+	pop_min = -1;//Estimator::LOW_FITNESS;
+	pop_max = 100;//Estimator::HIGH_FITNESS;
 	pop_avg = pop_med = 0.0;
 
 	refresh();

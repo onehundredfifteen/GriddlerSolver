@@ -5,7 +5,8 @@
 #include "./PopulationGenerator.h"
 #include "./Approach/NoApproach.h"
 #include "./Approach/FullSolutionProvider.h"
-#include "./Estimators/BasicEstimator.h"
+#include "./Estimators/Estimator.h"
+//#include "./Estimators/Estimator.h"
 #include "./Selectors/RouletteSelector.h"
 #include "./Mutations/BasicMutation.h"
 #include "./PopulationAnalyser.h"
@@ -23,7 +24,7 @@ void GA() {
 
 	DiagonalGriddler5x5 /*/ConcreteGriddler7x7*/ myGiddler;
 	NoApproach ap;
-	BasicEstimator estimator(myGiddler);
+	Estimator estimator(myGiddler);
 	
 	Population population = PopulationGenerator::Generate(pop_size, myGiddler, ap);
 

@@ -16,7 +16,7 @@ public:
 	Selector(const Population& _population, const Estimator& _estimator)
 		: population(_population), 
 		estimator(_estimator), 
-		population_score(population.size(), Estimator::LOW_FITNESS)
+		population_score(population.size(), -1.0)//Estimator::LOW_FITNESS)
 	{}
 	
 	virtual const SolutionCandidate& Next() = 0;

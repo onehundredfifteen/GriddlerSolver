@@ -3,7 +3,7 @@
 
 //#include "BasicEstimator.h"
 
-class FairEstimator : public BasicEstimator
+class FairEstimator : public Estimator
 {
 };/*
 #include "BasicEstimator.h"

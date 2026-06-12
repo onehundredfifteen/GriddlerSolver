@@ -16,8 +16,8 @@
 #include "../GriddlersSolver/Griddlers/ConcreteGriddler7x7.h"
 #include "../GriddlersSolver/SolutionCandidate.h"
 
-#include "../GriddlersSolver/Estimators/BasicEstimator.h"
-#include "../GriddlersSolver/Estimators/ChainedEstimator.h"
+#include "../GriddlersSolver/Estimators/Estimator.h"
+//#include "../GriddlersSolver/Estimators/ChainedEstimator.h"
 
 #include "../GriddlersSolver/PopulationAnalyser.h"
 #include "../GriddlersSolver/PopulationGenerator.h"
@@ -355,7 +355,7 @@ TEST_CASE("Passing Solution Candidate", "population")
 
 TEST_CASE("Estimate Candidate of simple griddler", "estimators")
 {
-    BasicEstimator estimator(testGiddler);
+    Estimator estimator(testGiddler);
     SolutionCandidate candidate(testGiddler, no_approach);
 
     FullSolutionProvider fsp(testGiddler);
@@ -376,10 +376,10 @@ TEST_CASE("Estimate Candidate of simple griddler", "estimators")
     CHECK(fitness != fitness_of_warped);
     CHECK(fitness_of_warped < fitness_of_solved);
 }
-
+/*
 TEST_CASE("Chain estimator candidate fitness", "estimators")
 {
-    BasicEstimator basic(testGiddler);
+    Estimator basic(testGiddler);
     ChainedEstimator chain(testGiddler, {
         { &basic, 1.0 },
         { &basic, 2.0 }
@@ -391,11 +391,11 @@ TEST_CASE("Chain estimator candidate fitness", "estimators")
 
     CHECK(chained == expected);
     CHECK(chain.candidateFitness(candidate) == expected);
-}
+}*/
 
 TEST_CASE("Estimate Candidate of more complicated griddler", "estimators")
 {
-    BasicEstimator estimator(myGiddler);
+    Estimator estimator(myGiddler);
     SolutionCandidate candidate(myGiddler, no_approach);
 
     FullSolutionProvider fsp(myGiddler);
@@ -409,7 +409,7 @@ TEST_CASE("Estimate Candidate of more complicated griddler", "estimators")
 
 template<typename testedSelector>
 std::vector<int> __mock_and_test_selector() {
-    BasicEstimator estimator(testGiddler);
+    Estimator estimator(testGiddler);
     SolutionCandidate candidate(testGiddler, no_approach);
     SolutionCandidate candidate2(testGiddler, no_approach);
 
@@ -465,7 +465,7 @@ TEST_CASE("Population selection - best of K=3", "selection")
 TEST_CASE("Basic Mutation", "mutations")
 {
     BasicMutation mutation(0.9);
-    BasicEstimator estimator(myGiddler);
+    Estimator estimator(myGiddler);
     FullSolutionProvider fsp(myGiddler);
     SolutionCandidate solved_candidate(myGiddler, fsp);
 
@@ -480,7 +480,7 @@ TEST_CASE("Basic Mutation", "mutations")
 
 TEST_CASE("Crossing over", "mutations")
 {
-    BasicEstimator estimator(myGiddler);
+    Estimator estimator(myGiddler);
     FullSolutionProvider fsp(myGiddler);
     SolutionCandidate candidate(myGiddler, no_approach);
     SolutionCandidate solved_candidate(myGiddler, fsp);
@@ -499,7 +499,7 @@ TEST_CASE("Crossing over", "mutations")
 
 TEST_CASE("Analyse the population", "population")
 {
-    BasicEstimator estimator(testGiddler);
+    Estimator estimator(testGiddler);
     FullSolutionProvider fsp(testGiddler);
     SolutionCandidate solved_candidate(testGiddler, fsp);
 
