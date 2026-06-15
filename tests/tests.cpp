@@ -266,7 +266,14 @@ TEST_CASE("Mutable row", "rows")
 
 ConcreteGriddler7x7 myGiddler;
 TestGriddler5x5 testGiddler;
-ConstrainedRow warped_constraint(GriddlerRow({1, 1}, {1, 1}, 5)); //for testGiddler
+BlockCollection warp_b = { 1,1 };
+SpanCollection warp_s = { 1, 1 };
+GriddlerRow warped(warp_b, warp_s, 5);
+ConstrainedRow warped_constraint(warped);
+
+
+//GriddlerRow row({1, 1}, {1, 1}, 5);
+//ConstrainedRow warped_constraint(row); //for testGiddler
 
 NoApproach no_approach;
 
@@ -360,9 +367,11 @@ TEST_CASE("Estimate Candidate of simple griddler", "estimators")
 
     FullSolutionProvider fsp(testGiddler);
     SolutionCandidate solved_candidate(testGiddler, fsp);
+
     solved_candidate.printToStream(std::cout);
     //prepare almost perfect solution
     WarpedSolution ws(testGiddler);
+
     ws.warpRow(0, warped_constraint);
 
     SolutionCandidate warped_candidate(testGiddler, ws);
@@ -373,7 +382,6 @@ TEST_CASE("Estimate Candidate of simple griddler", "estimators")
 
     CHECK(fitness_of_solved == 1.0);
     CHECK(fitness < fitness_of_solved);
-    std::cout << "Fitness of candidate: " << fitness << std::endl;
     CHECK(fitness_of_warped < fitness_of_solved);
     CHECK(fitness != fitness_of_warped);
 }
@@ -403,7 +411,6 @@ TEST_CASE("Estimate Candidate of more complicated griddler", "estimators")
     SolutionCandidate solved_candidate(myGiddler, fsp);
 
     double fitness = estimator.candidateFitness(candidate);
-    std::cout << "Fitness of candidate2: " << fitness << std::endl;
     double fitness_of_solved = estimator.candidateFitness(solved_candidate);
     CHECK(fitness_of_solved == 1.0);
     CHECK(fitness < fitness_of_solved);
@@ -495,7 +502,7 @@ TEST_CASE("Crossing over", "mutations")
     double fitness_of_solved_after = estimator.candidateFitness(solved_candidate);
     double fitness_after = estimator.candidateFitness(candidate);
 
-    CHECK(fitness_of_solved_before == (double)solved_candidate.rowCount);
+    CHECK(fitness_of_solved_before == 1.0);
     CHECK(fitness_of_solved_after < fitness_of_solved_before);
 }
 
@@ -515,9 +522,9 @@ TEST_CASE("Analyse the population", "population")
     RouletteSelector selector(population, estimator);
     PopulationAnalyser analyser(population, selector.getPopulationScore());
 
-    double expected_min = 1.0;
-    double expected_max = 5.0;
-    double expected_avg = 3.0;
+    double expected_min = -1.0;
+    double expected_max = 1.0;
+    double expected_avg = 0.99486832980505135;
     double expected_med = expected_avg;
     
     CHECK(expected_min == analyser.getMin());

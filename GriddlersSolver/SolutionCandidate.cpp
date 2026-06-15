@@ -46,9 +46,9 @@ ColumnCollection SolutionCandidate::getSolvedColumnPattern(int column) const
 	ColumnCollection result;
 	result.reserve(rowCount / 2);
 
-	for (int i = 0; i < rowCount; i++) {
+	for (int i = 0; i < rowCount; ++i) {
 		if (rows[i].getCellByColumn(column)) {
-			cnt++;
+			++cnt;
 		}
 		else if (cnt != 0) {
 			result.push_back(cnt);
@@ -67,11 +67,11 @@ std::vector<ColumnCollection> SolutionCandidate::getSolvedColumnPattern() const
 	std::vector<ColumnCollection> result;
 	result.reserve(colCount);
 
-	for (int i = 0; i < colCount; i++) {
-		result.emplace_back(std::move(getSolvedColumnPattern(i)));
+	for (int i = 0; i < colCount; ++i) {
+		result.push_back(getSolvedColumnPattern(i));
 	}
 
-	return result;
+	return std::move(result);
 }
 
 CellCollection SolutionCandidate::getRowAsCells(int row) const {

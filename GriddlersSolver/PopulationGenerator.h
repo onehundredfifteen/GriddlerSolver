@@ -9,10 +9,10 @@ public:
         Population population;
         population.reserve(N);
         
-        for (int i = 0; i < N; i++)
+        for (int i = 0; i < N; ++i)
             population.emplace_back(pattern, approachProvider);
 
-        return population;
+        return std::move(population);
     }
 
     /*template<typename... Args>
